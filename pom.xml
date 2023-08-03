@@ -16,7 +16,9 @@
     <version>2.7.0</version>
     <packaging>pom</packaging>
 
-    <url>https://github.com/lsnju/tp-base-v2</url>
+    <name>tp-base</name>
+    <description>tp-base</description>
+    <url>https://github.com/lsnju/tp-base</url>
 
     <modules>
         <module>tp-base-dep</module>
@@ -250,9 +252,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git@github.com:lsnju/dependencies-for-jdk.git</connection>
-        <developerConnection>scm:git:git@github.com:lsnju/dependencies-for-jdk.git</developerConnection>
-        <url>git@github.com:lsnju/dependencies-for-jdk.git</url>
+        <connection>scm:git:git@github.com:lsnju/tp-base.git</connection>
+        <developerConnection>scm:git:git@github.com:lsnju/tp-base.git</developerConnection>
+        <url>git@github.com:lsnju/tp-base.git</url>
     </scm>
     <developers>
         <developer>
@@ -329,18 +331,21 @@
                 </executions>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-javadoc-plugin</artifactId>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>attach-javadocs</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>jar</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <doclint>none</doclint>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
