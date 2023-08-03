@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<configuration debug="false" scan="false" packagingData="true">
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <springProperty scope="context" name="log_config_ext" source="logger.config-ext" defaultValue="" />
+    <springProperty scope="context" name="sys_name" source="logger.sys-name" defaultValue="tp" />
+    <springProperty scope="context" name="log_level" source="logger.level" defaultValue="info" />
+    <springProperty scope="context" name="log_home" source="logger.home" defaultValue="/tmp/logs" />
+    <springProperty scope="context" name="log_path" source="logger.path" defaultValue="" />
+    <springProperty scope="context" name="his_log_path" source="logger.his-path" defaultValue="" />
+    <springProperty scope="context" name="saved_days" source="logger.max-history" defaultValue="15" />
+    <springProperty scope="context" name="log_env" source="spring.profiles.active" defaultValue="dev" />
+    <springProperty scope="context" name="base_package" source="logger.base-package" defaultValue="com.lsnju.ox" />
+    <springProperty scope="context" name="log_out" source="logger.output" defaultValue="file" />
+    <springProperty scope="context" name="log_console_pattern" source="logger.console-pattern" defaultValue="spring" />
+
+    <property name="logging_level_info" value="info" />
+    <property name="logging_level_warn" value="warn" />
+
+    <if condition='p("log_path").length() > 0'>
+        <then>
+            <property name="log_file_path" value="${log_home}/${sys_name}/${log_path}" />
+        </then>
+        <else>
+            <property name="log_file_path" value="${log_home}/${sys_name}" />
+        </else>
+    </if>
+
+    <if condition='p("his_log_path").length() > 0'>
+        <then>
+            <property name="log_file_his_path" value="${his_log_path}" />
+        </then>
+        <else>
+            <property name="log_file_his_path" value="${log_file_path}" />
+        </else>
+    </if>
+
+    <property name="file_post_fix" value=".%d{yyyy-MM-dd}.b" />
+    <property name="file_default" value="common-default.log" />
+    <property name="file_error" value="common-error.log" />
+    <property name="file_warn" value="common-warn.log" />
+    <property name="file_http" value="common-http.log" />
+
+    <!-- 摘要日志 -->
+    <property name="file_dal_digest" value="${sys_name}-dal-digest.log" />
+    <property name="file_sal_digest" value="${sys_name}-sal-digest.log" />
+    <property name="file_page_digest" value="${sys_name}-page-digest.log" />
+    <property name="file_biz_daemon_digest" value="${sys_name}-biz-daemon-digest.log" />
+    <property name="file_cp_mo_digest" value="${sys_name}-cp-digest.log" />
+    <property name="file_tp_mo_digest" value="${sys_name}-tp-digest.log" />
+
+    <property name="file_http_header" value="${sys_name}-http-header.log" />
+    <property name="file_web_info" value="${sys_name}-web-info.log" />
+    <property name="file_web_default" value="${sys_name}-web.log" />
+    <property name="file_core_default" value="${sys_name}-core-default.log" />
+    <property name="file_core_model" value="${sys_name}-core-model.log" />
+    <property name="file_core_srv" value="${sys_name}-core-service.log" />
+
+    <property name="file_biz_daemon" value="${sys_name}-biz-daemon.log" />
+    <property name="file_common_dal" value="${sys_name}-common-dal.log" />
+    <property name="file_common_sal" value="${sys_name}-common-integration.log" />
+    <property name="file_profiler" value="${sys_name}-profiler.log" />
+    <property name="file_tp_ex_class" value="${sys_name}-ex.log" />
+
+    <property name="logging_console_pattern" value="${CONSOLE_LOG_PATTERN:-%d{HH:mm:ss.SSS} [%t]#%X{session_uid} %-5p %-40.40c{39} - %m%n}" />
+
+    <property name="logging_digest_pattern" value="%d:%X{w_req_id} - %m%n" />
+    <property name="logging_default_pattern" value="%d:%X{w_req_id} [%t] [%X{session_uid}] %-5p %c [%F:%L-%M] - %m%n" />
+    <property name="logging_default_pattern_web"
+              value="%d:%X{w_req_id} [%t] %-4X{req.method} [%X{session_uid}-%-15X{req.remoteHost} %X{req.requestURI} %X{req.queryString}] - %m[%X{req.userAgent}]%n" />
+    <property name="logging_error_pattern"
+              value="%d:%X{w_req_id} [%t] [%X{session_uid}#%X{req.remoteHost}#%X{req.requestURI}] %-5p %c [%F:%L-%M] - %m%n" />
+    <property name="logging_profile_pattern" value="%d:%X{w_req_id} [%t] [%X{req.remoteHost}#%X{req.requestURI}#%X{req.queryString}] %-5p - %m%n" />
+
+    <!-- ================================================== -->
+    <!-- ================================================== -->
+    <!-- ================================================== -->
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
+                <then>
+                    <pattern>${logging_console_pattern}</pattern>
+                </then>
+                <else>
+                    <pattern>${logging_default_pattern}</pattern>
+                </else>
+            </if>
+        </encoder>
+    </appender>
+
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
+                <then>
+                    <pattern>${logging_console_pattern}</pattern>
+                </then>
+                <else>
+                    <pattern>${logging_default_pattern}</pattern>
+                </else>
+            </if>
+        </encoder>
+        <target>System.err</target>
+    </appender>
+
+
+    <appender name="COMMON_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <file>${log_file_path}/${file_error}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_error}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_error_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="COMMON_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${log_file_path}/${file_warn}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_warn}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="DEFAULT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_default}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_default}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+
+    <appender name="WEB_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_web_default}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_web_default}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="${base_package}.web" level="${log_level}" additivity="false">
+        <appender-ref ref="WEB_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+    <logger name="com.lsnju.tpbase.web" level="${log_level}" additivity="false">
+        <appender-ref ref="WEB_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+    <appender name="WEBX_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_web_info}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_web_info}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern_web}</pattern>
+        </encoder>
+    </appender>
+    <logger name="COM.LSNJU.WEBX" level="${log_level}" additivity="false">
+        <appender-ref ref="WEBX_APPENDER" />
+    </logger>
+
+
+    <appender name="BIZ_DAEMON_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_biz_daemon}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_biz_daemon}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="${base_package}.biz.daemon" level="${log_level}" additivity="false">
+        <appender-ref ref="BIZ_DAEMON_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+    <logger name="com.lsnju.tp.biz.daemon.monitor" level="${log_level}" additivity="false">
+        <appender-ref ref="BIZ_DAEMON_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+    <appender name="CORE_DEFAULT_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_core_default}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_core_default}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="${base_package}.core" level="${log_level}" additivity="false">
+        <appender-ref ref="CORE_DEFAULT_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+    <appender name="CORE_MODEL_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_core_model}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_core_model}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="${base_package}.core.model" level="${log_level}" additivity="false">
+        <appender-ref ref="CORE_MODEL_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+    <appender name="CORE_SERVICE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_core_srv}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_core_srv}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="${base_package}.core.service" level="${log_level}" additivity="false">
+        <appender-ref ref="CORE_SERVICE_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+
+    <appender name="DAL_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_common_dal}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_common_dal}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="${base_package}.common.dal" level="${log_level}" additivity="false">
+        <appender-ref ref="DAL_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+
+    <appender name="SAL_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_common_sal}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_common_sal}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_default_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="${base_package}.common.sal" level="${log_level}" additivity="false">
+        <appender-ref ref="SAL_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+
+    <!-- 定时任务摘要日志 -->
+    <appender name="BIZ_DAEMON_DIGEST_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_biz_daemon_digest}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_biz_daemon_digest}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_BIZ_DAEMON_DIGEST" level="info" additivity="false">
+        <appender-ref ref="BIZ_DAEMON_DIGEST_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+    <appender name="DAL_DIGEST_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_dal_digest}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_dal_digest}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_DAL_DIGEST" level="info" additivity="false">
+        <appender-ref ref="DAL_DIGEST_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+    <appender name="SAL_DIGEST_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_sal_digest}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_sal_digest}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_SAL_DIGEST" level="info" additivity="false">
+        <appender-ref ref="SAL_DIGEST_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+    <appender name="CP_MO_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_cp_mo_digest}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_cp_mo_digest}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_CP_MO_DIGEST" level="info" additivity="false">
+        <appender-ref ref="CP_MO_APPENDER" />
+    </logger>
+
+    <appender name="TP_MO_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_tp_mo_digest}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_tp_mo_digest}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_TP_MO_DIGEST" level="info" additivity="false">
+        <appender-ref ref="TP_MO_APPENDER" />
+    </logger>
+
+    <appender name="PAGE_PERF_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_page_digest}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_page_digest}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_PAGE_PERF" level="info" additivity="false">
+        <appender-ref ref="PAGE_PERF_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+    <appender name="HTTP_HEADER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_http_header}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_http_header}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_profile_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_HTTP_HEADER" level="info" additivity="false">
+        <appender-ref ref="HTTP_HEADER_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+
+    <appender name="PROFILER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_profiler}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_profiler}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_profile_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_PROFILER" level="info" additivity="false">
+        <appender-ref ref="PROFILER_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+
+    <logger name="com.lsnju.tp" level="info" />
+    <logger name="com.lsnju.tpbase.web.config.filter" level="warn" />
+    <logger name="org.springframework.boot.web.embedded" level="info" />
+    <logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer" level="info" />
+
+    <logger name="org.apache.http.headers" level="debug" />
+
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+
+    <appender name="COMMON_HTTP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_http}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_http}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="org.apache.http" level="info" additivity="false">
+        <appender-ref ref="COMMON_HTTP" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
+
+
+    <appender name="TP_EX_CLASS_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_tp_ex_class}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_tp_ex_class}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="tp-ex-class" level="info" additivity="false">
+        <appender-ref ref="TP_EX_CLASS_APPENDER" />
+    </logger>
+
+    <!-- 默认日志输出 -->
+    <logger name="com.lsnju" level="${log_level}" additivity="false">
+        <appender-ref ref="DEFAULT" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+    <logger name="com.lsnju" level="${log_level}" additivity="false">
+        <appender-ref ref="DEFAULT" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </logger>
+
+    <logger name="STDOUT" level="${log_level}" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="STDERR" level="${log_level}" additivity="false">
+        <appender-ref ref="STDERR" />
+    </logger>
+
+    <if condition='p("log_config_ext").length() > 0'>
+        <then>
+            <include resource="${log_config_ext}" />
+        </then>
+    </if>
+
+    <root level="warn">
+        <appender-ref ref="DEFAULT" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
+    </root>
+
+</configuration>
