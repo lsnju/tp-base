@@ -13,13 +13,28 @@
 
     <groupId>com.lsnju</groupId>
     <artifactId>tp-base-dependencies</artifactId>
-    <version>2.7.0</version>
+    <version>2.7.1</version>
     <packaging>pom</packaging>
 
     <url>https://github.com/lsnju/tp-base</url>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.lsnju</groupId>
+                <artifactId>tp-domain-multi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju</groupId>
+                <artifactId>tp-domain-default</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju</groupId>
+                <artifactId>tp-domain-json</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.lsnju</groupId>
                 <artifactId>tp-utils</artifactId>
