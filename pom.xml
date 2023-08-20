@@ -310,9 +310,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <!--                <configuration>-->
-                <!--                    <propertiesEncoding>utf-8</propertiesEncoding>-->
-                <!--                </configuration>-->
+                <configuration>
+                    <propertiesEncoding>utf-8</propertiesEncoding>
+                </configuration>
             </plugin>
 
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
