@@ -10,7 +10,7 @@
         <version>2.7.2</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
-    <artifactId>tp-domain-default</artifactId>
+    <artifactId>tp-domain-short</artifactId>
 
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>

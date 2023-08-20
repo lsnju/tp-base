@@ -13,7 +13,7 @@
 
     <groupId>com.lsnju</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>2.7.1</version>
+    <version>2.7.2</version>
     <packaging>pom</packaging>
 
     <name>tp-base</name>
@@ -24,6 +24,7 @@
         <module>tp-base-dep</module>
         <module>tp-domain-multi</module>
         <module>tp-domain-default</module>
+        <module>tp-domain-short</module>
         <module>tp-domain-json</module>
         <module>tp-utils</module>
         <module>tp-base-log</module>
