@@ -78,32 +78,41 @@
     <!-- ================================================== -->
     <!-- ================================================== -->
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
-                <then>
+    <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
+        <then>
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
                     <pattern>${logging_console_pattern}</pattern>
-                </then>
-                <else>
+                </encoder>
+            </appender>
+        </then>
+        <else>
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
                     <pattern>${logging_default_pattern}</pattern>
-                </else>
-            </if>
-        </encoder>
-    </appender>
+                </encoder>
+            </appender>
+        </else>
+    </if>
 
-    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
-                <then>
+    <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
+        <then>
+            <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
                     <pattern>${logging_console_pattern}</pattern>
-                </then>
-                <else>
+                </encoder>
+                <target>System.err</target>
+            </appender>
+        </then>
+        <else>
+            <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
                     <pattern>${logging_default_pattern}</pattern>
-                </else>
-            </if>
-        </encoder>
-        <target>System.err</target>
-    </appender>
+                </encoder>
+                <target>System.err</target>
+            </appender>
+        </else>
+    </if>
 
 
     <appender name="COMMON_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -166,21 +175,11 @@
         <appender-ref ref="WEB_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
     <logger name="com.lsnju.tpbase.web" level="${log_level}" additivity="false">
         <appender-ref ref="WEB_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
 
     <appender name="WEBX_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -213,7 +212,7 @@
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
     </logger>
-    <logger name="com.lsnju.tp.biz.daemon.monitor" level="${log_level}" additivity="false">
+    <logger name="com.lsnju.tpbase.daemon.monitor" level="${log_level}" additivity="false">
         <appender-ref ref="BIZ_DAEMON_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
@@ -233,11 +232,6 @@
         <appender-ref ref="CORE_DEFAULT_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
 
     <appender name="CORE_MODEL_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -254,11 +248,6 @@
         <appender-ref ref="CORE_MODEL_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
 
     <appender name="CORE_SERVICE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -275,11 +264,6 @@
         <appender-ref ref="CORE_SERVICE_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
 
 
@@ -297,11 +281,6 @@
         <appender-ref ref="DAL_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
 
 
@@ -319,11 +298,6 @@
         <appender-ref ref="SAL_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
 
 
@@ -465,8 +439,9 @@
     <!-- ====================================== -->
     <!-- ====================================== -->
 
-    <logger name="com.lsnju.tp" level="info" />
-    <logger name="com.lsnju.tpbase.web.config.filter" level="warn" />
+    <logger name="com.lsnju.base" level="info" />
+    <logger name="com.lsnju.tpbase" level="info" />
+    <logger name="com.lsnju.tpbase.web.filter" level="warn" />
     <logger name="org.springframework.boot.web.embedded" level="info" />
     <logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer" level="info" />
 
@@ -512,22 +487,6 @@
         <appender-ref ref="DEFAULT" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
-    </logger>
-
-    <logger name="com.lsnju" level="${log_level}" additivity="false">
-        <appender-ref ref="DEFAULT" />
-        <appender-ref ref="COMMON_ERROR" />
-        <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </logger>
 
     <logger name="STDOUT" level="${log_level}" additivity="false">
@@ -538,9 +497,9 @@
         <appender-ref ref="STDERR" />
     </logger>
 
-    <if condition='p("log_config_ext").length() > 0'>
+    <if condition='isDefined("log_config_ext") &amp;&amp; p("log_config_ext").length() > 0'>
         <then>
-            <include resource="${log_config_ext}" />
+            <include optional="true" resource="logback-ext.xml" />
         </then>
     </if>
 
@@ -548,11 +507,37 @@
         <appender-ref ref="DEFAULT" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
     </root>
+    <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+        <then>
+            <logger name="${base_package}.web">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <logger name="com.lsnju.tpbase.web">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <logger name="${base_package}.core">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <logger name="${base_package}.core.model">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <logger name="${base_package}.core.service">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <logger name="${base_package}.common.dal">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <logger name="${base_package}.common.sal">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <logger name="com.lsnju">
+                <appender-ref ref="STDOUT" />
+            </logger>
+            <root>
+                <appender-ref ref="STDOUT" />
+            </root>
+        </then>
+    </if>
 
 </configuration>
