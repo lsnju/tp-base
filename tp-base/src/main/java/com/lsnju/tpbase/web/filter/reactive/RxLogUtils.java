@@ -51,7 +51,7 @@ public class RxLogUtils {
         MDC.put(ClassicConstants.REQUEST_REQUEST_URI, request.getURI().getPath());
         MDC.put(ClassicConstants.REQUEST_QUERY_STRING, request.getURI().getRawQuery());
         MDC.put(ClassicConstants.REQUEST_REQUEST_URL, request.getURI().toString());
-        MDC.put(ClassicConstants.REQUEST_METHOD, request.getMethodValue());
+        MDC.put(ClassicConstants.REQUEST_METHOD, request.getMethod().name());
         MDC.put(ClassicConstants.REQUEST_USER_AGENT_MDC_KEY, TpHttpHeaderUtils.getUserAgent(headers));
     }
 

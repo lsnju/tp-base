@@ -3,8 +3,6 @@ package com.lsnju.tpbase.web.util;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +10,8 @@ import org.springframework.http.MediaType;
 import com.lsnju.base.enums.BizErrEnum;
 import com.lsnju.base.model.rs.BaseResp;
 import com.lsnju.base.util.TpJsonUtils;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 /**

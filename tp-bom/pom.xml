@@ -5,7 +5,7 @@
 
     <groupId>com.lsnju</groupId>
     <artifactId>tp-bom</artifactId>
-    <version>2.7.2</version>
+    <version>3.1.0</version>
     <packaging>pom</packaging>
 
     <name>tp-bom</name>
@@ -17,6 +17,8 @@
         <tp-base.version>${project.version}</tp-base.version>
         <tp-base-config.version>${project.version}</tp-base-config.version>
         <tp-base-log.version>${project.version}</tp-base-log.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencyManagement>

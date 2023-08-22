@@ -1,10 +1,10 @@
 package com.lsnju.tpbase.daemon.base;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 
 import com.lsnju.tpbase.daemon.AbstractNewTask;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  *

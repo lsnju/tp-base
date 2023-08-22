@@ -1,6 +1,6 @@
 package com.lsnju.base.http.config;
 
-import org.apache.http.client.fluent.Request;
+import org.apache.hc.client5.http.fluent.Request;
 
 /**
  *

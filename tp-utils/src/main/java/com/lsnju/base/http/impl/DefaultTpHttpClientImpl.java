@@ -5,11 +5,12 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Executor;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
+import org.apache.hc.client5.http.fluent.Executor;
+import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.util.Timeout;
 
 import com.lsnju.base.http.TpHttpClient;
 import com.lsnju.base.http.config.HttpConfig;
@@ -138,10 +139,10 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
 
     @Override
     public HttpResponse post(URI targetUrl, String rawReq, ContentType contentType, RequestCustomizer customizer, Executor executor) throws IOException {
-        final Request request = Request.Post(targetUrl)
+        final Request request = Request.post(targetUrl)
             .userAgent(this.userAgent)
-            .connectTimeout(this.connectTimeout)
-            .socketTimeout(this.socketTimeout)
+            .connectTimeout(Timeout.ofMicroseconds(this.connectTimeout))
+            .responseTimeout(Timeout.ofMicroseconds(this.socketTimeout))
             .body(new StringEntity(rawReq, contentType));
         if (customizer != null) {
             customizer.customize(request);
@@ -190,10 +191,10 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
 
     @Override
     public HttpResponse get(URI targetUrl, RequestCustomizer customizer, Executor executor) throws IOException {
-        final Request request = Request.Get(targetUrl)
+        final Request request = Request.get(targetUrl)
             .userAgent(this.userAgent)
-            .connectTimeout(this.connectTimeout)
-            .socketTimeout(this.socketTimeout);
+            .connectTimeout(Timeout.ofMicroseconds(this.connectTimeout))
+            .responseTimeout(Timeout.ofMicroseconds(this.socketTimeout));
         if (customizer != null) {
             customizer.customize(request);
         }

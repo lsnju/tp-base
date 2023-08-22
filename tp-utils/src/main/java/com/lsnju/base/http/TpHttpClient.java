@@ -3,9 +3,9 @@ package com.lsnju.base.http;
 import java.io.IOException;
 import java.net.URI;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Executor;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.client5.http.fluent.Executor;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpResponse;
 
 import com.lsnju.base.http.config.RequestCustomizer;
 

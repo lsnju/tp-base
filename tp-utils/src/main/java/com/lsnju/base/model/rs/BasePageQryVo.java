@@ -1,7 +1,5 @@
 package com.lsnju.base.model.rs;
 
-import javax.validation.constraints.Positive;
-
 import org.hibernate.validator.constraints.Range;
 
 import com.lsnju.base.model.BaseMo;
@@ -9,6 +7,7 @@ import com.lsnju.base.model.BaseMo;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 

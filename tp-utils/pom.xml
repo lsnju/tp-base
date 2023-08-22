@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lsnju</groupId>
         <artifactId>tp-base-dep</artifactId>
-        <version>2.7.2</version>
+        <version>3.1.0</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
     <artifactId>tp-utils</artifactId>
@@ -41,10 +41,18 @@
             <artifactId>gson</artifactId>
         </dependency>
 
+        <!-- API, java.xml.bind module -->
         <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
@@ -100,17 +108,10 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/fluent-hc -->
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5-fluent -->
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>fluent-hc</artifactId>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5-fluent</artifactId>
         </dependency>
 
         <!--        test                  -->

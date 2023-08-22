@@ -7,17 +7,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import com.lsnju.base.util.UUIDGenerator;
 import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.tpbase.web.filter.RequestId;
 import com.lsnju.tpbase.web.util.TpHttpHeaderUtils;
-import com.lsnju.base.util.UUIDGenerator;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -52,7 +52,7 @@ public class PagePerfWebFilter implements WebFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         final ServerHttpRequest request = exchange.getRequest();
         final String path = request.getURI().getPath();
-        final String method = request.getMethodValue();
+        final String method = request.getMethod().name();
         final String requestId = getRequestId(exchange);
         exchange.getAttributes().put(RequestId.RX_CTX_ID, requestId);
 
@@ -94,7 +94,7 @@ public class PagePerfWebFilter implements WebFilter, Ordered {
         if (PAGE_PERF_LOGGER.isInfoEnabled()) {
             final long cost = System.nanoTime() - start;
             final String logPrefix = exchange.getLogPrefix();
-            final HttpStatus httpStatus = exchange.getResponse().getStatusCode();
+            final HttpStatusCode httpStatus = exchange.getResponse().getStatusCode();
             PAGE_PERF_LOGGER.info(String.format(FORMAT, method, path, cost / DigestConstants.MS_SCALE, s, getIp(exchange),
                 logPrefix, httpStatus));
         }
