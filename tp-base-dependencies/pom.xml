@@ -11,7 +11,7 @@
         <relativePath />
     </parent>
 
-    <groupId>com.lsnju</groupId>
+    <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-dependencies</artifactId>
     <version>3.1.0</version>
     <packaging>pom</packaging>
@@ -26,37 +26,37 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-multi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-default</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-short</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-json</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-log</artifactId>
                 <version>${project.version}</version>
             </dependency>

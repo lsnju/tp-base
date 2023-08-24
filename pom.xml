@@ -11,7 +11,7 @@
         <relativePath />
     </parent>
 
-    <groupId>com.lsnju</groupId>
+    <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-parent</artifactId>
     <version>3.1.0</version>
     <packaging>pom</packaging>
@@ -47,7 +47,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-dependencies</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>

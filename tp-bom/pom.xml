@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.lsnju</groupId>
+    <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-bom</artifactId>
     <version>3.1.0</version>
     <packaging>pom</packaging>
@@ -24,42 +24,42 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-multi</artifactId>
                 <version>${wtion-base.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-default</artifactId>
                 <version>${wtion-base.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-short</artifactId>
                 <version>${wtion-base.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-json</artifactId>
                 <version>${wtion-base.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-utils</artifactId>
                 <version>${wtion-base.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-config</artifactId>
                 <version>${tp-base-config.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-log</artifactId>
                 <version>${tp-base-log.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base</artifactId>
                 <version>${tp-base-log.version}</version>
             </dependency>
