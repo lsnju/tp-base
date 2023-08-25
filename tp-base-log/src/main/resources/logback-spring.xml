@@ -446,6 +446,7 @@
     <logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer" level="info" />
 
     <logger name="org.apache.http.headers" level="debug" />
+    <logger name="org.apache.hc.client5.http.headers" level="debug" />
 
     <!-- ====================================== -->
     <!-- ====================================== -->

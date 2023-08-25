@@ -7,8 +7,8 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.client5.http.fluent.Executor;
 import org.apache.hc.client5.http.fluent.Request;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.util.Timeout;
 
@@ -43,102 +43,102 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
     }
 
     @Override
-    public HttpResponse postXml(String targetUrl, String rawReq) throws IOException {
+    public ClassicHttpResponse postXml(String targetUrl, String rawReq) throws IOException {
         return postXml(URI.create(targetUrl), rawReq);
     }
 
     @Override
-    public HttpResponse postXml(String targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
+    public ClassicHttpResponse postXml(String targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
         return postXml(URI.create(targetUrl), rawReq, customizer);
     }
 
     @Override
-    public HttpResponse postXml(String targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse postXml(String targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
         return postXml(URI.create(targetUrl), rawReq, customizer, executor);
     }
 
     @Override
-    public HttpResponse postXml(String targetUrl, String rawReq, Executor executor) throws IOException {
+    public ClassicHttpResponse postXml(String targetUrl, String rawReq, Executor executor) throws IOException {
         return postXml(URI.create(targetUrl), rawReq, executor);
     }
 
     @Override
-    public HttpResponse postXml(URI targetUrl, String rawReq) throws IOException {
+    public ClassicHttpResponse postXml(URI targetUrl, String rawReq) throws IOException {
         return postXml(targetUrl, rawReq, RequestCustomizer.NO_OP, null);
     }
 
     @Override
-    public HttpResponse postXml(URI targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
+    public ClassicHttpResponse postXml(URI targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
         return postXml(targetUrl, rawReq, customizer, null);
     }
 
     @Override
-    public HttpResponse postXml(URI targetUrl, String rawReq, Executor executor) throws IOException {
+    public ClassicHttpResponse postXml(URI targetUrl, String rawReq, Executor executor) throws IOException {
         return postXml(targetUrl, rawReq, RequestCustomizer.NO_OP, executor);
     }
 
     @Override
-    public HttpResponse postXml(URI targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse postXml(URI targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
         return post(targetUrl, rawReq, APPLICATION_XML_UTF8, customizer, executor);
     }
 
     @Override
-    public HttpResponse postJson(String targetUrl, String rawReq) throws IOException {
+    public ClassicHttpResponse postJson(String targetUrl, String rawReq) throws IOException {
         return postJson(URI.create(targetUrl), rawReq);
     }
 
     @Override
-    public HttpResponse postJson(String targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
+    public ClassicHttpResponse postJson(String targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
         return postJson(URI.create(targetUrl), rawReq, customizer);
     }
 
     @Override
-    public HttpResponse postJson(String targetUrl, String rawReq, Executor executor) throws IOException {
+    public ClassicHttpResponse postJson(String targetUrl, String rawReq, Executor executor) throws IOException {
         return postJson(URI.create(targetUrl), rawReq, executor);
     }
 
     @Override
-    public HttpResponse postJson(String targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse postJson(String targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
         return postJson(URI.create(targetUrl), rawReq, customizer, executor);
     }
 
     @Override
-    public HttpResponse postJson(URI targetUrl, String rawReq) throws IOException {
+    public ClassicHttpResponse postJson(URI targetUrl, String rawReq) throws IOException {
         return postJson(targetUrl, rawReq, RequestCustomizer.NO_OP, null);
     }
 
     @Override
-    public HttpResponse postJson(URI targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
+    public ClassicHttpResponse postJson(URI targetUrl, String rawReq, RequestCustomizer customizer) throws IOException {
         return postJson(targetUrl, rawReq, customizer, null);
     }
 
     @Override
-    public HttpResponse postJson(URI targetUrl, String rawReq, Executor executor) throws IOException {
+    public ClassicHttpResponse postJson(URI targetUrl, String rawReq, Executor executor) throws IOException {
         return postJson(targetUrl, rawReq, RequestCustomizer.NO_OP, executor);
     }
 
     @Override
-    public HttpResponse postJson(URI targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse postJson(URI targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
         return post(targetUrl, rawReq, APPLICATION_JSON, customizer, executor);
     }
 
     @Override
-    public HttpResponse post(String targetUrl, String rawReq, ContentType contentType, Executor executor) throws IOException {
+    public ClassicHttpResponse post(String targetUrl, String rawReq, ContentType contentType, Executor executor) throws IOException {
         return post(URI.create(targetUrl), rawReq, contentType, executor);
     }
 
     @Override
-    public HttpResponse post(String targetUrl, String rawReq, ContentType contentType, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse post(String targetUrl, String rawReq, ContentType contentType, RequestCustomizer customizer, Executor executor) throws IOException {
         return post(URI.create(targetUrl), rawReq, contentType, customizer, executor);
     }
 
     @Override
-    public HttpResponse post(URI targetUrl, String rawReq, ContentType contentType, Executor executor) throws IOException {
+    public ClassicHttpResponse post(URI targetUrl, String rawReq, ContentType contentType, Executor executor) throws IOException {
         return post(targetUrl, rawReq, contentType, RequestCustomizer.NO_OP, executor);
     }
 
     @Override
-    public HttpResponse post(URI targetUrl, String rawReq, ContentType contentType, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse post(URI targetUrl, String rawReq, ContentType contentType, RequestCustomizer customizer, Executor executor) throws IOException {
         final Request request = Request.post(targetUrl)
             .userAgent(this.userAgent)
             .connectTimeout(Timeout.ofMicroseconds(this.connectTimeout))
@@ -148,49 +148,49 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
             customizer.customize(request);
         }
         if (executor != null) {
-            return executor.execute(request).returnResponse();
+            return (ClassicHttpResponse) executor.execute(request).returnResponse();
         }
-        return request.execute().returnResponse();
+        return (ClassicHttpResponse) request.execute().returnResponse();
     }
 
     @Override
-    public HttpResponse get(String targetUrl) throws IOException {
+    public ClassicHttpResponse get(String targetUrl) throws IOException {
         return get(URI.create(targetUrl));
     }
 
     @Override
-    public HttpResponse get(String targetUrl, RequestCustomizer customizer) throws IOException {
+    public ClassicHttpResponse get(String targetUrl, RequestCustomizer customizer) throws IOException {
         return get(URI.create(targetUrl), customizer);
     }
 
     @Override
-    public HttpResponse get(String targetUrl, Executor executor) throws IOException {
+    public ClassicHttpResponse get(String targetUrl, Executor executor) throws IOException {
         return get(URI.create(targetUrl), executor);
     }
 
     @Override
-    public HttpResponse get(String targetUrl, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse get(String targetUrl, RequestCustomizer customizer, Executor executor) throws IOException {
         return get(URI.create(targetUrl), customizer, executor);
     }
 
     @Override
-    public HttpResponse get(URI targetUrl) throws IOException {
+    public ClassicHttpResponse get(URI targetUrl) throws IOException {
         return get(targetUrl, RequestCustomizer.NO_OP, null);
     }
 
     @Override
-    public HttpResponse get(URI targetUrl, RequestCustomizer customizer) throws IOException {
+    public ClassicHttpResponse get(URI targetUrl, RequestCustomizer customizer) throws IOException {
         return get(targetUrl, customizer, null);
     }
 
 
     @Override
-    public HttpResponse get(URI targetUrl, Executor executor) throws IOException {
+    public ClassicHttpResponse get(URI targetUrl, Executor executor) throws IOException {
         return get(targetUrl, RequestCustomizer.NO_OP, executor);
     }
 
     @Override
-    public HttpResponse get(URI targetUrl, RequestCustomizer customizer, Executor executor) throws IOException {
+    public ClassicHttpResponse get(URI targetUrl, RequestCustomizer customizer, Executor executor) throws IOException {
         final Request request = Request.get(targetUrl)
             .userAgent(this.userAgent)
             .connectTimeout(Timeout.ofMicroseconds(this.connectTimeout))
@@ -199,8 +199,8 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
             customizer.customize(request);
         }
         if (executor != null) {
-            return executor.execute(request).returnResponse();
+            return (ClassicHttpResponse) executor.execute(request).returnResponse();
         }
-        return request.execute().returnResponse();
+        return (ClassicHttpResponse) request.execute().returnResponse();
     }
 }
