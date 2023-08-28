@@ -17,7 +17,7 @@ public abstract class AbstractTpTaskConfig {
 
     public static final String METHOD = "run";
 
-    protected JobDetail getJobDetail(AbstractTask task) throws ClassNotFoundException, NoSuchMethodException {
+    protected JobDetail getJobDetail(Runnable task) throws ClassNotFoundException, NoSuchMethodException {
         final MethodInvokingJobDetailFactoryBean job = new MethodInvokingJobDetailFactoryBean();
         job.setTargetObject(task);
         job.setTargetMethod(METHOD);
