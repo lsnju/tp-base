@@ -19,7 +19,7 @@
 
     <properties>
         <skipTests>true</skipTests>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <!--        <maven.javadoc.skip>true</maven.javadoc.skip>-->
     </properties>
 
     <dependencies>
