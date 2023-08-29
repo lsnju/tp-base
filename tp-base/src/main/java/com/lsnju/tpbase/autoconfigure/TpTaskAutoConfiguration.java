@@ -53,17 +53,17 @@ public class TpTaskAutoConfiguration {
 
             @Override
             public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
-                if (hikariCpsMonitorTask != null) {
+                if (hikariCpsMonitorTask != null && tpTaskConfigProperties.isCpMoEnable()) {
                     final String cron = tpTaskConfigProperties.getCpMoCron();
                     taskRegistrar.addCronTask(hikariCpsMonitorTask, cron);
                     logMsg("hikariCpsMonitorTask", cron);
                 }
-                if (newCommonErrorInitTask != null) {
+                if (newCommonErrorInitTask != null && tpTaskConfigProperties.isCommonErrorEnable()) {
                     final String cron = tpTaskConfigProperties.getCommonErrorCron();
                     taskRegistrar.addCronTask(newCommonErrorInitTask, cron);
                     logMsg("newCommonErrorInitTask", cron);
                 }
-                if (tpMonitorTask != null) {
+                if (tpMonitorTask != null && tpTaskConfigProperties.isTpMoEnable()) {
                     final String cron = tpTaskConfigProperties.getTpMoCron();
                     taskRegistrar.addCronTask(tpMonitorTask, cron);
                     logMsg("tpMonitorTask", cron);
