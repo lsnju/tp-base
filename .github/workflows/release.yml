@@ -4,7 +4,7 @@ on:
     branches:
       - 'release_v2'
     tags:
-      - '**'
+      - 'v*'
 jobs:
   publish:
     runs-on: ubuntu-latest
