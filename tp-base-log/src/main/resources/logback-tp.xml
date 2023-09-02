@@ -213,7 +213,7 @@
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
     </logger>
-    <logger name="com.lsnju.tp.biz.daemon.monitor" level="${log_level}" additivity="false">
+    <logger name="com.lsnju.tpbase.daemon.monitor" level="${log_level}" additivity="false">
         <appender-ref ref="BIZ_DAEMON_APPENDER" />
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
@@ -465,8 +465,9 @@
     <!-- ====================================== -->
     <!-- ====================================== -->
 
-    <logger name="com.lsnju.tp" level="info" />
-    <logger name="com.lsnju.tpbase.web.config.filter" level="warn" />
+    <logger name="com.lsnju.base" level="info" />
+    <logger name="com.lsnju.tpbase" level="info" />
+    <logger name="com.lsnju.tpbase.web.filter" level="warn" />
     <logger name="org.springframework.boot.web.embedded" level="info" />
     <logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer" level="info" />
 
@@ -508,17 +509,6 @@
     </logger>
 
     <!-- 默认日志输出 -->
-    <logger name="com.lsnju" level="${log_level}" additivity="false">
-        <appender-ref ref="DEFAULT" />
-        <appender-ref ref="COMMON_ERROR" />
-        <appender-ref ref="COMMON_WARN" />
-        <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
-            <then>
-                <appender-ref ref="STDOUT" />
-            </then>
-        </if>
-    </logger>
-
     <logger name="com.lsnju" level="${log_level}" additivity="false">
         <appender-ref ref="DEFAULT" />
         <appender-ref ref="COMMON_ERROR" />
