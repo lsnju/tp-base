@@ -111,6 +111,7 @@
                 <version>1.10.0</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/com.github.ikidou/TypeBuilder -->
             <dependency>
                 <groupId>com.github.ikidou</groupId>
                 <artifactId>TypeBuilder</artifactId>
@@ -380,18 +381,5 @@
 
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>aliyun-public</id>
-            <name>aliyun-public</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
 
 </project>
