@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.7.14</version>
+        <version>3.1.3</version>
         <relativePath />
     </parent>
 
-    <groupId>com.lsnju</groupId>
+    <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>2.7.2</version>
+    <version>3.1.0</version>
     <packaging>pom</packaging>
 
     <name>tp-base</name>
@@ -35,7 +35,7 @@
     </modules>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
@@ -47,7 +47,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.lsnju</groupId>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-dependencies</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>
@@ -109,12 +109,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <version>1.10.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.ikidou</groupId>
-                <artifactId>TypeBuilder</artifactId>
-                <version>1.0</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
@@ -380,18 +374,5 @@
 
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>aliyun-public</id>
-            <name>aliyun-public</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
 
 </project>

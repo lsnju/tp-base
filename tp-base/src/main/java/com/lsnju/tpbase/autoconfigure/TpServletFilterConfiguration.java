@@ -17,6 +17,7 @@ import com.lsnju.tpbase.web.filter.TpUidLogFilter;
 import com.lsnju.tpbase.web.filter.profiler.RestProfilerFilter;
 
 import ch.qos.logback.classic.helpers.MDCInsertingServletFilter;
+import jakarta.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,7 +32,7 @@ public class TpServletFilterConfiguration {
 
 
     @Configuration
-    @ConditionalOnClass(value = {javax.servlet.Filter.class, FilterRegistrationBean.class})
+    @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class})
     public static class TpBaseFilterConfig implements FilterOrderConstants {
 
         @Bean
@@ -93,7 +94,7 @@ public class TpServletFilterConfiguration {
     }
 
     @Configuration
-    @ConditionalOnClass(value = {javax.servlet.Filter.class, FilterRegistrationBean.class})
+    @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class})
     public static class TpFilterConfig implements FilterOrderConstants {
 
         @Bean
@@ -108,7 +109,7 @@ public class TpServletFilterConfiguration {
     }
 
     @Configuration
-    @ConditionalOnClass(value = {javax.servlet.Filter.class, FilterRegistrationBean.class})
+    @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class})
     public static class ProfilerFilterConfig implements FilterOrderConstants {
 
         @Bean

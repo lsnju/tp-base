@@ -2,13 +2,12 @@ package com.lsnju.tpbase.daemon.monitor;
 
 import java.util.Objects;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.metadata.HikariDataSourcePoolMetadata;
 
 import com.zaxxer.hikari.HikariDataSource;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Setter;
 
 /**

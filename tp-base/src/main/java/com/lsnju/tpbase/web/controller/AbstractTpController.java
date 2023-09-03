@@ -1,7 +1,5 @@
 package com.lsnju.tpbase.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +13,7 @@ import com.lsnju.tpbase.web.filter.TpRequestFilter;
 import com.lsnju.tpbase.web.mvc.TpSpringWebMvcHelper;
 import com.lsnju.tpbase.web.util.TpHttpHeaderUtils;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 
 /**

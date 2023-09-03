@@ -1,9 +1,8 @@
 package com.lsnju.tpbase.debug.env;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.core.env.ConfigurableEnvironment;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 /**

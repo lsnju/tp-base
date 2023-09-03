@@ -1,8 +1,8 @@
 package com.lsnju.tpbase.daemon.base;
 
-import javax.annotation.PostConstruct;
-
 import com.lsnju.tpbase.daemon.AbstractTask;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * @author lisong

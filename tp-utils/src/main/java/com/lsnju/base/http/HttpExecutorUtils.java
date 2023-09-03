@@ -6,19 +6,24 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.client.fluent.Executor;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustAllStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContexts;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.fluent.Executor;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
+import org.apache.hc.client5.http.ssl.TrustAllStrategy;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.core5.util.TimeValue;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,12 +40,18 @@ public class HttpExecutorUtils {
 
     public static Executor newTrustAllInstance() {
         try {
-            final SSLContext sslContext = SSLContexts.custom()
-                .loadTrustMaterial(TrustAllStrategy.INSTANCE)
+            final SSLContext sslcontext = SSLContexts.custom()
+                .loadTrustMaterial(null, new TrustAllStrategy())
+                .build();
+            final SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder.create()
+                .setSslContext(sslcontext)
+                .build();
+            final HttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder.create()
+                .setSSLSocketFactory(sslSocketFactory)
                 .build();
             final CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .setSSLContext(sslContext)
+                .setConnectionManager(cm)
+                .evictExpiredConnections()
                 .build();
             return Executor.newInstance(httpClient);
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
@@ -65,7 +76,8 @@ public class HttpExecutorUtils {
             final PoolingHttpClientConnectionManager connMgr = new PoolingHttpClientConnectionManager(sfr);
             connMgr.setDefaultMaxPerRoute(100);
             connMgr.setMaxTotal(200);
-            connMgr.setValidateAfterInactivity(1000);
+            connMgr.setConnectionConfigResolver(x -> ConnectionConfig.custom()
+                .setValidateAfterInactivity(TimeValue.ofMilliseconds(2000)).build());
 
             final CloseableHttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(connMgr)
