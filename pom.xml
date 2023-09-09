@@ -57,7 +57,7 @@
             <dependency>
                 <groupId>org.springframework.session</groupId>
                 <artifactId>spring-session-bom</artifactId>
-                <version>2021.2.0</version>
+                <version>2021.2.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -129,14 +129,14 @@
             <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>joor-java-8</artifactId>
-                <version>0.9.14</version>
+                <version>0.9.15</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.jooq/joor -->
             <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>joor</artifactId>
-                <version>0.9.14</version>
+                <version>0.9.15</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
@@ -184,6 +184,14 @@
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
                 <version>9.31</version>
+                <optional>true</optional>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>1.7.0</version>
                 <optional>true</optional>
             </dependency>
 
