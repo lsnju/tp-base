@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import com.google.common.net.HttpHeaders;
 import com.lsnju.base.util.ClazzUtils;
 import com.lsnju.tpbase.config.prop.TpMoConfigProperties;
-import com.lsnju.tpbase.web.filter.TpRequestFilter;
 import com.lsnju.tpbase.web.mvc.TpSpringWebMvcHelper;
 import com.lsnju.tpbase.web.util.TpHttpHeaderUtils;
 
@@ -28,6 +27,7 @@ abstract class AbstractTpController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final String MSG = "[%s] The quick brown fox jumps over the lazy dog. [%s]";
+    public static final String X_REAL_IP = "X-Real-IP";
 
     @Getter
     @Value("${spring.application.name:xxoo}")
@@ -63,7 +63,7 @@ abstract class AbstractTpController {
                 log.info("X_FORWARDED_HOST  : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_HOST));
                 log.info("X_FORWARDED_PORT  : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_PORT));
                 log.info("X_FORWARDED_FOR   : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_FOR));
-                log.info("X_REAL_IP         : {}", TpHttpHeaderUtils.getHeader(request, TpRequestFilter.X_REAL_IP));
+                log.info("X_REAL_IP         : {}", TpHttpHeaderUtils.getHeader(request, X_REAL_IP));
                 log.info("HOST              : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.HOST));
                 log.info("FORWARDED         : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.FORWARDED));
                 log.info("getServerName     : {}", request.getServerName());
