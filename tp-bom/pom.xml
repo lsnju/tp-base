@@ -13,10 +13,7 @@
     <url>https://github.com/lsnju/tp-base</url>
 
     <properties>
-        <wtion-base.version>${project.version}</wtion-base.version>
         <tp-base.version>${project.version}</tp-base.version>
-        <tp-base-config.version>${project.version}</tp-base-config.version>
-        <tp-base-log.version>${project.version}</tp-base-log.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -26,42 +23,47 @@
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-multi</artifactId>
-                <version>${wtion-base.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-default</artifactId>
-                <version>${wtion-base.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-short</artifactId>
-                <version>${wtion-base.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-json</artifactId>
-                <version>${wtion-base.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-utils</artifactId>
-                <version>${wtion-base.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-config</artifactId>
-                <version>${tp-base-config.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base-log</artifactId>
-                <version>${tp-base-log.version}</version>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-base-log4j2</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-base</artifactId>
-                <version>${tp-base-log.version}</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

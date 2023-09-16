@@ -4,11 +4,10 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.lsnju.tpbase.log.DigestConstants;
+import com.lsnju.tpbase.web.util.RequestUtils;
 
-import ch.qos.logback.classic.ClassicConstants;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -65,7 +64,7 @@ public class TpPagePerfFilter implements Filter, DigestConstants {
                 if (PAGE_PERF_LOGGER.isInfoEnabled()) {
                     final long costTime = (System.nanoTime() - startTime) / DigestConstants.MS_SCALE;
                     String msg = String.format(PAGE_DIGEST_FORMAT, method, uri, costTime, success ? "S" : "E",
-                        MDC.get(ClassicConstants.REQUEST_REMOTE_HOST_MDC_KEY), resp.getStatus());
+                        RequestUtils.getRequestIp(), resp.getStatus());
                     PAGE_PERF_LOGGER.info(msg);
                 }
                 WEBX_LOGGER.info("{} ", resp.getStatus());

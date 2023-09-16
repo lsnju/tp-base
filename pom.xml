@@ -28,6 +28,7 @@
         <module>tp-domain-json</module>
         <module>tp-utils</module>
         <module>tp-base-log</module>
+        <module>tp-base-log4j2</module>
         <module>tp-base-config</module>
         <module>tp-base-dependencies</module>
         <module>tp-base</module>
