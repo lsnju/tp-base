@@ -58,6 +58,11 @@
             </dependency>
             <dependency>
                 <groupId>com.lsnju</groupId>
+                <artifactId>tp-base-log4j2</artifactId>
+                <version>${tp-base-log.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju</groupId>
                 <artifactId>tp-base</artifactId>
                 <version>${tp-base-log.version}</version>
             </dependency>

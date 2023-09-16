@@ -21,6 +21,10 @@ import com.lsnju.tpbase.autoconfigure.TpServletFilterConfiguration;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import(value = {TpServletFilterConfiguration.TpBaseFilterConfig.class})
+@Import(value = {
+    TpServletFilterConfiguration.TpBaseLogbackFilterConfig.class,
+    TpServletFilterConfiguration.TpBaseLog4j2FilterConfig.class,
+    TpServletFilterConfiguration.TpBaseFilterConfig.class
+})
 public @interface EnableFilterBaseConfig {
 }

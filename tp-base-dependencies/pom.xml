@@ -55,6 +55,11 @@
                 <artifactId>tp-base-log</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.lsnju</groupId>
+                <artifactId>tp-base-log4j2</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
