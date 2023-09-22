@@ -42,7 +42,7 @@ public class DalDigestLogInterceptor implements MethodInterceptor, DigestConstan
         log.debug("{}", invocation);
 
         Method method = invocation.getMethod();
-        String className = method.getDeclaringClass().getSimpleName();
+        String className = getClassName(invocation);
         String methodName = method.getName();
 
         String code = "S";
