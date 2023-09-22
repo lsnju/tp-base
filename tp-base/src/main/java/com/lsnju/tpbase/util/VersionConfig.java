@@ -42,7 +42,7 @@ public class VersionConfig {
         try {
             p = new ProcessBuilder("uname", "-n").start();
             return StringUtils.trim(IOUtils.toString(p.getInputStream(), StandardCharsets.UTF_8));
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return getHostname1();
         } finally {
             if (p != null) {
