@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lsnju</groupId>
         <artifactId>tp-base-dep</artifactId>
-        <version>2.7.6</version>
+        <version>2.7.7</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
     <artifactId>tp-base</artifactId>
@@ -47,6 +47,13 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>joor-java-8</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jooq/joor -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
