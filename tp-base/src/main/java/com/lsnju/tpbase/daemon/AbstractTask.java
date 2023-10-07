@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.lsnju.base.util.UUIDGenerator;
 import com.lsnju.tpbase.daemon.utils.TaskCountContext;
 import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.tpbase.web.filter.RequestId;
-import com.lsnju.base.util.UUIDGenerator;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,14 +36,15 @@ public abstract class AbstractTask implements Runnable, DigestConstants {
 
     @Override
     public void run() {
+        if (!StringUtils.equals("on", taskStatus)) {
+            log.debug("taskStatus = {}", taskStatus);
+            return;
+        }
+
         long startTime = System.nanoTime();
         String success = "S";
         try {
             MDC.put(W_REQ_ID, UUIDGenerator.getSUID());
-            if (!StringUtils.equals("on", taskStatus)) {
-                log.info("taskStatus = {}", taskStatus);
-                return;
-            }
             execute();
         } catch (Throwable e) {
             log.error(String.format("【定时任务异常】error=%s", e.getMessage()), e);
