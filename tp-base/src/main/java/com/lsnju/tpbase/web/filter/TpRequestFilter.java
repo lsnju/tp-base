@@ -33,8 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TpRequestFilter implements Filter {
 
-    private static final String HOST_NAME = "X_tp_hn";
-    private static final String TOKEN = "X_tp_token";
+    private static final String HOST_NAME = "X-tp-hn";
+    private static final String TOKEN = "X-tp-token";
 
     static final String ALREADY_FILTERED_ATTRIBUTE = TpRequestFilter.class.getName() + ".FILTERED";
 

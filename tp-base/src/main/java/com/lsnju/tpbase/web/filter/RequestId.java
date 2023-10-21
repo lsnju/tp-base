@@ -8,7 +8,7 @@ package com.lsnju.tpbase.web.filter;
  */
 public interface RequestId {
     /** */
-    String REQ_ID = "w_req_id";
+    String REQ_ID = "w-req-id";
 
     String RX_CTX_ID = REQ_ID;
 
