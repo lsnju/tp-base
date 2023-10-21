@@ -10,12 +10,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.base.util.Profiler;
+import com.lsnju.tpbase.log.DigestConstants;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ public class RestProfilerFilter implements Filter, DigestConstants {
 
     @Value("${rest.api.profiler.timeout:1000}")
     private long apiTimeout = 5000L;
+    @Value("${rest.api.profiler.prefix:}")
+    private String prefix = "";
+
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -51,7 +55,7 @@ public class RestProfilerFilter implements Filter, DigestConstants {
             } finally {
                 Profiler.release();
                 if (PROFILER_LOGGER.isInfoEnabled() && Profiler.getDuration() > apiTimeout) {
-                    PROFILER_LOGGER.info("\n{}\n", Profiler.dump());
+                    PROFILER_LOGGER.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
                 }
                 Profiler.reset();
             }
