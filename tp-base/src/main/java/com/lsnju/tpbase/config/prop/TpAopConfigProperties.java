@@ -17,5 +17,5 @@ import lombok.Setter;
 @Setter
 @ConfigurationProperties(prefix = "tp.aop")
 public class TpAopConfigProperties extends BaseMo {
-    private boolean useSpring;
+    private boolean useSpring = true;
 }
