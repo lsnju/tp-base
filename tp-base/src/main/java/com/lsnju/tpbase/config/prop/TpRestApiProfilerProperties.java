@@ -18,4 +18,5 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "rest.api.profiler")
 public class TpRestApiProfilerProperties extends BaseMo {
     private long timeout = 1000;
+    private String prefix;
 }
