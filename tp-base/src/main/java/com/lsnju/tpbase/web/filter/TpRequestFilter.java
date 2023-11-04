@@ -67,6 +67,7 @@ public class TpRequestFilter implements Filter {
                         MDC.put(LogMdcConstants.REQUEST_REMOTE_HOST_MDC_KEY, remoteIp);
                     }
                     MDC.put(RequestId.MDC_REQ_ID, getReqId(request));
+                    MDC.put(LogMdcConstants.REQUEST_SERVLET_PATH, req.getServletPath());
                     setupResp(resp);
                     if (log.isDebugEnabled()) {
                         log.debug("uri={}, url={}", req.getRequestURI(), req.getRequestURL());
@@ -76,6 +77,7 @@ public class TpRequestFilter implements Filter {
                 } finally {
                     MDC.remove(RequestId.MDC_REQ_ID);
                     MDC.remove(LogMdcConstants.REQUEST_REMOTE_IP_MDC_KEY);
+                    MDC.remove(LogMdcConstants.REQUEST_SERVLET_PATH);
                     OperationContext.clear();
                 }
             } else {
