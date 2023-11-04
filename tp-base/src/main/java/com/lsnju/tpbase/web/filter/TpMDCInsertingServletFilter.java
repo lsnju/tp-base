@@ -55,6 +55,7 @@ public class TpMDCInsertingServletFilter implements Filter {
             MDC.put(LogMdcConstants.REQUEST_QUERY_STRING, httpServletRequest.getQueryString());
             MDC.put(LogMdcConstants.REQUEST_USER_AGENT_MDC_KEY, httpServletRequest.getHeader("User-Agent"));
             MDC.put(LogMdcConstants.REQUEST_X_FORWARDED_FOR, httpServletRequest.getHeader("X-Forwarded-For"));
+            MDC.put(LogMdcConstants.REQUEST_SERVLET_PATH, httpServletRequest.getServletPath());
         }
 
     }
@@ -68,6 +69,7 @@ public class TpMDCInsertingServletFilter implements Filter {
         MDC.remove(LogMdcConstants.REQUEST_METHOD);
         MDC.remove(LogMdcConstants.REQUEST_USER_AGENT_MDC_KEY);
         MDC.remove(LogMdcConstants.REQUEST_X_FORWARDED_FOR);
+        MDC.remove(LogMdcConstants.REQUEST_SERVLET_PATH);
     }
 
     @Override
