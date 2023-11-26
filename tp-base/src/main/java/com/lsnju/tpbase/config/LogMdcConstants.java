@@ -16,5 +16,6 @@ public class LogMdcConstants {
     public static final String REQUEST_REQUEST_URL = "req.requestURL";
     public static final String REQUEST_METHOD = "req.method";
     public static final String REQUEST_X_FORWARDED_FOR = "req.xForwardedFor";
+    public static final String REQUEST_SERVLET_PATH = "req.servletPath";
 
 }
