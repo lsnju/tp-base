@@ -26,6 +26,8 @@
         <module>tp-domain-default</module>
         <module>tp-domain-short</module>
         <module>tp-domain-json</module>
+        <module>tp-rs-default</module>
+        <module>tp-rs-simple</module>
         <module>tp-utils</module>
         <module>tp-base-log</module>
         <module>tp-base-log4j2</module>

@@ -28,6 +28,10 @@
             <groupId>com.lsnju.tp3</groupId>
             <artifactId>tp-domain-multi</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.lsnju.tp3</groupId>
+            <artifactId>tp-rs-simple</artifactId>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
