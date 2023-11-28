@@ -2,9 +2,8 @@ package com.lsnju.base.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
-
-import org.apache.commons.lang3.StringUtils;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -37,11 +36,11 @@ public class TpAppInfo {
     }
 
     private static String javaVersionDate() {
-        return StringUtils.defaultString(System.getProperty("java.version.date"), "-");
+        return Objects.toString(System.getProperty("java.version.date"), "-");
     }
 
     private static String javaVendor() {
-        return StringUtils.defaultString(System.getProperty("java.vendor"), "-");
+        return Objects.toString(System.getProperty("java.vendor"), "-");
     }
 
     private static TpAppInfo getAppInfo() {
