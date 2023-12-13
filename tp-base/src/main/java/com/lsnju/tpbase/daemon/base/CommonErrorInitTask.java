@@ -11,7 +11,7 @@ import com.lsnju.tpbase.daemon.AbstractTask;
  */
 public class CommonErrorInitTask extends AbstractTask {
     @Override
-    protected void execute() {
+    public void execute() {
         log.error("init");
         log.warn("init");
     }

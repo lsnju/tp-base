@@ -64,5 +64,6 @@ public abstract class AbstractTask implements Runnable, DigestConstants {
     }
 
     /** 定时任务处理 */
-    protected abstract void execute();
+    public abstract void execute();
+
 }
