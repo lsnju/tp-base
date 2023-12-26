@@ -3,8 +3,8 @@ package com.lsnju.base.http.impl;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
@@ -36,7 +36,7 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
     private final int connectTimeout;
 
     public DefaultTpHttpClientImpl(HttpConfig config) {
-        this.userAgent = StringUtils.defaultString(config.getUserAgent(), DEFAULT_USER_AGENT);
+        this.userAgent = Objects.toString(config.getUserAgent(), DEFAULT_USER_AGENT);
         this.socketTimeout = config.getSocketTimeout() > 0 ? config.getSocketTimeout() : DEFAULT_SOCKET_TIMEOUT;
         this.connectTimeout = config.getConnectTimeout() > 0 ? config.getConnectTimeout() : DEFAULT_CONNECT_TIMEOUT;
     }

@@ -11,9 +11,10 @@
         <relativePath />
     </parent>
 
+    <!-- https://mvnrepository.com/artifact/com.lsnju/tp-base-parent -->
     <groupId>com.lsnju</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>2.7.10</version>
+    <version>2.7.11</version>
     <packaging>pom</packaging>
 
     <name>tp-base</name>
@@ -49,6 +50,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- https://mvnrepository.com/artifact/com.lsnju/tp-base-dependencies -->
             <dependency>
                 <groupId>com.lsnju</groupId>
                 <artifactId>tp-base-dependencies</artifactId>
@@ -97,7 +99,7 @@
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
-                <version>3.5.14</version>
+                <version>3.5.15</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
@@ -158,7 +160,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.15.0</version>
+                <version>2.15.1</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
             <dependency>
@@ -186,7 +188,7 @@
             <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
-                <version>9.37.1</version>
+                <version>9.37.3</version>
                 <optional>true</optional>
             </dependency>
 
@@ -199,12 +201,12 @@
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>2.2.0</version>
-                <optional>true</optional>
-            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>org.springdoc</groupId>-->
+            <!--                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
+            <!--                <version>2.3.0</version>-->
+            <!--                <optional>true</optional>-->
+            <!--            </dependency>-->
 
             <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
             <dependency>
@@ -248,6 +250,10 @@
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

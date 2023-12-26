@@ -62,6 +62,10 @@ public class TpSysInfoController {
         ret.setSbVersion(SpringBootVersion.getVersion());
         ret.setHomeDir(String.valueOf(HOME.getDir()));
         ret.setHomeSrc(String.valueOf(HOME.getSource()));
+        ret.setCoreSize(Runtime.getRuntime().availableProcessors());
+        ret.setTotalMemory(Runtime.getRuntime().totalMemory());
+        ret.setMaxMemory(Runtime.getRuntime().maxMemory());
+        ret.setFreeMemory(Runtime.getRuntime().freeMemory());
         if (tpSpringWebMvcHelper != null) {
             ret.setServerUrl(tpSpringWebMvcHelper.getServerUrl());
         }
@@ -70,10 +74,14 @@ public class TpSysInfoController {
 
     @Getter
     @Setter
-    static class SysInfo extends BaseMo {
+    public static class SysInfo extends BaseMo {
         private String hostname;
         private String pid;
         private int port;
+        private int coreSize;
+        private long totalMemory;
+        private long maxMemory;
+        private long freeMemory;
         private String javaVersion;
         private String javaVersionDate;
         private String javaVendor;
