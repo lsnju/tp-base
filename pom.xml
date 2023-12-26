@@ -11,6 +11,7 @@
         <relativePath />
     </parent>
 
+    <!-- https://mvnrepository.com/artifact/com.lsnju/tp-base-parent -->
     <groupId>com.lsnju</groupId>
     <artifactId>tp-base-parent</artifactId>
     <version>2.7.11</version>
@@ -49,6 +50,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- https://mvnrepository.com/artifact/com.lsnju/tp-base-dependencies -->
             <dependency>
                 <groupId>com.lsnju</groupId>
                 <artifactId>tp-base-dependencies</artifactId>
