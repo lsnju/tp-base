@@ -93,9 +93,9 @@ public class TpSysInfoController {
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();
         for (JarInfo item : list) {
-            String key = StringUtils.defaultIfBlank(item.getJarName(), item.getMfName());
-            String value = StringUtils.defaultIfBlank(StringUtils.defaultIfBlank(item.getJarVersion(), item.getMfVersion()), item.getPath());
-            map.put(key, value);
+            String name = StringUtils.defaultIfBlank(item.getJarName(), item.getMfName());
+            String version = StringUtils.defaultIfBlank(item.getJarVersion(), item.getMfVersion());
+            map.put(name, StringUtils.defaultIfBlank(version, item.getPath()));
         }
         if (sorted) {
             return new TreeMap<>(map);
