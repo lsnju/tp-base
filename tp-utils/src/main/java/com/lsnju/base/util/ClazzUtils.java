@@ -9,9 +9,11 @@ import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.lsnju.base.model.JarInfo;
@@ -143,8 +145,10 @@ public class ClazzUtils {
             String jarFullName = jarFullName(jarPath);
             info.setPath(jarPath);
             info.setJarFullName(jarFullName);
-            info.setJarName(jarName(jarFullName));
-            info.setJarVersion(jarVersion(jarFullName));
+            String[] ss = spitJarName(jarFullName);
+            Objects.requireNonNull(ss);
+            info.setJarName(ss[0]);
+            info.setJarVersion(ss[1]);
             list.add(info);
         }
         return list;
@@ -156,12 +160,26 @@ public class ClazzUtils {
 //        return StringUtils.substringBefore(StringUtils.substringBefore(rawJarName, ".jar"), ".war");
     }
 
-    private static String jarName(String jarFullName) {
-        return StringUtils.substringBeforeLast(jarFullName, "-");
-    }
-
-    private static String jarVersion(String jarFullName) {
-        return StringUtils.substringAfterLast(jarFullName, "-");
+    public static String[] spitJarName(String fullName) {
+        String[] ss = StringUtils.split(fullName, "-");
+        int size = ss.length;
+        if (size <= 1) {
+            return new String[]{fullName, ""};
+        }
+        String version = ss[size - 1];
+        if (Character.isDigit(version.charAt(0))) {
+            String jarName = StringUtils.join(ArrayUtils.subarray(ss, 0, size - 1), "-");
+            return new String[]{jarName, version};
+        }
+        if (size == 2) {
+            return new String[]{fullName, ""};
+        }
+        String second = ss[size - 2];
+        if (Character.isDigit(second.charAt(0))) {
+            String jarName = StringUtils.join(ArrayUtils.subarray(ss, 0, size - 2), "-");
+            return new String[]{jarName, second + "-" + version};
+        }
+        return new String[]{fullName, ""};
     }
 
     private static String jarPath(URL url) {
@@ -182,7 +200,7 @@ public class ClazzUtils {
     private static String mfVersion(Manifest m) {
         Attributes mainAttributes = m.getMainAttributes();
         String version = mainAttributes.getValue("Implementation-Version");
-        if (version == null) {
+        if (StringUtils.isBlank(version)) {
             version = mainAttributes.getValue("Bundle-Version");
         }
         return version;
@@ -191,10 +209,10 @@ public class ClazzUtils {
     private static String mfName(Manifest m) {
         Attributes mainAttributes = m.getMainAttributes();
         String name = mainAttributes.getValue("Implementation-Title");
-        if (name == null) {
+        if (StringUtils.isBlank(name)) {
             name = mainAttributes.getValue("Bundle-SymbolicName");
         }
-        if (name == null) {
+        if (StringUtils.isBlank(name)) {
             name = mainAttributes.getValue("Bundle-Name");
         }
         return name;

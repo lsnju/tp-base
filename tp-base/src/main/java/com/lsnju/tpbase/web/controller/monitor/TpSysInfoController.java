@@ -87,15 +87,27 @@ public class TpSysInfoController {
         return ClazzUtils.allJarInfo();
     }
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple.json")
-    public Map<String, String> depSimple(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+    @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-mf.json")
+    public Map<String, String> depSimpleMf(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depInfo");
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();
         for (JarInfo item : list) {
-            String name = StringUtils.defaultIfBlank(item.getJarName(), item.getMfName());
-            String version = StringUtils.defaultIfBlank(item.getJarVersion(), item.getMfVersion());
-            map.put(name, StringUtils.defaultIfBlank(version, item.getPath()));
+            map.put(item.getJarFullName(), StringUtils.defaultIfBlank(item.getMfVersion(), item.getPath()));
+        }
+        if (sorted) {
+            return new TreeMap<>(map);
+        }
+        return map;
+    }
+
+    @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-jar.json")
+    public Map<String, String> depSimpleJar(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+        log.debug("depSimpleJar");
+        Map<String, String> map = new LinkedHashMap<>();
+        List<JarInfo> list = ClazzUtils.allJarInfo();
+        for (JarInfo item : list) {
+            map.put(item.getJarFullName(), StringUtils.defaultIfBlank(item.getJarVersion(), item.getPath()));
         }
         if (sorted) {
             return new TreeMap<>(map);
