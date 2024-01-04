@@ -100,10 +100,10 @@ public class ClazzUtilsFunTest {
 
     @Test
     void test_007() {
-        log.info("{}", Lists.newArrayList(ClazzUtils.spitJarName("")));
-        log.info("{}", Lists.newArrayList(ClazzUtils.spitJarName("jce")));
-        log.info("{}", Lists.newArrayList(ClazzUtils.spitJarName("jce-1.1")));
-        log.info("{}", Lists.newArrayList(ClazzUtils.spitJarName("json-lib-2.2.2-jdk15")));
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("")));
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("jce")));
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("jce-1.1")));
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("json-lib-2.2.2-jdk15")));
     }
 
 }

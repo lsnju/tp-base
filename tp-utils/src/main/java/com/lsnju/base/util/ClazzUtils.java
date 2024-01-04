@@ -145,7 +145,7 @@ public class ClazzUtils {
             String jarFullName = jarFullName(jarPath);
             info.setPath(jarPath);
             info.setJarFullName(jarFullName);
-            String[] ss = spitJarName(jarFullName);
+            String[] ss = splitJarName(jarFullName);
             Objects.requireNonNull(ss);
             info.setJarName(ss[0]);
             info.setJarVersion(ss[1]);
@@ -160,7 +160,7 @@ public class ClazzUtils {
 //        return StringUtils.substringBefore(StringUtils.substringBefore(rawJarName, ".jar"), ".war");
     }
 
-    public static String[] spitJarName(String fullName) {
+    public static String[] splitJarName(String fullName) {
         String[] ss = StringUtils.split(fullName, "-");
         int size = ss.length;
         if (size <= 1) {
@@ -214,6 +214,9 @@ public class ClazzUtils {
         }
         if (StringUtils.isBlank(name)) {
             name = mainAttributes.getValue("Bundle-Name");
+        }
+        if (StringUtils.isBlank(name)) {
+            name = mainAttributes.getValue("Specification-Title");
         }
         return name;
     }
