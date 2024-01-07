@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.classmate.TypeResolver;
@@ -95,6 +96,14 @@ public class ClazzUtilsFunTest {
         } catch (IOException e) {
             log.error(String.format("%s", e.getMessage()), e);
         }
+    }
+
+    @Test
+    void test_007() {
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("")));
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("jce")));
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("jce-1.1")));
+        log.info("{}", Lists.newArrayList(ClazzUtils.splitJarName("json-lib-2.2.2-jdk15")));
     }
 
 }
