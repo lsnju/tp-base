@@ -2,6 +2,8 @@ package com.lsnju.tpbase.autoconfigure;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,9 @@ import org.springframework.core.Ordered;
 
 import com.lsnju.tpbase.TpConstants;
 import com.lsnju.tpbase.config.FilterOrderConstants;
+import com.lsnju.tpbase.config.prop.TpFilterConfigProperties;
+import com.lsnju.tpbase.config.prop.TpRestApiProfilerProperties;
+import com.lsnju.tpbase.web.filter.TpMDCInsertingServletFilter;
 import com.lsnju.tpbase.web.filter.TpPagePerfFilter;
 import com.lsnju.tpbase.web.filter.TpRequestFilter;
 import com.lsnju.tpbase.web.filter.TpRequestHeaderFilter;
@@ -27,14 +32,11 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-@Configuration(proxyBeanMethods = false)
 public class TpServletFilterConfiguration {
 
-
     @Configuration
-    @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class})
-    public static class TpBaseFilterConfig implements FilterOrderConstants {
-
+    @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class, MDCInsertingServletFilter.class})
+    public static class TpBaseLogbackFilterConfig implements FilterOrderConstants {
         @Bean
         public FilterRegistrationBean<MDCInsertingServletFilter> logFilter() {
             log.debug("{} logFilter", TpConstants.PREFIX);
@@ -44,6 +46,27 @@ public class TpServletFilterConfiguration {
             registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + LOG_ORDER);
             return registrationBean;
         }
+    }
+
+    @Configuration
+    @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class})
+    @ConditionalOnMissingClass("ch.qos.logback.classic.helpers.MDCInsertingServletFilter")
+    public static class TpBaseLog4j2FilterConfig implements FilterOrderConstants {
+        @Bean
+        public FilterRegistrationBean<TpMDCInsertingServletFilter> logFilter() {
+            log.debug("{} logFilter", TpConstants.PREFIX);
+            FilterRegistrationBean<TpMDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
+            registrationBean.setFilter(new TpMDCInsertingServletFilter());
+            registrationBean.addUrlPatterns("/*");
+            registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + LOG_ORDER);
+            return registrationBean;
+        }
+    }
+
+    @Configuration
+    @EnableConfigurationProperties(TpFilterConfigProperties.class)
+    @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class})
+    public static class TpBaseFilterConfig implements FilterOrderConstants {
 
         @Bean
         public FilterRegistrationBean<TpRequestFilter> requestFilter(TpRequestFilter newBaseRequestFilter) {
@@ -57,9 +80,9 @@ public class TpServletFilterConfiguration {
 
         @Bean
         @ConditionalOnMissingBean(TpRequestFilter.class)
-        protected TpRequestFilter newBaseRequestFilter() {
+        public TpRequestFilter newBaseRequestFilter(TpFilterConfigProperties tpFilterConfigProperties) {
             log.debug("{} newBaseRequestFilter", TpConstants.PREFIX);
-            return new TpRequestFilter();
+            return new TpRequestFilter(tpFilterConfigProperties);
         }
 
         @Bean
@@ -109,6 +132,7 @@ public class TpServletFilterConfiguration {
     }
 
     @Configuration
+    @EnableConfigurationProperties(TpRestApiProfilerProperties.class)
     @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class})
     public static class ProfilerFilterConfig implements FilterOrderConstants {
 

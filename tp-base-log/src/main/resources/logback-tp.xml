@@ -66,13 +66,13 @@
 
     <property name="logging_console_pattern" value="${CONSOLE_LOG_PATTERN:-%d{HH:mm:ss.SSS} [%t]#%X{session_uid} %-5p %-40.40c{39} - %m%n}" />
 
-    <property name="logging_digest_pattern" value="%d:%X{w_req_id} - %m%n" />
-    <property name="logging_default_pattern" value="%d:%X{w_req_id} [%t] [%X{session_uid}] %-5p %c [%F:%L-%M] - %m%n" />
+    <property name="logging_digest_pattern" value="%d:%X{w-req-id} - %m%n" />
+    <property name="logging_default_pattern" value="%d:%X{w-req-id} [%t] [%X{session_uid}] %-5p %c [%F:%L-%M] - %m%n" />
     <property name="logging_default_pattern_web"
-              value="%d:%X{w_req_id} [%t] %-4X{req.method} [%X{session_uid}-%-15X{req.remoteHost} %X{req.requestURI} %X{req.queryString}] - %m[%X{req.userAgent}]%n" />
+              value="%d:%X{w-req-id} [%t] %-4X{req.method} [%X{session_uid}-%-15X{req.remoteHost} %X{req.requestURI} %X{req.queryString}] - %m[%X{req.userAgent}]%n" />
     <property name="logging_error_pattern"
-              value="%d:%X{w_req_id} [%t] [%X{session_uid}#%X{req.remoteHost}#%X{req.requestURI}] %-5p %c [%F:%L-%M] - %m%n" />
-    <property name="logging_profile_pattern" value="%d:%X{w_req_id} [%t] [%X{req.remoteHost}#%X{req.requestURI}#%X{req.queryString}] %-5p - %m%n" />
+              value="%d:%X{w-req-id} [%t] [%X{session_uid}#%X{req.remoteHost}#%X{req.requestURI}] %-5p %c [%F:%L-%M] - %m%n" />
+    <property name="logging_profile_pattern" value="%d:%X{w-req-id} [%t] [%X{req.remoteHost}#%X{req.requestURI}#%X{req.queryString}] %-5p - %m%n" />
 
     <!-- ================================================== -->
     <!-- ================================================== -->

@@ -8,10 +8,12 @@ import org.joor.ReflectException;
 import org.slf4j.MDC;
 
 import com.lsnju.base.util.UUIDGenerator;
+import com.lsnju.tpbase.config.LogMdcConstants;
+import com.lsnju.tpbase.config.prop.TpFilterConfigProperties;
 import com.lsnju.tpbase.util.VersionConfig;
 import com.lsnju.tpbase.web.util.OperationContext;
+import com.lsnju.tpbase.web.util.RequestUtils;
 
-import ch.qos.logback.classic.ClassicConstants;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -31,22 +33,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TpRequestFilter implements Filter {
 
-    /** */
-    @Deprecated
-    public static final String REQ_ID = RequestId.HTTP_REQ_ID;
+    private static final String HOST_NAME = "X-tp-hn";
+    private static final String TOKEN = "X-tp-token";
 
-    public static final String HOST_NAME = "X_tp_hn";
-    public static final String TOKEN = "X_tp_token";
-    public static final String X_REAL_IP = "X-Real-IP";
+    static final String ALREADY_FILTERED_ATTRIBUTE = TpRequestFilter.class.getName() + ".FILTERED";
 
-    private final boolean useHeader;
+    private final TpFilterConfigProperties tpFilterConfigProperties;
 
-    public TpRequestFilter() {
-        this(true);
-    }
-
-    public TpRequestFilter(boolean useHeader) {
-        this.useHeader = useHeader;
+    public TpRequestFilter(TpFilterConfigProperties tpFilterConfigProperties) {
+        this.tpFilterConfigProperties = tpFilterConfigProperties;
     }
 
     @Override
@@ -55,42 +50,40 @@ public class TpRequestFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
-        try {
-            // ...
-            final String ip = getRealIp(request);
-            if (StringUtils.isNotBlank(ip)) {
-                MDC.put(ClassicConstants.REQUEST_REMOTE_HOST_MDC_KEY, StringUtils.trimToEmpty(ip));
-            }
-            // ...
-            MDC.put(RequestId.MDC_REQ_ID, getReqId(request));
-            setupResp(response);
-            if (log.isDebugEnabled()) {
-                log.debug("uri={}, url={}", MDC.get(ClassicConstants.REQUEST_REQUEST_URI), MDC.get(ClassicConstants.REQUEST_REQUEST_URL));
-                showFilterChain(chain);
-            }
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (request.getAttribute(ALREADY_FILTERED_ATTRIBUTE) != null) {
             chain.doFilter(request, response);
-        } finally {
-            MDC.remove(RequestId.MDC_REQ_ID);
-            OperationContext.clear();
-        }
-    }
+        } else {
+            request.setAttribute(ALREADY_FILTERED_ATTRIBUTE, Boolean.TRUE);
 
-    private String getRealIp(ServletRequest request) {
-        if (request instanceof HttpServletRequest) {
-            HttpServletRequest req = (HttpServletRequest) request;
-            final String realIp = req.getHeader(X_REAL_IP);
-            if (StringUtils.isNotBlank(realIp)) {
-                return realIp;
+            if (request instanceof HttpServletRequest) {
+                final HttpServletRequest req = (HttpServletRequest) request;
+                final HttpServletResponse resp = (HttpServletResponse) response;
+                try {
+                    // ...
+                    final String remoteIp = RequestUtils.getRequestIp(req);
+                    MDC.put(LogMdcConstants.REQUEST_REMOTE_IP_MDC_KEY, remoteIp);
+                    if (tpFilterConfigProperties.isOverrideRemoteHost()) {
+                        MDC.put(LogMdcConstants.REQUEST_REMOTE_HOST_MDC_KEY, remoteIp);
+                    }
+                    MDC.put(RequestId.MDC_REQ_ID, getReqId(request));
+                    MDC.put(LogMdcConstants.REQUEST_SERVLET_PATH, req.getServletPath());
+                    setupResp(resp);
+                    if (log.isDebugEnabled()) {
+                        log.debug("uri={}, url={}", req.getRequestURI(), req.getRequestURL());
+                        showFilterChain(chain);
+                    }
+                    chain.doFilter(request, response);
+                } finally {
+                    MDC.remove(RequestId.MDC_REQ_ID);
+                    MDC.remove(LogMdcConstants.REQUEST_REMOTE_IP_MDC_KEY);
+                    MDC.remove(LogMdcConstants.REQUEST_SERVLET_PATH);
+                    OperationContext.clear();
+                }
+            } else {
+                chain.doFilter(request, response);
             }
         }
-        // "X-Forwarded-For"
-        final String forwardIp = MDC.get(ClassicConstants.REQUEST_X_FORWARDED_FOR);
-        if (StringUtils.isNotBlank(forwardIp)) {
-            return StringUtils.trimToEmpty(StringUtils.substringBefore(forwardIp, ","));
-        }
-        return null;
     }
 
     private void showFilterChain(FilterChain chain) {
@@ -120,16 +113,15 @@ public class TpRequestFilter implements Filter {
         }
     }
 
-    private void setupResp(ServletResponse response) {
-        if (response instanceof HttpServletResponse) {
-            HttpServletResponse resp = (HttpServletResponse) response;
+    private void setupResp(HttpServletResponse resp) {
+        if (tpFilterConfigProperties.isAddResponse()) {
             resp.addHeader(HOST_NAME, VersionConfig.getHostname());
             resp.addHeader(TOKEN, MDC.get(RequestId.MDC_REQ_ID));
         }
     }
 
     private String getReqId(ServletRequest request) {
-        if (!useHeader) {
+        if (!tpFilterConfigProperties.isTraceHeader()) {
             return UUIDGenerator.getSUID();
         }
         if (request instanceof HttpServletRequest) {

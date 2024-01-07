@@ -9,10 +9,10 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.lang.NonNull;
 import org.springframework.web.server.ServerWebExchange;
 
+import com.lsnju.tpbase.config.LogMdcConstants;
 import com.lsnju.tpbase.web.filter.RequestId;
 import com.lsnju.tpbase.web.util.TpHttpHeaderUtils;
 
-import ch.qos.logback.classic.ClassicConstants;
 import reactor.core.publisher.Signal;
 
 /**
@@ -45,24 +45,24 @@ public class RxLogUtils {
         if (request.getRemoteAddress() != null) {
             String remoteHost = request.getRemoteAddress().getHostString();
             String realIp = TpHttpHeaderUtils.getRealIp(headers, remoteHost);
-            MDC.put(ClassicConstants.REQUEST_REMOTE_HOST_MDC_KEY, realIp);
-            MDC.put(ClassicConstants.REQUEST_X_FORWARDED_FOR, TpHttpHeaderUtils.getHeader(headers, com.google.common.net.HttpHeaders.X_FORWARDED_FOR));
+            MDC.put(LogMdcConstants.REQUEST_REMOTE_HOST_MDC_KEY, realIp);
+            MDC.put(LogMdcConstants.REQUEST_X_FORWARDED_FOR, TpHttpHeaderUtils.getHeader(headers, com.google.common.net.HttpHeaders.X_FORWARDED_FOR));
         }
-        MDC.put(ClassicConstants.REQUEST_REQUEST_URI, request.getURI().getPath());
-        MDC.put(ClassicConstants.REQUEST_QUERY_STRING, request.getURI().getRawQuery());
-        MDC.put(ClassicConstants.REQUEST_REQUEST_URL, request.getURI().toString());
-        MDC.put(ClassicConstants.REQUEST_METHOD, request.getMethod().name());
-        MDC.put(ClassicConstants.REQUEST_USER_AGENT_MDC_KEY, TpHttpHeaderUtils.getUserAgent(headers));
+        MDC.put(LogMdcConstants.REQUEST_REQUEST_URI, request.getURI().getPath());
+        MDC.put(LogMdcConstants.REQUEST_QUERY_STRING, request.getURI().getRawQuery());
+        MDC.put(LogMdcConstants.REQUEST_REQUEST_URL, request.getURI().toString());
+        MDC.put(LogMdcConstants.REQUEST_METHOD, request.getMethod().name());
+        MDC.put(LogMdcConstants.REQUEST_USER_AGENT_MDC_KEY, TpHttpHeaderUtils.getUserAgent(headers));
     }
 
     static void clearMDC() {
-        MDC.remove(ClassicConstants.REQUEST_REMOTE_HOST_MDC_KEY);
-        MDC.remove(ClassicConstants.REQUEST_REQUEST_URI);
-        MDC.remove(ClassicConstants.REQUEST_QUERY_STRING);
-        MDC.remove(ClassicConstants.REQUEST_REQUEST_URL);
-        MDC.remove(ClassicConstants.REQUEST_METHOD);
-        MDC.remove(ClassicConstants.REQUEST_USER_AGENT_MDC_KEY);
-        MDC.remove(ClassicConstants.REQUEST_X_FORWARDED_FOR);
+        MDC.remove(LogMdcConstants.REQUEST_REMOTE_HOST_MDC_KEY);
+        MDC.remove(LogMdcConstants.REQUEST_REQUEST_URI);
+        MDC.remove(LogMdcConstants.REQUEST_QUERY_STRING);
+        MDC.remove(LogMdcConstants.REQUEST_REQUEST_URL);
+        MDC.remove(LogMdcConstants.REQUEST_METHOD);
+        MDC.remove(LogMdcConstants.REQUEST_USER_AGENT_MDC_KEY);
+        MDC.remove(LogMdcConstants.REQUEST_X_FORWARDED_FOR);
     }
 
     public static Consumer<Signal<?>> logOnError(Consumer<Throwable> errorLogStatement) {

@@ -6,8 +6,10 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopProxyUtils;
 
 import com.lsnju.base.util.Profiler;
+import com.lsnju.tpbase.config.prop.TpAopConfigProperties;
 import com.lsnju.tpbase.log.DigestConstants;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +31,18 @@ public class DalDigestLogInterceptor implements MethodInterceptor, DigestConstan
     /** 日志格式 */
     protected static final String FORMAT_STR = "[%s.%s,%sms,%s]";
 
+    private final TpAopConfigProperties tpAopConfigProperties;
+
+    public DalDigestLogInterceptor(TpAopConfigProperties tpAopConfigProperties) {
+        this.tpAopConfigProperties = tpAopConfigProperties;
+    }
+
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         log.debug("{}", invocation);
 
         Method method = invocation.getMethod();
-        String className = method.getDeclaringClass().getSimpleName();
+        String className = getClassName(invocation);
         String methodName = method.getName();
 
         String code = "S";
@@ -52,4 +60,14 @@ public class DalDigestLogInterceptor implements MethodInterceptor, DigestConstan
             }
         }
     }
+
+    private String getClassName(MethodInvocation invocation) {
+        if (tpAopConfigProperties.isUseSpring() && invocation.getThis() != null) {
+            Class<?>[] classes = AopProxyUtils.proxiedUserInterfaces(invocation.getThis());
+            return classes[0].getSimpleName();
+        } else {
+            return invocation.getMethod().getDeclaringClass().getSimpleName();
+        }
+    }
+
 }
