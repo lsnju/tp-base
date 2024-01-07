@@ -1,9 +1,20 @@
 package com.lsnju.base.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.lsnju.base.model.JarInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -120,4 +131,73 @@ public class ClazzUtils {
     private static boolean isFolder(int idx, String text) {
         return (idx != -1 && idx + 1 == text.length());
     }
+
+
+    public static List<JarInfo> allJarInfo() throws IOException {
+        List<JarInfo> list = new ArrayList<>();
+        Enumeration<URL> resources = ClazzUtils.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+        while (resources.hasMoreElements()) {
+            URL url = resources.nextElement();
+            JarInfo info = fromMF(url);
+            String jarPath = jarPath(url);
+            String jarFullName = jarFullName(jarPath);
+            info.setPath(jarPath);
+            info.setJarFullName(jarFullName);
+            info.setJarName(jarName(jarFullName));
+            info.setJarVersion(jarVersion(jarFullName));
+            list.add(info);
+        }
+        return list;
+    }
+
+    private static String jarFullName(String path) {
+        String rawJarName = StringUtils.substringAfterLast(path, "/");
+        return StringUtils.substringBeforeLast(rawJarName, ".");
+//        return StringUtils.substringBefore(StringUtils.substringBefore(rawJarName, ".jar"), ".war");
+    }
+
+    private static String jarName(String jarFullName) {
+        return StringUtils.substringBeforeLast(jarFullName, "-");
+    }
+
+    private static String jarVersion(String jarFullName) {
+        return StringUtils.substringAfterLast(jarFullName, "-");
+    }
+
+    private static String jarPath(URL url) {
+        String manifestLocation = url.toString();
+        return StringUtils.substringAfter(StringUtils.substringBefore(manifestLocation, "!/META-INF/MANIFEST.MF"), "jar:file:");
+    }
+
+    public static JarInfo fromMF(URL jarManifest) throws IOException {
+        try (InputStream is = jarManifest.openStream()) {
+            Manifest m = new Manifest(is);
+            final JarInfo info = new JarInfo();
+            info.setMfName(mfName(m));
+            info.setMfVersion(mfVersion(m));
+            return info;
+        }
+    }
+
+    private static String mfVersion(Manifest m) {
+        Attributes mainAttributes = m.getMainAttributes();
+        String version = mainAttributes.getValue("Implementation-Version");
+        if (version == null) {
+            version = mainAttributes.getValue("Bundle-Version");
+        }
+        return version;
+    }
+
+    private static String mfName(Manifest m) {
+        Attributes mainAttributes = m.getMainAttributes();
+        String name = mainAttributes.getValue("Implementation-Title");
+        if (name == null) {
+            name = mainAttributes.getValue("Bundle-SymbolicName");
+        }
+        if (name == null) {
+            name = mainAttributes.getValue("Bundle-Name");
+        }
+        return name;
+    }
+
 }
