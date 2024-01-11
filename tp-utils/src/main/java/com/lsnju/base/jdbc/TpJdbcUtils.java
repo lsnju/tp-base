@@ -15,7 +15,9 @@ import javax.sql.DataSource;
 public class TpJdbcUtils {
 
     public static ConnectionInfo connectionInfo(DataSource ds) throws SQLException {
-        return connectionInfo(ds.getConnection());
+        try (Connection connection = ds.getConnection()) {
+            return connectionInfo(connection);
+        }
     }
 
     public static ConnectionInfo connectionInfo(Connection connection) throws SQLException {
