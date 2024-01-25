@@ -14,7 +14,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-base-parent -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>3.1.1</version>
+    <version>3.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>tp-base</name>

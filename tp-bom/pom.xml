@@ -6,7 +6,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-bom -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-bom</artifactId>
-    <version>3.1.1</version>
+    <version>3.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>tp-bom</name>
