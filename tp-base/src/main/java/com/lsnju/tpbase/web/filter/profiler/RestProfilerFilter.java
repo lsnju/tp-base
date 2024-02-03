@@ -48,7 +48,7 @@ public class RestProfilerFilter implements Filter, DigestConstants {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest req = (HttpServletRequest) request;
             try {
-                Profiler.start(req.getRequestURI());
+                Profiler.start(String.format("%s %s", req.getMethod(), req.getRequestURI()));
                 chain.doFilter(request, response);
             } finally {
                 Profiler.release();
