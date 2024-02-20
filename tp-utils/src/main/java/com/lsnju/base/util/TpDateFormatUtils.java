@@ -28,7 +28,7 @@ public class TpDateFormatUtils {
 
     /**
      * @param pattern
-     * @return
+     * @return DateFormat
      */
     public static DateFormat newDateFormat(String pattern) {
         DateFormat df = new SimpleDateFormat(pattern);
@@ -39,7 +39,7 @@ public class TpDateFormatUtils {
     /**
      * @param date
      * @param format
-     * @return
+     * @return DateFormat
      */
     public static String format(Date date, String format) {
         return format(date, new SimpleDateFormat(format));
@@ -48,7 +48,7 @@ public class TpDateFormatUtils {
     /**
      * @param date
      * @param format
-     * @return
+     * @return DateFormat
      */
     public static String format(Date date, DateFormat format) {
         if (date == null || format == null) {
@@ -60,7 +60,7 @@ public class TpDateFormatUtils {
     /**
      * @param dateStr
      * @param format
-     * @return
+     * @return Date
      */
     public static Date parse(String dateStr, String format) {
         if (StringUtils.isAnyBlank(dateStr, format)) {
@@ -86,7 +86,7 @@ public class TpDateFormatUtils {
      * yyyyMMddHHmmss
      *
      * @param longDateStr
-     * @return
+     * @return Date
      */
     public static Date parseDateLongFormat(String longDateStr) {
         return parse(longDateStr, longFormat);
@@ -96,7 +96,7 @@ public class TpDateFormatUtils {
      * yyyyMMddHHmmss
      *
      * @param date
-     * @return
+     * @return longFormat
      */
     public static String getLongDateString(Date date) {
         return format(date, longFormat);
@@ -108,17 +108,17 @@ public class TpDateFormatUtils {
      * yyyy-MM-dd HH:mm:ss
      *
      * @param newDateStr
-     * @return
+     * @return Date
      */
     public static Date parseDateNewFormat(String newDateStr) {
-        return parse(newDateStr, newFormat);
+        return parse(newDateStr, longFormat);
     }
 
     /**
      * yyyy-MM-dd HH:mm:ss
      *
      * @param date
-     * @return
+     * @return newFormat
      */
     public static String getNewFormatDateString(Date date) {
         return format(date, newFormat);
@@ -130,7 +130,7 @@ public class TpDateFormatUtils {
      * yyyyMMdd
      *
      * @param dateStr
-     * @return
+     * @return Date
      */
     public static Date parseDateFormat(String dateStr) {
         return parse(dateStr, dateFormat);
@@ -151,7 +151,7 @@ public class TpDateFormatUtils {
      * HHmmss
      *
      * @param dateStr
-     * @return
+     * @return Date
      */
     public static Date parseDateTimeFormat(String dateStr) {
         return parse(dateStr, timeFormat);
@@ -172,7 +172,7 @@ public class TpDateFormatUtils {
      * yyyy-MM-dd
      *
      * @param webDateStr
-     * @return
+     * @return Date
      */
     public static Date parseDateWebString(String webDateStr) {
         return parse(webDateStr, webFormat);
@@ -182,7 +182,7 @@ public class TpDateFormatUtils {
      * yyyy-MM-dd
      *
      * @param date
-     * @return
+     * @return webFormat
      */
     public static String getWebDateString(Date date) {
         return format(date, webFormat);
@@ -194,7 +194,7 @@ public class TpDateFormatUtils {
      * yyyy/MM/dd
      *
      * @param webDateStr
-     * @return
+     * @return Date
      */
     public static Date parseDateAlipayString(String webDateStr) {
         return parse(webDateStr, alipayFormat);
@@ -204,7 +204,7 @@ public class TpDateFormatUtils {
      * yyyy/MM/dd
      *
      * @param date
-     * @return
+     * @return yyyy/MM/dd
      */
     public static String getAlipayDateString(Date date) {
         return format(date, alipayFormat);
