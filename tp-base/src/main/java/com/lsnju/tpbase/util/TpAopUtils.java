@@ -1,7 +1,11 @@
 package com.lsnju.tpbase.util;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -13,20 +17,24 @@ public class TpAopUtils {
 
     public static String argumentsDesc(MethodInvocation invocation) {
         Object[] arguments = invocation.getArguments();
-        if (arguments.length != 1) {
-            return null;
+        if (arguments.length == 0) {
+            return "()";
         }
-        Object arg = arguments[0];
+        String value = Arrays.stream(arguments).map(TpAopUtils::argDesc).collect(Collectors.joining(", "));
+        return "(" + value + ")";
+    }
+
+    public static String argDesc(Object arg) {
         if (arg == null) {
-            return null;
+            return "null";
         }
         if (arg instanceof String) {
-            return (String) arg;
+            return StringUtils.left((String) arg, 32);
         }
         if (ClassUtils.isPrimitiveOrWrapper(arg.getClass())) {
             return String.valueOf(arg);
         }
-        return null;
+        return "na";
     }
 
 }

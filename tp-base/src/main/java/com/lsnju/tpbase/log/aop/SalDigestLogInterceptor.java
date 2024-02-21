@@ -4,11 +4,13 @@ import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lsnju.base.util.Profiler;
 import com.lsnju.tpbase.log.DigestConstants;
+import com.lsnju.tpbase.util.TpAopUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +41,12 @@ public class SalDigestLogInterceptor implements MethodInterceptor, DigestConstan
         String code = "S";
         long startTime = System.nanoTime();
         try {
-            Profiler.enter(String.format("%s.%s", className, methodName));
+            String argDesc = TpAopUtils.argumentsDesc(invocation);
+            if (StringUtils.isNotBlank(argDesc)) {
+                Profiler.enter(String.format("%s.%s %s", className, methodName, argDesc));
+            } else {
+                Profiler.enter(String.format("%s.%s", className, methodName));
+            }
             return invocation.proceed();
         } catch (Throwable e) {
             code = "E";
