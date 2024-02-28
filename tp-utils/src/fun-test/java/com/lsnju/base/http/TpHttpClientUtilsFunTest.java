@@ -40,6 +40,22 @@ public class TpHttpClientUtilsFunTest {
     }
 
     @Test
+    void test_002() {
+        try {
+            TpHttpClient CLIENT = TpHttpClientUtils.HTTP_CLIENT;
+            final String targetUrl = "http://localhost:8080/tp/mo/sysinfo.json";
+            final ClassicHttpResponse returnClassicHttpResponse = CLIENT.get(targetUrl);
+            final int statusCode = returnClassicHttpResponse.getCode();
+            final String rawResp = EntityUtils.toString(returnClassicHttpResponse.getEntity(), StandardCharsets.UTF_8);
+            if (log.isInfoEnabled()) {
+                log.info("code = {}, rawResp = {}", statusCode, rawResp);
+            }
+        } catch (Exception e) {
+            log.error(String.format("%s", e.getMessage()), e);
+        }
+    }
+
+    @Test
     void test_httpclient5_direct() {
 
         try {

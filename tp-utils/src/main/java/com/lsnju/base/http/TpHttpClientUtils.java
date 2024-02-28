@@ -14,8 +14,9 @@ import com.lsnju.base.http.impl.DefaultTpHttpClientImpl;
 /**
  *
  *  <blockquote><pre>
+ *      final TpHttpClient CLIENT = TpHttpClientUtils.HTTP_CLIENT;
  *      final ClassicHttpResponse returnClassicHttpResponse = CLIENT.get(targetUrl);
- *      final int statusCode = returnClassicHttpResponse.getStatusLine().getStatusCode();
+ *      final int statusCode = returnClassicHttpResponse.getCode();
  *      final String rawResp = EntityUtils.toString(returnClassicHttpResponse.getEntity(), StandardCharsets.UTF_8);
  *      if (log.isInfoEnabled()) {
  *          log.info("code = {}, rawResp = {}", statusCode, rawResp);
