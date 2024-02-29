@@ -67,15 +67,12 @@ public class TpDateFormatUtils {
             return null;
         }
         DateFormat dateFormat = new SimpleDateFormat(format);
-        if (dateStr.length() == format.length()) {
-            try {
-                return dateFormat.parse(dateStr);
-            } catch (ParseException e) {
-                log.error(e.getMessage(), e);
-                return null;
-            }
+        try {
+            return dateFormat.parse(dateStr);
+        } catch (ParseException e) {
+            log.error(e.getMessage(), e);
+            return null;
         }
-        return null;
     }
 
     // ========================================================
