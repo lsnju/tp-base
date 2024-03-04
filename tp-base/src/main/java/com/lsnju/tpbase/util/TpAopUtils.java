@@ -34,6 +34,9 @@ public class TpAopUtils {
         if (ClassUtils.isPrimitiveOrWrapper(arg.getClass())) {
             return String.valueOf(arg);
         }
+        if (arg.getClass().isEnum()) {
+            return arg.toString();
+        }
         return "na";
     }
 
