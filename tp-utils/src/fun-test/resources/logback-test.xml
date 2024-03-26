@@ -11,6 +11,15 @@
     <logger name="com.lsnju" level="info" />
 
     <logger name="org.apache.http.headers" level="debug" />
+
+    <logger name="org.apache.hc.client5.http.headers" level="debug" />
+    <logger name="org.apache.hc.client5.http.wire" level="info" />
+
+    <logger name="org.apache.hc" level="debug" />
+    <logger name="org.apache.hc.client5" level="info" />
+    <logger name="org.apache.hc.client5.http" level="info" />
+    <logger name="org.apache.hc.client5.http.impl" level="info" />
+
     <root level="warn">
         <appender-ref ref="STDOUT" />
     </root>

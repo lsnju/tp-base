@@ -13,6 +13,8 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.util.Timeout;
 import org.junit.jupiter.api.Test;
 
+import com.lsnju.base.util.JsonUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,6 +35,9 @@ public class TpHttpClientUtilsFunTest {
             final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             if (log.isInfoEnabled()) {
                 log.info("code = {}, rawResp = {}", statusCode, rawResp);
+                if (JsonUtils.isValidJson(rawResp)) {
+                    log.info("{}", JsonUtils.toPrettyFormat(rawResp));
+                }
             }
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
@@ -44,11 +49,14 @@ public class TpHttpClientUtilsFunTest {
         try {
             TpHttpClient CLIENT = TpHttpClientUtils.HTTP_CLIENT;
             final String targetUrl = "http://localhost:8080/tp/mo/sysinfo.json";
-            final ClassicHttpResponse returnClassicHttpResponse = CLIENT.get(targetUrl);
-            final int statusCode = returnClassicHttpResponse.getCode();
-            final String rawResp = EntityUtils.toString(returnClassicHttpResponse.getEntity(), StandardCharsets.UTF_8);
+            final ClassicHttpResponse response = CLIENT.get(targetUrl);
+            final int statusCode = response.getCode();
+            final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             if (log.isInfoEnabled()) {
                 log.info("code = {}, rawResp = {}", statusCode, rawResp);
+                if (JsonUtils.isValidJson(rawResp)) {
+                    log.info("{}", JsonUtils.toPrettyFormat(rawResp));
+                }
             }
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
