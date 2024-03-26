@@ -73,7 +73,7 @@ public class ClazzUtils {
 
     /**
      * @param type
-     * @return
+     * @return getImplementationVersion
      */
     public static String getImplementationVersion(Class<?> type) {
         if (type == null) {
@@ -93,7 +93,7 @@ public class ClazzUtils {
 
     /**
      * @param type
-     * @return
+     * @return getCodeLocation
      */
     public static String getCodeLocation(Class<?> type) {
         try {

@@ -17,6 +17,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lsnju.base.jdbc.ConnectionInfo;
+import com.lsnju.base.jdbc.TpJdbcUtils;
 import com.lsnju.base.model.BaseMo;
 
 import lombok.Getter;
@@ -63,6 +65,10 @@ public class TpCpInfoController {
             info.setMax(metadata.getMax());
             info.setMin(metadata.getMin());
             info.setUsage(metadata.getUsage());
+            try {
+                info.setDetail(TpJdbcUtils.connectionInfo(ds));
+            } catch (Exception ignore) {
+            }
             ret.add(info);
         }
         return ret;
@@ -80,12 +86,13 @@ public class TpCpInfoController {
 
     @Getter
     @Setter
-    static class CpInfo extends BaseMo {
+    public static class CpInfo extends BaseMo {
         private String name;
         private Integer max;
         private Integer min;
         private Integer active;
         private Float usage;
+        private ConnectionInfo detail;
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.system.JavaVersion;
 import org.springframework.context.ApplicationListener;
 
 import com.lsnju.base.util.TpAppInfo;
+import com.lsnju.base.util.TpDateFormatUtils;
 
 /**
  *
@@ -34,6 +35,7 @@ public class TpEnvPreparedEventListener implements ApplicationListener<Applicati
         log.error("tp.version       = {}", TpAppInfo.TP_BASE_VERSION);
         log.error("build.version    = {}", TpAppInfo.BUILD_VERSION);
         log.error("build.time       = {}", TpAppInfo.BUILD_TIME);
+        log.error("build.date       = {}", TpDateFormatUtils.getNewFormatDateString(TpAppInfo.BUILD_DATE));
         log.error("app.home         = {}", new ApplicationHome().getDir());
     }
 }

@@ -63,6 +63,7 @@ public class TpSysInfoController {
         ret.setJavaVendor(TpAppInfo.JAVA_VENDOR);
         ret.setVersion(TpAppInfo.BUILD_VERSION);
         ret.setBuildTime(TpAppInfo.BUILD_TIME);
+        ret.setBuildDate(TpAppInfo.BUILD_DATE);
         ret.setStartTime(VersionConfig.getStartDate());
         ret.setNow(TpDateFormatUtils.getNewFormatDateString(new Date()));
         ret.setProfile(profile);
@@ -131,6 +132,7 @@ public class TpSysInfoController {
         private String version;
         private String serverUrl;
         private String buildTime;
+        private Date buildDate;
         private String startTime;
         private String now;
         private String profile;
