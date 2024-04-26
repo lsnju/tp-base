@@ -25,7 +25,7 @@ public class NewCommonErrorInitTask extends AbstractNewTask {
 
     @PostConstruct
     public void setup() {
-        log.info("taskStatus = {}", taskStatus);
+        log.info("quartz.taskStatus = {}", taskStatus);
     }
 
 }
