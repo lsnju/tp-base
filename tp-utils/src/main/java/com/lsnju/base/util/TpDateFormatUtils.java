@@ -108,7 +108,7 @@ public class TpDateFormatUtils {
      * @return Date
      */
     public static Date parseDateNewFormat(String newDateStr) {
-        return parse(newDateStr, longFormat);
+        return parse(newDateStr, newFormat);
     }
 
     /**
