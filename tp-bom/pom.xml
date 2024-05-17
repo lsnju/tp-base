@@ -5,7 +5,7 @@
 
     <groupId>com.lsnju</groupId>
     <artifactId>tp-bom</artifactId>
-    <version>2.7.13</version>
+    <version>2.7.14</version>
     <packaging>pom</packaging>
 
     <name>tp-bom</name>

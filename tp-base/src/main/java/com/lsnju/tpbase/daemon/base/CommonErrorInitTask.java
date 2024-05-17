@@ -18,6 +18,6 @@ public class CommonErrorInitTask extends AbstractTask {
 
     @PostConstruct
     public void setup() {
-        log.info("taskStatus = {}", getTaskStatus());
+        log.info("quartz.taskStatus = {}", getTaskStatus());
     }
 }

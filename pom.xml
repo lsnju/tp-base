@@ -14,7 +14,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju/tp-base-parent -->
     <groupId>com.lsnju</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>2.7.13</version>
+    <version>2.7.14</version>
     <packaging>pom</packaging>
 
     <name>tp-base</name>
@@ -78,14 +78,14 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.77</version>
+                <version>1.78.1</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.json/json -->
             <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
-                <version>20240205</version>
+                <version>20240303</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
@@ -99,7 +99,7 @@
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
-                <version>3.5.15</version>
+                <version>3.5.16</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
@@ -113,14 +113,14 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
-                <version>1.11.0</version>
+                <version>1.12.0</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>33.0.0-jre</version>
+                <version>33.2.0-jre</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.github.javadev/underscore -->
@@ -160,7 +160,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.15.1</version>
+                <version>2.16.1</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
             <dependency>
@@ -196,7 +196,7 @@
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
-                <version>1.7.0</version>
+                <version>1.8.0</version>
                 <optional>true</optional>
             </dependency>
 
@@ -212,14 +212,14 @@
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
-                <version>1.6.13</version>
+                <version>1.6.14</version>
                 <optional>true</optional>
             </dependency>
             <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
-                <version>2.2.20</version>
+                <version>2.2.21</version>
                 <optional>true</optional>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.spring4all/swagger-spring-boot-starter -->
