@@ -34,7 +34,9 @@ public class JacksonUtils {
 
     static {
         PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
+//        PRETTY_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        DEFAULT_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(Money.class, new MoneySerializer());

@@ -2,7 +2,10 @@ package com.lsnju.base.jackson;
 
 import java.io.IOException;
 
+import org.joor.Reflect;
+
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.io.IOContext;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
@@ -18,12 +21,20 @@ public class RawJsonDeserializer extends JsonDeserializer<String> {
     @Override
     public String deserialize(JsonParser jp, DeserializationContext ctx) throws IOException {
         // return jp.getCodec().readTree(jp).toString();
-        final long begin = jp.getCurrentLocation().getCharOffset();
+        final long begin = jp.currentLocation().getCharOffset();
         jp.skipChildren();
-        final long end = jp.getCurrentLocation().getCharOffset();
-        // final String json = jp.getCurrentLocation().getSourceRef().toString();
-        final String json = jp.getCurrentLocation().contentReference().getRawContent().toString();
-        log.debug("{}->{}, {}", begin, end, json);
+        final long end = jp.currentLocation().getCharOffset();
+        log.debug("start={}, end={}", begin, end);
+        final IOContext ioContext = Reflect.on(jp).get("_ioContext");
+        if (ioContext == null) {
+            return null;
+        }
+        final Object rawContent = ioContext.contentReference().getRawContent();
+        if (rawContent == null) {
+            return null;
+        }
+        final String json = rawContent.toString();
+        log.debug("rawJson={}", json);
         return json.substring((int) begin - 1, (int) end);
     }
 }
