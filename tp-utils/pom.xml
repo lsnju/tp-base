@@ -45,6 +45,12 @@
             <artifactId>gson</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.jooq/joor -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor</artifactId>
+        </dependency>
+
         <!-- API, java.xml.bind module -->
         <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
         <dependency>
@@ -177,12 +183,6 @@
             <artifactId>commons-net</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jooq/joor -->
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>joor</artifactId>
-        </dependency>
-
 
     </dependencies>
 
