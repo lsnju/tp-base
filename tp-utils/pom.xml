@@ -45,6 +45,12 @@
             <artifactId>gson</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.jooq/joor-java-8 -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor-java-8</artifactId>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
@@ -175,6 +181,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
 
     </dependencies>
 

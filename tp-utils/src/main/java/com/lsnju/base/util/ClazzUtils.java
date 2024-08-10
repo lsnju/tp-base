@@ -3,15 +3,21 @@ package com.lsnju.base.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ClazzUtils {
 
     public static String getParentDirectoryFromJar(Class<?> clazz) {
-        return cleanPath(clazz.getResource("").toString());
+        Objects.requireNonNull(clazz);
+        return cleanPath(Optional.ofNullable(clazz.getResource("")).map(URL::toString).orElse(""));
     }
 
     public static String getParentDirectoryFromJar() {
@@ -36,7 +43,8 @@ public class ClazzUtils {
     }
 
     public static String getWorkingDir(Class<?> clazz) {
-        return cleanPath(clazz.getResource("/").toString());
+        Objects.requireNonNull(clazz);
+        return cleanPath(Optional.ofNullable(clazz.getResource("/")).map(URL::toString).orElse(""));
     }
 
     public static String getWorkingDir() {
@@ -72,7 +80,7 @@ public class ClazzUtils {
     }
 
     /**
-     * @param type
+     * @param type class
      * @return getImplementationVersion
      */
     public static String getImplementationVersion(Class<?> type) {
@@ -92,7 +100,7 @@ public class ClazzUtils {
     }
 
     /**
-     * @param type
+     * @param type class
      * @return getCodeLocation
      */
     public static String getCodeLocation(Class<?> type) {
@@ -219,6 +227,32 @@ public class ClazzUtils {
             name = mainAttributes.getValue("Specification-Title");
         }
         return name;
+    }
+
+    public static Set<URL> getJarURLs(ClassLoader cl) {
+        final URL[] all = getURLs(cl);
+        return Arrays.stream(all)
+            .filter(Objects::nonNull)
+            .filter(x -> StringUtils.endsWith(x.getPath(), ".jar"))
+            .collect(Collectors.toSet());
+    }
+
+    public static URL[] getURLs(ClassLoader cl) {
+        if (cl == null) {
+            return new URL[0];
+        }
+        if (cl instanceof URLClassLoader) {
+            return ((URLClassLoader) cl).getURLs();
+        }
+        return new URL[0];
+    }
+
+    public static URL getURL(Class<?> clazz) {
+        return Optional.of(clazz)
+            .map(Class::getProtectionDomain)
+            .map(ProtectionDomain::getCodeSource)
+            .map(CodeSource::getLocation)
+            .orElse(null);
     }
 
 }
