@@ -9,9 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import com.lsnju.base.enums.BizErrEnum;
 import com.lsnju.base.model.BaseMo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -20,26 +18,39 @@ import lombok.Setter;
  * @version V1.0
  */
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class BaseResp<T> extends BaseMo {
 
     private String code;
     @JsonProperty("msg")
     @SerializedName("msg")
     private String message;
+    @Setter
     private T data;
-
+    @Setter
     private String traceId;
 
-    public BaseResp(String code, String message, T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
+    public BaseResp() {
         this.traceId = MDC.get("w-req-id");
     }
 
+    public BaseResp(String code, String message, T data) {
+        this();
+        TpRestContext.setRsCode(code);
+        TpRestContext.setRsMsg(message);
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
+    public void setCode(String code) {
+        TpRestContext.setRsCode(code);
+        this.code = code;
+    }
+
+    public void setMessage(String message) {
+        TpRestContext.setRsMsg(message);
+        this.message = message;
+    }
 
     public static <T> BaseResp<T> of(T data, BizErrEnum error) {
         Objects.requireNonNull(error);
