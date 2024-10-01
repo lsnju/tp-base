@@ -20,6 +20,7 @@ import com.lsnju.tpbase.web.filter.TpRequestHeaderFilter;
 import com.lsnju.tpbase.web.filter.TpSessionFilter;
 import com.lsnju.tpbase.web.filter.TpUidLogFilter;
 import com.lsnju.tpbase.web.filter.profiler.RestProfilerFilter;
+import com.lsnju.tpbase.web.filter.rest.TpRestApiDigestFilter;
 
 import ch.qos.logback.classic.helpers.MDCInsertingServletFilter;
 import jakarta.servlet.Filter;
@@ -151,6 +152,14 @@ public class TpServletFilterConfiguration {
             log.debug("{} newRestProfilerFilter", TpConstants.PREFIX);
             return new RestProfilerFilter();
         }
+
+        @Bean
+        @ConditionalOnMissingBean(TpRestApiDigestFilter.class)
+        public TpRestApiDigestFilter tpRestApiDigestFilter() {
+            log.debug("{} tpRestApiDigestFilter", TpConstants.PREFIX);
+            return new TpRestApiDigestFilter();
+        }
+
     }
 
 }
