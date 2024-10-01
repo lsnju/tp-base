@@ -1,5 +1,7 @@
 package com.lsnju.tpbase.autoconfigure;
 
+import jakarta.servlet.Filter;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -23,7 +25,6 @@ import com.lsnju.tpbase.web.filter.profiler.RestProfilerFilter;
 import com.lsnju.tpbase.web.filter.rest.TpRestApiDigestFilter;
 
 import ch.qos.logback.classic.helpers.MDCInsertingServletFilter;
-import jakarta.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 
 /**

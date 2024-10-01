@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
+import jakarta.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
@@ -33,7 +35,6 @@ import com.lsnju.tpbase.daemon.base.NewCommonErrorInitTask;
 import com.lsnju.tpbase.daemon.monitor.HikariCpsMonitorTask;
 import com.lsnju.tpbase.daemon.monitor.TpMonitorTask;
 
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -154,7 +155,7 @@ class TpTaskConfiguration {
     public static class TpQuartzTaskConfig {
         @Bean
         SchedulerFactoryBeanCustomizer tpSchedulerFactoryBeanCustomizer(@Qualifier("tpForTask") @Autowired(required = false)
-                                                                            ThreadPoolTaskExecutor tpForTask,
+                                                                        ThreadPoolTaskExecutor tpForTask,
                                                                         @Autowired ThreadPoolTaskExecutor tpThreadPool,
                                                                         @Autowired Trigger[] triggers) {
             show(tpForTask, tpThreadPool, triggers);
