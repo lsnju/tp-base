@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lsnju</groupId>
         <artifactId>tp-base-dep</artifactId>
-        <version>2.7.14</version>
+        <version>2.7.15</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
     <artifactId>tp-utils</artifactId>
@@ -43,6 +43,12 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jooq/joor-java-8 -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor-java-8</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
@@ -173,8 +179,13 @@
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+                    <artifactId>commons-collections</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
+
 
     </dependencies>
 

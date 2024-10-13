@@ -9,6 +9,8 @@ public interface FilterOrderConstants {
     /** */
     int LOGIN_ORDER = 3000;
     /** */
+    int RS_API_ORDER = 1100;
+    /** */
     int UID_ORDER = 1050;
     /** */
     int SESSION_ORDER = 1000;

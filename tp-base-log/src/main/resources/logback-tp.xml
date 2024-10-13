@@ -62,6 +62,7 @@
     <property name="file_common_dal" value="${sys_name}-common-dal.log" />
     <property name="file_common_sal" value="${sys_name}-common-integration.log" />
     <property name="file_profiler" value="${sys_name}-profiler.log" />
+    <property name="file_rest_api" value="${sys_name}-rest-api.log" />
     <property name="file_tp_ex_class" value="${sys_name}-ex.log" />
 
     <property name="logging_console_pattern" value="${CONSOLE_LOG_PATTERN:-%d{HH:mm:ss.SSS} [%t]#%X{session_uid} %-5p %-40.40c{39} - %m%n}" />
@@ -460,6 +461,21 @@
         <appender-ref ref="COMMON_WARN" />
     </logger>
 
+    <appender name="TP_REST_API_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_file_path}/${file_rest_api}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_file_his_path}/${file_rest_api}${file_post_fix}</fileNamePattern>
+            <maxHistory>${saved_days}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${logging_digest_pattern}</pattern>
+        </encoder>
+    </appender>
+    <logger name="TP_REST_API" level="info" additivity="false">
+        <appender-ref ref="TP_REST_API_APPENDER" />
+        <appender-ref ref="COMMON_ERROR" />
+        <appender-ref ref="COMMON_WARN" />
+    </logger>
 
     <!-- ====================================== -->
     <!-- ====================================== -->
