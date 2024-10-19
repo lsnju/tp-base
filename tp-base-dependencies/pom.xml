@@ -13,7 +13,7 @@
 
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-dependencies</artifactId>
-    <version>3.1.4-SNAPSHOT</version>
+    <version>3.1.4</version>
     <packaging>pom</packaging>
 
     <url>https://github.com/lsnju/tp-base</url>
