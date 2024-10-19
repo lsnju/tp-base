@@ -9,6 +9,7 @@
     </appender>
 
     <logger name="com.lsnju" level="info" />
+    <logger name="com.lsnju.base.jackson.RawJsonDeserializer" level="debug" />
 
     <logger name="org.apache.http.headers" level="debug" />
 

@@ -25,6 +25,7 @@ public interface DigestConstants {
     String TP_PROFILER = "TP_PROFILER";
     String TP_PAGE_PERF = "TP_PAGE_PERF";
     String TP_HTTP_HEADER = "TP_HTTP_HEADER";
+    String TP_REST_API = "TP_REST_API";
 
     String TP_CP_MO_DIGEST = "TP_CP_MO_DIGEST";
     String TP_TP_MO_DIGEST = "TP_TP_MO_DIGEST";

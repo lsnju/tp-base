@@ -14,9 +14,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import com.lsnju.base.model.BaseMo;
+import com.lsnju.base.util.JsonUtils;
 import com.lsnju.tpbase.daemon.AbstractNewTask;
 import com.lsnju.tpbase.log.DigestConstants;
-import com.lsnju.base.util.JsonUtils;
 
 import lombok.Getter;
 import lombok.Setter;

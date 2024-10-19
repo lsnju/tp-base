@@ -3,6 +3,9 @@ package com.lsnju.tpbase.debug.filter;
 import java.util.Collections;
 import java.util.List;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.Filter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
@@ -10,8 +13,6 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.lsnju.tpbase.util.OrderUtils;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.Filter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 

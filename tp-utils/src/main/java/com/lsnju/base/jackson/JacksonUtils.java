@@ -34,7 +34,9 @@ public class JacksonUtils {
 
     static {
         PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
+//        PRETTY_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        DEFAULT_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(Money.class, new MoneySerializer());
@@ -123,9 +125,9 @@ public class JacksonUtils {
                             final JsonToken jsonToken = jp.nextToken();
                             log.debug("nextToken = {}", jsonToken);
                             if (jsonToken == JsonToken.START_OBJECT || jsonToken == JsonToken.START_ARRAY) {
-                                final long begin = jp.getCurrentLocation().getCharOffset();
+                                final long begin = jp.currentLocation().getCharOffset();
                                 jp.skipChildren();
-                                final long end = jp.getCurrentLocation().getCharOffset();
+                                final long end = jp.currentLocation().getCharOffset();
                                 log.debug("{} - {}", begin, end);
                                 return json.substring((int) begin - 1, (int) end);
                             } else if (jsonToken == JsonToken.VALUE_STRING) {

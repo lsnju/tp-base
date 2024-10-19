@@ -1,11 +1,11 @@
 package com.lsnju.tpbase.web.util;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
 import com.lsnju.tpbase.config.LogMdcConstants;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *

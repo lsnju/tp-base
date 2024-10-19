@@ -2,11 +2,6 @@ package com.lsnju.tpbase.web.filter;
 
 import java.io.IOException;
 
-import org.slf4j.MDC;
-
-import com.lsnju.tpbase.config.LogMdcConstants;
-import com.lsnju.tpbase.web.util.RequestUtils;
-
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -14,6 +9,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.slf4j.MDC;
+
+import com.lsnju.tpbase.config.LogMdcConstants;
+import com.lsnju.tpbase.web.util.RequestUtils;
 
 
 /**

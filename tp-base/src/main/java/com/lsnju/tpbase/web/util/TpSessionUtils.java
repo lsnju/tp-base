@@ -2,10 +2,10 @@ package com.lsnju.tpbase.web.util;
 
 import java.util.Objects;
 
-import com.lsnju.tpbase.web.model.TpUserInfo;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
+import com.lsnju.tpbase.web.model.TpUserInfo;
 
 /**
  *
