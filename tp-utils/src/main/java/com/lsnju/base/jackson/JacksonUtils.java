@@ -2,6 +2,8 @@ package com.lsnju.base.jackson;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,6 +41,10 @@ public class JacksonUtils {
         SimpleModule module = new SimpleModule();
         module.addSerializer(Money.class, new MoneySerializer());
         module.addDeserializer(Money.class, new MoneyDeserializer());
+        module.addSerializer(ZonedDateTime.class, new ZonedDateTImeSerializer());
+        module.addDeserializer(ZonedDateTime.class, new ZonedDateTImeDeserializer());
+        module.addSerializer(LocalDateTime.class, new LocalDateTImeSerializer());
+        module.addDeserializer(LocalDateTime.class, new LocalDateTImeDeserializer());
         DEFAULT_MAPPER.registerModule(module);
         PRETTY_MAPPER.registerModule(module);
         // MAPPER.registerModule(new JaxbAnnotationModule());
