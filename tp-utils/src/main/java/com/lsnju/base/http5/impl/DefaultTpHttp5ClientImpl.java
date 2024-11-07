@@ -193,8 +193,8 @@ public class DefaultTpHttp5ClientImpl implements TpHttp5Client {
     public ClassicHttpResponse get(URI targetUrl, Http5RequestCustomizer customizer, Executor executor) throws IOException {
         final Request request = Request.get(targetUrl)
             .userAgent(this.userAgent)
-            .connectTimeout(Timeout.ofMicroseconds(this.connectTimeout))
-            .responseTimeout(Timeout.ofMicroseconds(this.socketTimeout));
+            .connectTimeout(Timeout.ofMilliseconds(this.connectTimeout))
+            .responseTimeout(Timeout.ofMilliseconds(this.socketTimeout));
         if (customizer != null) {
             customizer.customize(request);
         }
