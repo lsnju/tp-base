@@ -42,7 +42,7 @@ import springfox.documentation.schema.AlternateTypeRules;
  * @version V1.0
  */
 @Slf4j
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class TpBaseConfiguration {
 
     @Configuration
@@ -101,14 +101,14 @@ public class TpBaseConfiguration {
     public static class TpDalDigestConfig {
         @Bean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
-        public Advice dalDigestLogInterceptor(TpAopConfigProperties tpAopConfigProperties) {
+        public static Advice dalDigestLogInterceptor(TpAopConfigProperties tpAopConfigProperties) {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME);
             return new DalDigestLogInterceptor(tpAopConfigProperties);
         }
 
         @Bean(DigestConstants.DAL_DIGEST_PROXY_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_PROXY_NAME)
-        public BeanNameAutoProxyCreator dalDigestLog() {
+        public static BeanNameAutoProxyCreator dalDigestLog() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.DAL_DIGEST_PROXY_NAME);
             BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
             beanNameAutoProxyCreator.setBeanNames("*Dao", "*DaoImpl");
@@ -122,14 +122,14 @@ public class TpBaseConfiguration {
     public static class TpSalDigestConfig {
         @Bean(DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME)
-        public Advice salDigestLogInterceptor() {
+        public static Advice salDigestLogInterceptor() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME);
             return new SalDigestLogInterceptor();
         }
 
         @Bean(DigestConstants.SAL_DIGEST_PROXY_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.SAL_DIGEST_PROXY_NAME)
-        public BeanNameAutoProxyCreator salDigestLog() {
+        public static BeanNameAutoProxyCreator salDigestLog() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.SAL_DIGEST_PROXY_NAME);
             BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
             beanNameAutoProxyCreator.setBeanNames("*ClientImpl");
