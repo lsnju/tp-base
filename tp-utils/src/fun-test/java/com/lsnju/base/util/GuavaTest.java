@@ -1,7 +1,12 @@
 package com.lsnju.base.util;
 
+import java.lang.management.ClassLoadingMXBean;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -93,11 +98,29 @@ public class GuavaTest {
         try {
             ClassPath classPath = ClassPath.from(GuavaTest.class.getClassLoader());
             Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
-
             log.info("total = {}", classes.size());
 
             final ImmutableSet<ClassPath.ClassInfo> topLevelClasses = classPath.getTopLevelClasses();
             log.info("topLevelClasses.size = {}", topLevelClasses.size());
+
+            final ImmutableSet<ClassPath.ResourceInfo> resources = classPath.getResources();
+            log.info("resources.size = {}", resources.size());
+
+            Map<ClassLoader, Integer> map = new LinkedHashMap<>();
+            for (ClassPath.ResourceInfo item : resources) {
+                ClassLoader cl = Reflect.on(item).field("loader").get();
+                final Integer value = map.getOrDefault(cl, 0);
+                map.put(cl, value + 1);
+            }
+
+            log.info("map.size = {}", map.size());
+            map.forEach((k, v) -> {
+                log.info("{} = {}", k, v);
+            });
+
+            final ClassLoader classLoader = GuavaTest.class.getClassLoader();
+            Vector<Class<?>> clsOfClassLoader = Reflect.on(classLoader).field("classes").get();
+            log.info("{}", clsOfClassLoader.size());
 
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
@@ -119,10 +142,25 @@ public class GuavaTest {
         if (classLoader == null) {
             return;
         }
-        Vector<Class<?>> classes = Reflect.on(classLoader).field("classes").get();
-        log.info("{}", classes.size());
-        for (Class<?> clazz : classes) {
-            log.debug("{}", clazz);
+//        Vector<Class<?>> classes = Reflect.on(classLoader).field("classes").get();
+//        log.info("{}", classes.size());
+//        for (Class<?> clazz : classes) {
+//            log.debug("{}", clazz);
+//        }
+        try {
+            final Field field = ClassLoader.class.getDeclaredField("classes");
+            field.setAccessible(true);
+            log.info("{}", field);
+            final Object value = field.get(classLoader);
+            if (value instanceof List<?>) {
+                List<?> list = (List<?>) value;
+                log.info("{}", list.size());
+                for (Object item : list) {
+                    log.info("{}", item);
+                }
+            }
+        } catch (Exception e) {
+            log.error(String.format("%s", e.getMessage()), e);
         }
     }
 
@@ -130,6 +168,7 @@ public class GuavaTest {
     void test_show_loaded_class_location() {
         final ClassLoader classLoader = GuavaTest.class.getClassLoader();
         Vector<Class<?>> classes = Reflect.on(classLoader).field("classes").get();
+        log.info("{}", classes.size());
         Set<URL> set = classes.stream().map(ClazzUtils::getURL).filter(Objects::nonNull).collect(Collectors.toSet());
         set.stream().map(URL::getPath).sorted().forEach(log::info);
     }
@@ -143,4 +182,12 @@ public class GuavaTest {
             log.info("{}", s);
         }
     }
+
+    @Test
+    void test_mx_bean() {
+        final ClassLoadingMXBean classLoadingMXBean = ManagementFactory.getClassLoadingMXBean();
+        log.info("{}", classLoadingMXBean.getLoadedClassCount());
+        log.info("{}", classLoadingMXBean.getTotalLoadedClassCount());
+    }
+
 }
