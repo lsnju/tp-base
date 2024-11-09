@@ -8,13 +8,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>3.3.5</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-base-parent -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>3.1.5-SNAPSHOT</version>
+    <version>3.1.5</version>
     <packaging>pom</packaging>
 
     <name>tp-base</name>
