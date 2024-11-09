@@ -93,7 +93,7 @@ public class TpSysInfoController {
     }
 
     @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-mf.json")
-    public Map<String, String> depSimpleMf(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+    public Map<String, String> depSimpleMf(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depInfo");
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();
@@ -107,7 +107,7 @@ public class TpSysInfoController {
     }
 
     @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-jar.json")
-    public Map<String, String> depSimpleJar(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+    public Map<String, String> depSimpleJar(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depSimpleJar");
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();
