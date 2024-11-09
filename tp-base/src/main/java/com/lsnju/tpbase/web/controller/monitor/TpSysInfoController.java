@@ -3,16 +3,15 @@ package com.lsnju.tpbase.web.controller.monitor;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joor.Reflect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootVersion;
@@ -94,7 +93,7 @@ public class TpSysInfoController {
     }
 
     @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-mf.json")
-    public Map<String, String> depSimpleMf(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+    public Map<String, String> depSimpleMf(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depInfo");
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();
@@ -108,7 +107,7 @@ public class TpSysInfoController {
     }
 
     @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-jar.json")
-    public Map<String, String> depSimpleJar(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+    public Map<String, String> depSimpleJar(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depSimpleJar");
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();
@@ -121,21 +120,12 @@ public class TpSysInfoController {
         return map;
     }
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/useless-jar.json")
+    @GetMapping(path = "${tp.sys.mo.base-path}/classpath-jar.json")
     public List<String> uselessJar() throws IOException {
         log.debug("uselessJar");
         final ClassLoader classLoader = ClazzUtils.class.getClassLoader();
-        final Set<URL> jarURLs = ClazzUtils.getJarURLs(classLoader);
+        final Set<URL> jarURLs = new HashSet<>(ClazzUtils.getJarURLs(classLoader));
         log.info("total.jar = {}", jarURLs.size());
-        final Vector<Class<?>> allClasses = Reflect.on(classLoader).field("classes").get();
-        log.info("total.class = {}", allClasses.size());
-        for (Class<?> clazz : allClasses) {
-            final URL url = ClazzUtils.getURL(clazz);
-            if (url != null) {
-                jarURLs.remove(url);
-            }
-        }
-        log.info("useless.jar = {}", jarURLs.size());
         return jarURLs.stream().map(URL::getPath).sorted().collect(Collectors.toList());
     }
 

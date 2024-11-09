@@ -1,6 +1,8 @@
 package com.lsnju.base.util;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,4 +115,18 @@ public class JacksonUtilsTest {
             log.error(String.format("%s", e.getMessage()), e);
         }
     }
+
+    @Test
+    void test_dateTime() {
+        DateTimeBean b = new DateTimeBean();
+        b.setName("name");
+        b.setZonedDateTime(ZonedDateTime.now());
+        b.setLocalDateTime(LocalDateTime.now());
+        b.setDate(new Date());
+        final String jsonStr = JacksonUtils.toJsonPretty(b);
+        log.info("{}", jsonStr);
+        final DateTimeBean ret = JacksonUtils.fromJson(jsonStr, DateTimeBean.class);
+        log.info("{}", ret);
+    }
+
 }
