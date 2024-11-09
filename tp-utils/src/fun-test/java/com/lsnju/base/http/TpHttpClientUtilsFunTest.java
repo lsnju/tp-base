@@ -31,12 +31,14 @@ public class TpHttpClientUtilsFunTest {
         final String targetUrl = "http://localhost:8080/tp/mo/sysinfo.json";
         try {
             final ClassicHttpResponse response = TpHttpClientUtils.HTTP_CLIENT.get(targetUrl);
-            final int statusCode = response.getCode();
-            final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (log.isInfoEnabled()) {
-                log.info("code = {}, rawResp = {}", statusCode, rawResp);
-                if (JsonUtils.isValidJson(rawResp)) {
-                    log.info("{}", JsonUtils.toPrettyFormat(rawResp));
+            try (response) {
+                final int statusCode = response.getCode();
+                final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                if (log.isInfoEnabled()) {
+                    log.info("code = {}, rawResp = {}", statusCode, rawResp);
+                    if (JsonUtils.isValidJson(rawResp)) {
+                        log.info("{}", JsonUtils.toPrettyFormat(rawResp));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -50,12 +52,14 @@ public class TpHttpClientUtilsFunTest {
             TpHttpClient CLIENT = TpHttpClientUtils.HTTP_CLIENT;
             final String targetUrl = "http://localhost:8080/tp/mo/sysinfo.json";
             final ClassicHttpResponse response = CLIENT.get(targetUrl);
-            final int statusCode = response.getCode();
-            final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-            if (log.isInfoEnabled()) {
-                log.info("code = {}, rawResp = {}", statusCode, rawResp);
-                if (JsonUtils.isValidJson(rawResp)) {
-                    log.info("{}", JsonUtils.toPrettyFormat(rawResp));
+            try (response) {
+                final int statusCode = response.getCode();
+                final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                if (log.isInfoEnabled()) {
+                    log.info("code = {}, rawResp = {}", statusCode, rawResp);
+                    if (JsonUtils.isValidJson(rawResp)) {
+                        log.info("{}", JsonUtils.toPrettyFormat(rawResp));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -84,15 +88,17 @@ public class TpHttpClientUtilsFunTest {
                 .setConnectionManager(cm)
                 .build();
 
-            final String rawRespStr = httpClient.execute(new HttpGet("http://localhost:8080/tp/mo/sysinfo.json"), response -> {
-                final int statusCode = response.getCode();
-                final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-                if (log.isInfoEnabled()) {
-                    log.info("code = {}, rawResp = {}", statusCode, rawResp);
-                }
-                return rawResp;
-            });
-            log.info("{}", rawRespStr);
+            try (httpClient) {
+                final String rawRespStr = httpClient.execute(new HttpGet("http://localhost:8080/tp/mo/sysinfo.json"), response -> {
+                    final int statusCode = response.getCode();
+                    final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                    if (log.isInfoEnabled()) {
+                        log.info("code = {}, rawResp = {}", statusCode, rawResp);
+                    }
+                    return rawResp;
+                });
+                log.info("{}", rawRespStr);
+            }
 
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
