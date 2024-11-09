@@ -1,7 +1,9 @@
 package com.lsnju.base.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
@@ -9,18 +11,19 @@ import java.nio.file.Paths;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemProperties;
 
 import com.lsnju.base.model.JarInfo;
 
@@ -229,22 +232,45 @@ public class ClazzUtils {
         return name;
     }
 
-    public static Set<URL> getJarURLs(ClassLoader cl) {
-        final URL[] all = getURLs(cl);
-        return Arrays.stream(all)
+    public static List<URL> getJarURLs(ClassLoader cl) {
+        final List<URL> all = getURLs(cl);
+        return all.stream()
             .filter(Objects::nonNull)
             .filter(x -> StringUtils.endsWith(x.getPath(), ".jar"))
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 
-    public static URL[] getURLs(ClassLoader cl) {
+    public static List<URL> getURLs(ClassLoader cl) {
         if (cl == null) {
-            return new URL[0];
+            return Collections.emptyList();
         }
         if (cl instanceof URLClassLoader) {
-            return ((URLClassLoader) cl).getURLs();
+            final URL[] urls = ((URLClassLoader) cl).getURLs();
+            return Stream.of(urls).collect(Collectors.toList());
         }
-        return new URL[0];
+        if (cl.equals(ClassLoader.getSystemClassLoader())) {
+            return parseJavaClassPath();
+        }
+        return Collections.emptyList();
+    }
+
+    @SuppressWarnings("deprecation")
+    private static List<URL> parseJavaClassPath() {
+        List<URL> urls = new ArrayList<>();
+        final String separator = SystemProperties.getPathSeparator();
+        final String classpath = SystemProperties.getJavaClassPath();
+        for (String entry : StringUtils.split(classpath, separator)) {
+            try {
+                try {
+                    urls.add(new File(entry).toURI().toURL());
+                } catch (SecurityException e) { // File.toURI checks to see if the file is a directory
+                    urls.add(new URL("file", null, new File(entry).getAbsolutePath()));
+                }
+            } catch (MalformedURLException e) {
+                log.warn("malformed classpath entry: " + entry, e);
+            }
+        }
+        return urls;
     }
 
     public static URL getURL(Class<?> clazz) {

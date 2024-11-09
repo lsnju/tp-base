@@ -1,13 +1,15 @@
 package com.lsnju.base.util;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.joor.Reflect;
 import org.junit.jupiter.api.Test;
@@ -34,9 +36,9 @@ public class GuavaTest {
     void test_002() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         do {
-            final URL[] urls = ClazzUtils.getURLs(classLoader);
+            final List<URL> urls = ClazzUtils.getURLs(classLoader);
             log.info("-----------------------------------------------------");
-            log.info("{}, url.size={}", classLoader, urls.length);
+            log.info("{}, url.size={}", classLoader, urls.size());
             log.info("-----------------------------------------------------");
             showAllUrl(urls);
 
@@ -44,9 +46,9 @@ public class GuavaTest {
         } while (classLoader != null);
     }
 
-    private void showAllUrl(URL[] urls) {
-        final Set<String> set = Stream.of(urls).map(URL::getPath).collect(Collectors.toSet());
-        log.info("total={}, unique={}", urls.length, set.size());
+    private void showAllUrl(List<URL> urls) {
+        final Set<String> set = urls.stream().map(URL::getPath).collect(Collectors.toSet());
+        log.info("total={}, unique={}", urls.size(), set.size());
         for (String url : new TreeSet<>(set)) {
             log.info("{}", url);
         }
@@ -56,14 +58,15 @@ public class GuavaTest {
     void test_show_diff() {
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            final URL[] urls = ClazzUtils.getURLs(classLoader);
+            final List<URL> urls = ClazzUtils.getURLs(classLoader);
             log.info("-----------------------------------------------------");
-            log.info("{}, url.size={}", classLoader, urls.length);
+            log.info("{}, url.size={}", classLoader, urls.size());
             log.info("-----------------------------------------------------");
-            final Set<String> set1 = Stream.of(urls).map(URL::getPath).collect(Collectors.toSet());
 
             final List<JarInfo> jarInfos = ClazzUtils.allJarInfo();
             log.info("{}", jarInfos.size());
+
+            final Set<String> set1 = urls.stream().map(URL::getPath).collect(Collectors.toSet());
             final Set<String> set2 = jarInfos.stream().map(JarInfo::getPath).collect(Collectors.toSet());
 
             Set<String> diff1 = Sets.newHashSet(set1);
@@ -92,12 +95,27 @@ public class GuavaTest {
     void test_show_top_level_class() {
         try {
             ClassPath classPath = ClassPath.from(GuavaTest.class.getClassLoader());
-            Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
+            Set<ClassPath.ClassInfo> allClasses = classPath.getAllClasses();
 
-            log.info("total = {}", classes.size());
+            log.info("allClasses = {}", allClasses.size());
 
             final ImmutableSet<ClassPath.ClassInfo> topLevelClasses = classPath.getTopLevelClasses();
             log.info("topLevelClasses.size = {}", topLevelClasses.size());
+
+            final ImmutableSet<ClassPath.ResourceInfo> resources = classPath.getResources();
+            log.info("resources.size = {}", resources.size());
+
+            Map<ClassLoader, Integer> map = new LinkedHashMap<>();
+            for (ClassPath.ResourceInfo item : resources) {
+                ClassLoader cl = Reflect.on(item).field("loader").get();
+                final Integer value = map.getOrDefault(cl, 0);
+                map.put(cl, value + 1);
+            }
+
+            log.info("map.size = {}", map.size());
+            map.forEach((k, v) -> {
+                log.info("{} = {}", k, v);
+            });
 
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
@@ -119,28 +137,55 @@ public class GuavaTest {
         if (classLoader == null) {
             return;
         }
-        Vector<Class<?>> classes = Reflect.on(classLoader).field("classes").get();
-        log.info("{}", classes.size());
-        for (Class<?> clazz : classes) {
-            log.debug("{}", clazz);
+        try {
+            final Field field = ClassLoader.class.getDeclaredField("classes");
+            log.info("{}", field);
+            final Object value = field.get(classLoader);
+            log.info("{}", value);
+            if (value instanceof List<?> list) {
+                for (Object item : list) {
+                    log.info("{}", item);
+                }
+            }
+        } catch (Exception e) {
+            log.error(String.format("%s", e.getMessage()), e);
         }
     }
 
     @Test
-    void test_show_loaded_class_location() {
-        final ClassLoader classLoader = GuavaTest.class.getClassLoader();
-        Vector<Class<?>> classes = Reflect.on(classLoader).field("classes").get();
-        Set<URL> set = classes.stream().map(ClazzUtils::getURL).filter(Objects::nonNull).collect(Collectors.toSet());
-        set.stream().map(URL::getPath).sorted().forEach(log::info);
-    }
-
-    @Test
     void test_show_getJarURLs() {
-        final Set<URL> jarURLs = ClazzUtils.getJarURLs(Thread.currentThread().getContextClassLoader());
+        final List<URL> jarURLs = ClazzUtils.getJarURLs(Thread.currentThread().getContextClassLoader());
+        log.info("{}", jarURLs.size());
         final List<String> list = jarURLs.stream().map(URL::getPath).sorted().collect(Collectors.toList());
         log.info("{}", list.size());
         for (String s : list) {
             log.info("{}", s);
         }
     }
+
+    @Test
+    void test_guava_classpath() {
+        try {
+            ClassPath classPath = ClassPath.from(GuavaTest.class.getClassLoader());
+            Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
+            log.info("{}", classes.size());
+            final Set<ClassPath.ClassInfo> topLevelClasses = classPath.getTopLevelClasses();
+            log.info("{}", topLevelClasses.size());
+
+            Set<ClassPath.ClassInfo> left = new LinkedHashSet<>();
+            for (ClassPath.ClassInfo item : classes) {
+                if (!topLevelClasses.contains(item)) {
+                    left.add(item);
+                }
+            }
+
+            log.info("left = {}", left.size());
+//            for (ClassPath.ClassInfo classInfo : left) {
+//                log.info("{}", classInfo.getName());
+//            }
+        } catch (IOException e) {
+            log.error(String.format("%s", e.getMessage()), e);
+        }
+    }
+
 }
