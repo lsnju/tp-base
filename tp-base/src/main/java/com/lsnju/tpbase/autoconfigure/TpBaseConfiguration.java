@@ -140,8 +140,9 @@ public class TpBaseConfiguration {
 
     @Configuration
     public static class FilterShowConfiguration {
+        //        @ConditionalOnClass(name = "jakarta.servlet.Filter")
         @Bean
-        @ConditionalOnClass(name = "javax.servlet.Filter")
+        @ConditionalOnClass(value = jakarta.servlet.Filter.class)
         FilterConfigShow filterConfigShow() {
             log.debug("{} filterConfigShow", TpConstants.PREFIX);
             return new FilterConfigShow();
