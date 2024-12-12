@@ -45,9 +45,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class TpSysInfoController {
 
-    @Value("${spring.profiles.active}")
+    @Value("${spring.profiles.active:none}")
     private String profile;
-    @Value("${server.port}")
+    @Value("${server.port:1010}")
     private int serverPort;
     @Autowired
     private TpLogConfigProperties tpLogConfigProperties;
