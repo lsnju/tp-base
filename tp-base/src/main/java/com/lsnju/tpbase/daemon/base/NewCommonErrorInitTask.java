@@ -1,10 +1,10 @@
 package com.lsnju.tpbase.daemon.base;
 
-import jakarta.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 
 import com.lsnju.tpbase.daemon.AbstractNewTask;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  *
@@ -14,7 +14,7 @@ import com.lsnju.tpbase.daemon.AbstractNewTask;
  */
 public class NewCommonErrorInitTask extends AbstractNewTask {
 
-    @Value("${quartz.task}")
+    @Value("${quartz.task:off}")
     private String taskStatus;
 
     @Override

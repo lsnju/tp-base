@@ -1,14 +1,13 @@
 package com.lsnju.tpbase.web.controller;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
 
 /**
@@ -23,9 +22,9 @@ import lombok.Setter;
 @RequestMapping(path = "${tp.sys.mo.page-path:/tp}")
 public class TpHomeController extends AbstractTpController {
 
-    @Value("${spring.datasource.url}")
+    @Value("${spring.datasource.url:none}")
     private String url;
-    @Value("${swagger.enabled}")
+    @Value("${swagger.enabled:xx}")
     private String swaggerEnable;
     @Value("${springdoc.api-docs.enabled:xx}")
     private String springDocApiEnable;
