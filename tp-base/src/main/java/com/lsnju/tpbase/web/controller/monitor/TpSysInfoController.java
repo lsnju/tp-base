@@ -45,9 +45,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class TpSysInfoController {
 
-    @Value("${spring.profiles.active}")
+    @Value("${spring.profiles.active:none}")
     private String profile;
-    @Value("${server.port}")
+    @Value("${server.port:1010}")
     private int serverPort;
     @Autowired
     private TpLogConfigProperties tpLogConfigProperties;
@@ -93,7 +93,7 @@ public class TpSysInfoController {
     }
 
     @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-mf.json")
-    public Map<String, String> depSimpleMf(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+    public Map<String, String> depSimpleMf(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depInfo");
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();
@@ -107,7 +107,7 @@ public class TpSysInfoController {
     }
 
     @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-jar.json")
-    public Map<String, String> depSimpleJar(@RequestParam(defaultValue = "false", required = false) boolean sorted) throws IOException {
+    public Map<String, String> depSimpleJar(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depSimpleJar");
         Map<String, String> map = new LinkedHashMap<>();
         List<JarInfo> list = ClazzUtils.allJarInfo();

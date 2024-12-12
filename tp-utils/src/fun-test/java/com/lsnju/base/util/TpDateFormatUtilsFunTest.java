@@ -31,13 +31,13 @@ public class TpDateFormatUtilsFunTest {
         log.info("{}", DateFormatUtils.ISO_8601_EXTENDED_TIME_FORMAT.format(now));
         log.info("{}", DateFormatUtils.ISO_8601_EXTENDED_TIME_TIME_ZONE_FORMAT.format(now));
         log.info("{}", DateFormatUtils.SMTP_DATETIME_FORMAT.format(now));
+        log.info("{}", now);
 
         log.info("----");
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         log.info("{}", simpleDateFormat.format(new Date()));
         log.info("{}", simpleDateFormat.parse("2024-02-29T00:45:45.938Z"));
-        log.info("{}", now);
     }
 
     @Test

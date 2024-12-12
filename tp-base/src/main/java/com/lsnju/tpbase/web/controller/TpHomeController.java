@@ -23,9 +23,9 @@ import lombok.Setter;
 @RequestMapping(path = "${tp.sys.mo.page-path:/tp}")
 public class TpHomeController extends AbstractTpController {
 
-    @Value("${spring.datasource.url}")
+    @Value("${spring.datasource.url:none}")
     private String url;
-    @Value("${swagger.enabled}")
+    @Value("${swagger.enabled:xx}")
     private String swaggerEnable;
     @Value("${springdoc.api-docs.enabled:xx}")
     private String springDocApiEnable;
