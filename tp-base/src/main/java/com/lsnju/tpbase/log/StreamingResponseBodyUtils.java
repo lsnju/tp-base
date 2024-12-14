@@ -1,10 +1,9 @@
 package com.lsnju.tpbase.log;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import com.lsnju.base.util.UUIDGenerator;
+import com.lsnju.tpbase.util.TpTraceUtils;
 import com.lsnju.tpbase.web.filter.RequestId;
 
 
@@ -17,15 +16,16 @@ import com.lsnju.tpbase.web.filter.RequestId;
 public class StreamingResponseBodyUtils {
 
     public static StreamingResponseBody wrap(StreamingResponseBody body) {
-        final String reqId = MDC.get(RequestId.MDC_REQ_ID);
+        final String currentReqId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(currentReqId);
         return outputStream -> {
-            String newId = StringUtils.join(StringUtils.substring(reqId, -16), LogRun.TAG, UUIDGenerator.getSUID());
-            MDC.put(RequestId.MDC_REQ_ID, newId);
             try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
                 body.writeTo(outputStream);
             } finally {
-                MDC.put(RequestId.MDC_REQ_ID, reqId);
+                MDC.put(RequestId.MDC_REQ_ID, currentReqId);
             }
         };
     }
+
 }
