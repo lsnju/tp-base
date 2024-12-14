@@ -19,7 +19,7 @@ public class LocalDateTImeSerializer extends StdSerializer<LocalDateTime> {
     /** */
     private static final long serialVersionUID = 1387644815657332923L;
 
-    protected LocalDateTImeSerializer() {
+    public LocalDateTImeSerializer() {
         super(LocalDateTime.class);
     }
 
