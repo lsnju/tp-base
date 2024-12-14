@@ -117,7 +117,7 @@ public class TpRequestFilter implements Filter {
     private void setupResp(HttpServletResponse resp) {
         if (tpFilterConfigProperties.isAddResponse()) {
             resp.addHeader(HOST_NAME, VersionConfig.getHostname());
-            resp.addHeader(TOKEN, MDC.get(RequestId.MDC_REQ_ID));
+            resp.addHeader(TOKEN, RequestUtils.getRequestId());
         }
     }
 
