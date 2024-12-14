@@ -19,7 +19,7 @@ public class ZonedDateTImeSerializer extends StdSerializer<ZonedDateTime> {
     /** */
     private static final long serialVersionUID = 1387644815657332923L;
 
-    protected ZonedDateTImeSerializer() {
+    public ZonedDateTImeSerializer() {
         super(ZonedDateTime.class);
     }
 
