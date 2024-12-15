@@ -19,9 +19,9 @@ import com.lsnju.tpbase.web.filter.RequestId;
  */
 public class TpTraceInterceptor {
 
-    private static final Logger PROFILER_LOGGER = LoggerFactory.getLogger(DigestConstants.TP_PROFILER);
     public static final String PREFIX = "<<< ";
 
+    private final Logger logger;
     private final String prefix;
 
     public TpTraceInterceptor() {
@@ -29,7 +29,12 @@ public class TpTraceInterceptor {
     }
 
     public TpTraceInterceptor(String prefix) {
+        this(prefix, DigestConstants.TP_PROFILER);
+    }
+
+    public TpTraceInterceptor(String prefix, String logName) {
         this.prefix = prefix;
+        this.logger = LoggerFactory.getLogger(logName);
     }
 
     public <T> T call(String name, Callable<T> callable) throws Exception {
@@ -45,8 +50,8 @@ public class TpTraceInterceptor {
             return callable.call();
         } finally {
             Profiler.release();
-            if (PROFILER_LOGGER.isInfoEnabled()) {
-                PROFILER_LOGGER.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
+            if (logger.isInfoEnabled()) {
+                logger.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
             }
             Profiler.reset();
             MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
