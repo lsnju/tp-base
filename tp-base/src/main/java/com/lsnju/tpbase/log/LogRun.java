@@ -4,10 +4,9 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
-import com.lsnju.base.util.UUIDGenerator;
+import com.lsnju.tpbase.util.TpTraceUtils;
 import com.lsnju.tpbase.web.filter.RequestId;
 
 /**
@@ -17,10 +16,8 @@ import com.lsnju.tpbase.web.filter.RequestId;
  */
 public class LogRun implements Runnable {
 
-    public static final String TAG = ":";
-
     private final Runnable run;
-    private final String reqId = MDC.get(RequestId.MDC_REQ_ID);
+    private final String currentId = TpTraceUtils.currentTraceId();
 
     public LogRun(Runnable run) {
         this.run = run;
@@ -31,12 +28,11 @@ public class LogRun implements Runnable {
     }
 
     public static Runnable wrapCurrent(Runnable runnable) {
-        String reqId = MDC.get(RequestId.MDC_REQ_ID);
-        final String newId = StringUtils.join(StringUtils.substring(reqId, -16), TAG, UUIDGenerator.getSUID());
+        final String currentReqId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(currentReqId);
         return () -> {
-            final String currentReqId = MDC.get(RequestId.MDC_REQ_ID);
-            MDC.put(RequestId.MDC_REQ_ID, newId);
             try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
                 runnable.run();
             } finally {
                 MDC.put(RequestId.MDC_REQ_ID, currentReqId);
@@ -45,12 +41,11 @@ public class LogRun implements Runnable {
     }
 
     public static <V> Callable<V> wrapCall(Callable<V> runnable) {
-        String reqId = MDC.get(RequestId.MDC_REQ_ID);
-        String newId = StringUtils.join(StringUtils.substring(reqId, -16), TAG, UUIDGenerator.getSUID());
+        final String currentReqId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(currentReqId);
         return () -> {
-            final String currentReqId = MDC.get(RequestId.MDC_REQ_ID);
-            MDC.put(RequestId.MDC_REQ_ID, newId);
             try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
                 return runnable.call();
             } finally {
                 MDC.put(RequestId.MDC_REQ_ID, currentReqId);
@@ -59,23 +54,22 @@ public class LogRun implements Runnable {
     }
 
     public static void wrapExe(Runnable runnable) {
-        String reqId = MDC.get(RequestId.MDC_REQ_ID);
-        String newId = StringUtils.join(StringUtils.substring(reqId, -16), TAG, UUIDGenerator.getSUID());
-        MDC.put(RequestId.MDC_REQ_ID, newId);
+        final String currentReqId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(currentReqId);
         try {
+            MDC.put(RequestId.MDC_REQ_ID, newId);
             runnable.run();
         } finally {
-            MDC.put(RequestId.MDC_REQ_ID, reqId);
+            MDC.put(RequestId.MDC_REQ_ID, currentReqId);
         }
     }
 
     public static <T> Supplier<T> wrapSupplier(Supplier<T> supplier) {
-        String reqId = MDC.get(RequestId.MDC_REQ_ID);
-        String newId = StringUtils.join(StringUtils.substring(reqId, -16), TAG, UUIDGenerator.getSUID());
+        final String currentReqId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(currentReqId);
         return () -> {
-            final String currentReqId = MDC.get(RequestId.MDC_REQ_ID);
-            MDC.put(RequestId.MDC_REQ_ID, newId);
             try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
                 return supplier.get();
             } finally {
                 MDC.put(RequestId.MDC_REQ_ID, currentReqId);
@@ -84,12 +78,11 @@ public class LogRun implements Runnable {
     }
 
     public static <T> Consumer<T> wrapConsumer(Consumer<T> consumer) {
-        String reqId = MDC.get(RequestId.MDC_REQ_ID);
-        String newId = StringUtils.join(StringUtils.substring(reqId, -16), TAG, UUIDGenerator.getSUID());
+        final String currentReqId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(currentReqId);
         return (T arg) -> {
-            final String currentReqId = MDC.get(RequestId.MDC_REQ_ID);
-            MDC.put(RequestId.MDC_REQ_ID, newId);
             try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
                 consumer.accept(arg);
             } finally {
                 MDC.put(RequestId.MDC_REQ_ID, currentReqId);
@@ -99,12 +92,13 @@ public class LogRun implements Runnable {
 
     @Override
     public void run() {
-        String newId = StringUtils.join(StringUtils.substring(reqId, -16), TAG, UUIDGenerator.getSUID());
-        MDC.put(RequestId.MDC_REQ_ID, newId);
+        final String newId = TpTraceUtils.newTraceId(currentId);
         try {
+            MDC.put(RequestId.MDC_REQ_ID, newId);
             this.run.run();
         } finally {
-            MDC.remove(RequestId.MDC_REQ_ID);
+            MDC.put(RequestId.MDC_REQ_ID, currentId);
         }
     }
+
 }

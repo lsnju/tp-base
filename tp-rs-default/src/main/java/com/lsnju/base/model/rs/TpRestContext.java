@@ -15,16 +15,16 @@ public class TpRestContext {
         return RS_CODE.get();
     }
 
-    public static void setRsCode(String uid) {
-        RS_CODE.set(uid);
+    public static void setRsCode(String rsCode) {
+        RS_CODE.set(rsCode);
     }
 
     public static String getRsMsg() {
         return RS_MSG.get();
     }
 
-    public static void setRsMsg(String uid) {
-        RS_MSG.set(uid);
+    public static void setRsMsg(String rsMsg) {
+        RS_MSG.set(rsMsg);
     }
 
     public static void clear() {

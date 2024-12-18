@@ -3,6 +3,8 @@ package com.lsnju.base.util;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -16,8 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lsnju.base.gson.GsonUtils;
+import com.lsnju.base.jackson.LocalDateTImeDeserializer;
+import com.lsnju.base.jackson.LocalDateTImeSerializer;
 import com.lsnju.base.jackson.MoneyDeserializer;
 import com.lsnju.base.jackson.MoneySerializer;
+import com.lsnju.base.jackson.ZonedDateTImeDeserializer;
+import com.lsnju.base.jackson.ZonedDateTImeSerializer;
 import com.lsnju.base.money.Money;
 
 import lombok.extern.slf4j.Slf4j;
@@ -137,6 +143,10 @@ class TpJsonFactory {
             SimpleModule module = new SimpleModule();
             module.addSerializer(Money.class, new MoneySerializer());
             module.addDeserializer(Money.class, new MoneyDeserializer());
+            module.addSerializer(ZonedDateTime.class, new ZonedDateTImeSerializer());
+            module.addDeserializer(ZonedDateTime.class, new ZonedDateTImeDeserializer());
+            module.addSerializer(LocalDateTime.class, new LocalDateTImeSerializer());
+            module.addDeserializer(LocalDateTime.class, new LocalDateTImeDeserializer());
             DEFAULT_MAPPER.registerModule(module);
             PRETTY_MAPPER.registerModule(module);
             // MAPPER.registerModule(new JaxbAnnotationModule());

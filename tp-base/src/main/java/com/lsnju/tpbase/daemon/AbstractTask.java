@@ -30,7 +30,7 @@ public abstract class AbstractTask implements Runnable, DigestConstants {
     private static final String FORMAT_STR = "[%s,%sms,%s,%s] %s";
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Value("${quartz.task}")
+    @Value("${quartz.task:off}")
     @Getter(AccessLevel.PROTECTED)
     private String taskStatus;
 

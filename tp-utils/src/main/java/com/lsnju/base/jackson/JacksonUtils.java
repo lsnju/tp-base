@@ -119,54 +119,55 @@ public class JacksonUtils {
     }
 
     public static String getRawValue(String json, String[] path) throws IOException {
-        final JsonParser jp = DEFAULT_MAPPER.getFactory().createParser(json);
-        for (int i = 0, max = path.length; i < max; i++) {
-            log.debug("current path = {}", path[i]);
-            if (jp.nextToken() == JsonToken.START_OBJECT) {
-                boolean found = false;
-                for (String fieldName = jp.nextFieldName(); fieldName != null; fieldName = jp.nextFieldName()) {
-                    log.debug("current fieldName = {}", fieldName);
-                    if (fieldName.equals(path[i])) {
-                        if (i == max - 1) {
-                            final JsonToken jsonToken = jp.nextToken();
-                            log.debug("nextToken = {}", jsonToken);
-                            if (jsonToken == JsonToken.START_OBJECT || jsonToken == JsonToken.START_ARRAY) {
-                                final long begin = jp.currentLocation().getCharOffset();
-                                jp.skipChildren();
-                                final long end = jp.currentLocation().getCharOffset();
-                                log.debug("{} - {}", begin, end);
-                                return json.substring((int) begin - 1, (int) end);
-                            } else if (jsonToken == JsonToken.VALUE_STRING) {
-                                return jp.getText();
-                            } else if (jsonToken == JsonToken.VALUE_NUMBER_INT
-                                || jsonToken == JsonToken.VALUE_NUMBER_FLOAT
-                                || jsonToken == JsonToken.VALUE_FALSE
-                                || jsonToken == JsonToken.VALUE_TRUE
-                                || jsonToken == JsonToken.VALUE_NULL) {
-                                return jp.getValueAsString();
+        try (final JsonParser jp = DEFAULT_MAPPER.getFactory().createParser(json)) {
+            for (int i = 0, max = path.length; i < max; i++) {
+                log.debug("current path = {}", path[i]);
+                if (jp.nextToken() == JsonToken.START_OBJECT) {
+                    boolean found = false;
+                    for (String fieldName = jp.nextFieldName(); fieldName != null; fieldName = jp.nextFieldName()) {
+                        log.debug("current fieldName = {}", fieldName);
+                        if (fieldName.equals(path[i])) {
+                            if (i == max - 1) {
+                                final JsonToken jsonToken = jp.nextToken();
+                                log.debug("nextToken = {}", jsonToken);
+                                if (jsonToken == JsonToken.START_OBJECT || jsonToken == JsonToken.START_ARRAY) {
+                                    final long begin = jp.currentLocation().getCharOffset();
+                                    jp.skipChildren();
+                                    final long end = jp.currentLocation().getCharOffset();
+                                    log.debug("{} - {}", begin, end);
+                                    return json.substring((int) begin - 1, (int) end);
+                                } else if (jsonToken == JsonToken.VALUE_STRING) {
+                                    return jp.getText();
+                                } else if (jsonToken == JsonToken.VALUE_NUMBER_INT
+                                    || jsonToken == JsonToken.VALUE_NUMBER_FLOAT
+                                    || jsonToken == JsonToken.VALUE_FALSE
+                                    || jsonToken == JsonToken.VALUE_TRUE
+                                    || jsonToken == JsonToken.VALUE_NULL) {
+                                    return jp.getValueAsString();
+                                }
+                                throw new NotImplementedException();
                             }
-                            throw new NotImplementedException();
-                        }
-                        found = true;
-                        break;
-                    } else {
-                        switch (jp.nextToken()) {
-                            case START_OBJECT:
-                            case START_ARRAY:
-                                jp.skipChildren();
-                                break;
-                            case VALUE_STRING:
-                                jp.finishToken();
-                                break;
-                            default:
+                            found = true;
+                            break;
+                        } else {
+                            switch (jp.nextToken()) {
+                                case START_OBJECT:
+                                case START_ARRAY:
+                                    jp.skipChildren();
+                                    break;
+                                case VALUE_STRING:
+                                    jp.finishToken();
+                                    break;
+                                default:
+                            }
                         }
                     }
-                }
-                if (!found) {
+                    if (!found) {
+                        return StringUtils.EMPTY;
+                    }
+                } else {
                     return StringUtils.EMPTY;
                 }
-            } else {
-                return StringUtils.EMPTY;
             }
         }
         return StringUtils.EMPTY;

@@ -1,5 +1,6 @@
 package com.lsnju.base.http;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -12,6 +13,8 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.util.Timeout;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.lsnju.base.util.JsonUtils;
 
@@ -28,8 +31,14 @@ public class TpHttpClientUtilsFunTest {
 
     @Test
     void test_001() {
-        final String targetUrl = "http://localhost:8080/tp/mo/sysinfo.json";
+        final String url = "http://localhost:8080/tp/mo/sysinfo.json";
         try {
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(url)
+                .buildAndExpand()
+                .encode();
+            URI targetUrl = uriComponents.toUri();
+            log.info("targetUrl = {}", targetUrl);
+
             final ClassicHttpResponse response = TpHttpClientUtils.HTTP_CLIENT.get(targetUrl);
             try (response) {
                 final int statusCode = response.getCode();
