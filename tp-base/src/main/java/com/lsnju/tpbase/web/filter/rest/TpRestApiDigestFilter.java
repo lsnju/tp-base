@@ -26,6 +26,7 @@ public class TpRestApiDigestFilter extends AbstractTpRequestFilter implements Di
 
     private static final Logger DIGEST_LOGGER = LoggerFactory.getLogger(TP_REST_API);
     private static final String DIGEST_FORMAT = "[%s,%s,%sms,%s] %s";
+    public static final String DEFAULT = "na";
 
     @Override
     public int getOrder() {
@@ -50,11 +51,11 @@ public class TpRestApiDigestFilter extends AbstractTpRequestFilter implements Di
     }
 
     private static String getRsMsg() {
-        return Objects.toString(TpRestContext.getRsMsg(), "-");
+        return Objects.toString(TpRestContext.getRsMsg(), DEFAULT);
     }
 
     private static String getRsCode() {
-        return Objects.toString(TpRestContext.getRsCode(), "-");
+        return Objects.toString(TpRestContext.getRsCode(), DEFAULT);
     }
 
 }
