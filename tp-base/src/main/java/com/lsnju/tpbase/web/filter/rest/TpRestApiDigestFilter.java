@@ -1,13 +1,13 @@
 package com.lsnju.tpbase.web.filter.rest;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,11 +50,11 @@ public class TpRestApiDigestFilter extends AbstractTpRequestFilter implements Di
     }
 
     private static String getRsMsg() {
-        return StringUtils.defaultString(TpRestContext.getRsMsg(), "-");
+        return Objects.toString(TpRestContext.getRsMsg(), "-");
     }
 
     private static String getRsCode() {
-        return StringUtils.defaultString(TpRestContext.getRsCode(), "-");
+        return Objects.toString(TpRestContext.getRsCode(), "-");
     }
 
 }
