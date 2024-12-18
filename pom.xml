@@ -351,6 +351,10 @@
                         </goals>
                         <configuration>
                             <doclint>none</doclint>
+                            <debug>false</debug>
+                            <failOnError>false</failOnError>
+                            <failOnError>false</failOnError>
+                            <quiet>true</quiet>
                         </configuration>
                     </execution>
                 </executions>
