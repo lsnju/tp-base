@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
 import com.lsnju.tpbase.config.LogMdcConstants;
+import com.lsnju.tpbase.web.filter.RequestId;
 
 /**
  *
@@ -57,5 +58,8 @@ public class RequestUtils {
         return request.getRemoteAddr();
     }
 
+    public static String getRequestId() {
+        return MDC.get(RequestId.MDC_REQ_ID);
+    }
 
 }

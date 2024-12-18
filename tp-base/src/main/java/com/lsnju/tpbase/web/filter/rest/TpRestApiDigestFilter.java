@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,11 +42,19 @@ public class TpRestApiDigestFilter extends AbstractTpRequestFilter implements Di
             if (DIGEST_LOGGER.isInfoEnabled()) {
                 final long costTime = (System.nanoTime() - startTime) / DigestConstants.MS_SCALE;
                 final String msg = String.format(DIGEST_FORMAT, request.getMethod(), request.getServletPath(), costTime,
-                    TpRestContext.getRsCode(), TpRestContext.getRsMsg());
+                    getRsCode(), getRsMsg());
                 DIGEST_LOGGER.info(msg);
             }
             TpRestContext.clear();
         }
+    }
+
+    private static String getRsMsg() {
+        return StringUtils.defaultString(TpRestContext.getRsMsg(), "-");
+    }
+
+    private static String getRsCode() {
+        return StringUtils.defaultString(TpRestContext.getRsCode(), "-");
     }
 
 }

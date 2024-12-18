@@ -71,4 +71,8 @@ public class GsonUtilsTest {
         }
     }
 
+    @Test
+    void test_005() {
+        log.info("{}", GsonUtils.toJson("abc"));
+    }
 }

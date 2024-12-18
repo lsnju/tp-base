@@ -101,9 +101,9 @@ public class TpBaseConfiguration {
     public static class TpDalDigestConfig {
         @Bean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
-        public Advice dalDigestLogInterceptor(TpAopConfigProperties tpAopConfigProperties) {
+        public Advice dalDigestLogInterceptor() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME);
-            return new DalDigestLogInterceptor(tpAopConfigProperties);
+            return new DalDigestLogInterceptor();
         }
 
         @Bean(DigestConstants.DAL_DIGEST_PROXY_NAME)
