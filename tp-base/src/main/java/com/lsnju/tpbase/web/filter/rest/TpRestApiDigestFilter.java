@@ -1,6 +1,7 @@
 package com.lsnju.tpbase.web.filter.rest;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -41,11 +42,19 @@ public class TpRestApiDigestFilter extends AbstractTpRequestFilter implements Di
             if (DIGEST_LOGGER.isInfoEnabled()) {
                 final long costTime = (System.nanoTime() - startTime) / DigestConstants.MS_SCALE;
                 final String msg = String.format(DIGEST_FORMAT, request.getMethod(), request.getServletPath(), costTime,
-                    TpRestContext.getRsCode(), TpRestContext.getRsMsg());
+                    getRsCode(), getRsMsg());
                 DIGEST_LOGGER.info(msg);
             }
             TpRestContext.clear();
         }
+    }
+
+    private static String getRsMsg() {
+        return Objects.toString(TpRestContext.getRsMsg(), "-");
+    }
+
+    private static String getRsCode() {
+        return Objects.toString(TpRestContext.getRsCode(), "-");
     }
 
 }
