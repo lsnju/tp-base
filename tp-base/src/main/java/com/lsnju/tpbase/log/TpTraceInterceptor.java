@@ -58,12 +58,59 @@ public class TpTraceInterceptor {
         }
     }
 
+    public void run(String name, Runnable runnable) {
+        this.run(name, TpTraceUtils.currentTraceId(), runnable);
+    }
+
+    public void run(String name, String traceId, Runnable runnable) {
+        final String currentTraceId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(traceId);
+        try {
+            MDC.put(RequestId.MDC_REQ_ID, newId);
+            Profiler.start(String.format("%s=%s", newId, name));
+            runnable.run();
+        } finally {
+            Profiler.release();
+            if (logger.isInfoEnabled()) {
+                logger.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
+            }
+            Profiler.reset();
+            MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
+        }
+    }
+
     public static TpTraceInterceptor newInstance() {
         return new TpTraceInterceptor();
     }
 
     public static TpTraceInterceptor newInstance(String prefix) {
         return new TpTraceInterceptor(prefix);
+    }
+
+    public static final TpTraceInterceptor DEFAULT = newInstance();
+
+    public static <T> T callByDefault(String name, Callable<T> callable) throws Exception {
+        return callByDefault(name, TpTraceUtils.currentTraceId(), callable);
+    }
+
+    public static <T> T callByDefault(String name, String traceId, Callable<T> callable) throws Exception {
+        return call(name, traceId, callable, DEFAULT);
+    }
+
+    public static <T> T call(String name, String traceId, Callable<T> callable, TpTraceInterceptor interceptor) throws Exception {
+        return interceptor.call(name, traceId, callable);
+    }
+
+    public static void runByDefault(String name, Runnable runnable) {
+        runByDefault(name, TpTraceUtils.currentTraceId(), runnable);
+    }
+
+    public static void runByDefault(String name, String traceId, Runnable runnable) {
+        run(name, traceId, runnable, DEFAULT);
+    }
+
+    public static void run(String name, String traceId, Runnable runnable, TpTraceInterceptor interceptor) {
+        interceptor.run(name, traceId, runnable);
     }
 
 }
