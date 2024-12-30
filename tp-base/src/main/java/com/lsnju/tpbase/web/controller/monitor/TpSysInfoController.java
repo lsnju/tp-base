@@ -56,7 +56,7 @@ public class TpSysInfoController {
 
     private static final ApplicationHome HOME = new ApplicationHome(TpSysInfoController.class);
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/sysinfo.json")
+    @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/sysinfo.json")
     public SysInfo show() {
         log.debug("x");
         final SysInfo ret = new SysInfo();
@@ -68,6 +68,7 @@ public class TpSysInfoController {
         ret.setJavaVendor(TpAppInfo.JAVA_VENDOR);
         ret.setVersion(TpAppInfo.BUILD_VERSION);
         ret.setBuildTime(TpAppInfo.BUILD_TIME);
+        ret.setBuildDate(TpAppInfo.BUILD_DATE);
         ret.setStartTime(VersionConfig.getStartDate());
         ret.setNow(TpDateFormatUtils.getNewFormatDateString(new Date()));
         ret.setProfile(profile);
@@ -86,13 +87,13 @@ public class TpSysInfoController {
         return ret;
     }
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/dep-info.json")
+    @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/dep-info.json")
     public List<JarInfo> depInfo() throws IOException {
         log.debug("depInfo");
         return ClazzUtils.allJarInfo();
     }
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-mf.json")
+    @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/dep-simple-mf.json")
     public Map<String, String> depSimpleMf(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depInfo");
         Map<String, String> map = new LinkedHashMap<>();
@@ -106,7 +107,7 @@ public class TpSysInfoController {
         return map;
     }
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/dep-simple-jar.json")
+    @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/dep-simple-jar.json")
     public Map<String, String> depSimpleJar(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
         log.debug("depSimpleJar");
         Map<String, String> map = new LinkedHashMap<>();
@@ -120,7 +121,7 @@ public class TpSysInfoController {
         return map;
     }
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/useless-jar.json")
+    @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/useless-jar.json")
     public List<String> uselessJar() throws IOException {
         log.debug("uselessJar");
         final ClassLoader classLoader = ClazzUtils.class.getClassLoader();
@@ -154,6 +155,7 @@ public class TpSysInfoController {
         private String version;
         private String serverUrl;
         private String buildTime;
+        private Date buildDate;
         private String startTime;
         private String now;
         private String profile;

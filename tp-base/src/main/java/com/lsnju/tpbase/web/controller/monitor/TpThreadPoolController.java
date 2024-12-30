@@ -36,7 +36,7 @@ public class TpThreadPoolController {
     @Autowired(required = false)
     private List<TaskScheduler> schedulerList;
 
-    @GetMapping(path = "${tp.sys.mo.base-path}/tp.json")
+    @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/tp.json")
     public ThreadPoolStatusVo show() {
         log.debug("{}", threadPools);
         log.debug("{}", schedulerList);
