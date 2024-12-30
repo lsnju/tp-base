@@ -47,7 +47,7 @@ public class TpCpInfoController {
         this.poolMetadataProvider = new CompositeDataSourcePoolMetadataProvider(metadataProviders);
     }
 
-    @GetMapping("${tp.sys.mo.base-path}/cp.json")
+    @GetMapping("${tp.sys.mo.base-path:/tp/mo}/cp.json")
     public List<CpInfo> show() {
         log.debug("x");
         final List<CpInfo> ret = new ArrayList<>();
