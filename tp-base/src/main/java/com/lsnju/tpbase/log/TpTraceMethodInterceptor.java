@@ -8,8 +8,6 @@ import javax.annotation.Nullable;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-import lombok.SneakyThrows;
-
 /**
  *
  * @author lisong
@@ -32,14 +30,19 @@ public class TpTraceMethodInterceptor implements MethodInterceptor {
         this.interceptor = new TpTraceInterceptor(prefix, logName);
     }
 
-    @SneakyThrows
     @Nullable
     @Override
     public Object invoke(@Nonnull MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
         String className = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();
-        return interceptor.call(String.format("%s.%s", className, methodName), invocation::proceed);
+        return interceptor.call(String.format("%s.%s", className, methodName), () -> {
+            try {
+                return invocation.proceed();
+            } catch (Throwable e) {
+                throw new Exception(e);
+            }
+        });
     }
 
 }
