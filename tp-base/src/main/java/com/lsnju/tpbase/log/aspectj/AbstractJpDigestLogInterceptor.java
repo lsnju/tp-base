@@ -28,7 +28,7 @@ public abstract class AbstractJpDigestLogInterceptor implements DigestConstants,
     /** 日志格式 */
     protected static final String FORMAT_STR = "[%s.%s,%sms,%s]";
 
-    abstract Logger digestLogger();
+    public abstract Logger digestLogger();
 
     @Override
     public Object proceed(ProceedingJoinPoint pjp) throws Throwable {
