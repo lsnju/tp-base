@@ -28,7 +28,7 @@ public abstract class AbstractJpDigestLogInterceptor implements DigestConstants,
     /** 日志格式 */
     protected static final String FORMAT_STR = "[%s.%s,%sms,%s]";
 
-    abstract Logger digestLogger();
+    public abstract Logger digestLogger();
 
     @Override
     public Object proceed(ProceedingJoinPoint pjp) throws Throwable {
@@ -68,19 +68,21 @@ public abstract class AbstractJpDigestLogInterceptor implements DigestConstants,
     }
 
     private String getInterfaceName(ProceedingJoinPoint pjp) {
-        Class<?>[] classes = AopProxyUtils.proxiedUserInterfaces(pjp.getTarget());
+        boolean isProxyClass = Proxy.isProxyClass(pjp.getTarget().getClass());
         if (log.isDebugEnabled()) {
             log.debug("getThis = {}", pjp.getThis());
             log.debug("getTarget = {}", pjp.getTarget());
             log.debug("getTarget.class = {}", pjp.getTarget().getClass());
             log.debug("getTarget.class.name = {}", pjp.getTarget().getClass().getSimpleName());
-            log.debug("getTarget is proxy = {}", Proxy.isProxyClass(pjp.getTarget().getClass()));
-            for (Class<?> c : classes) {
-                log.debug("__ c = {}", c);
-            }
+            log.debug("getTarget is proxy = {}", isProxyClass);
         }
-
-        if (Proxy.isProxyClass(pjp.getTarget().getClass())) {
+        if (isProxyClass) {
+            Class<?>[] classes = AopProxyUtils.proxiedUserInterfaces(pjp.getTarget());
+            if (log.isDebugEnabled()) {
+                for (Class<?> c : classes) {
+                    log.debug("__ c = {}", c);
+                }
+            }
             return classes[0].getSimpleName();
         }
         return pjp.getTarget().getClass().getSimpleName();

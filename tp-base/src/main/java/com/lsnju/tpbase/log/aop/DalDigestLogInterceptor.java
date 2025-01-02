@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 public class DalDigestLogInterceptor extends AbstractDigestLogInterceptor {
 
     /** 摘要日志存储文件 */
-    protected static final Logger digestLogger = LoggerFactory.getLogger(DigestConstants.TP_DAL_DIGEST);
+    private static final Logger digestLogger = LoggerFactory.getLogger(DigestConstants.TP_DAL_DIGEST);
 
     @Override
-    Logger digestLogger() {
+    public Logger digestLogger() {
         return digestLogger;
     }
 

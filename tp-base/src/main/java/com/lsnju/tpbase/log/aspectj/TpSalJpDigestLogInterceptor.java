@@ -14,10 +14,10 @@ import com.lsnju.tpbase.log.DigestConstants;
 public class TpSalJpDigestLogInterceptor extends AbstractJpDigestLogInterceptor {
 
     /** 摘要日志存储文件 */
-    protected static final Logger digestLogger = LoggerFactory.getLogger(DigestConstants.TP_SAL_DIGEST);
+    private static final Logger digestLogger = LoggerFactory.getLogger(DigestConstants.TP_SAL_DIGEST);
 
     @Override
-    Logger digestLogger() {
+    public Logger digestLogger() {
         return digestLogger;
     }
 
