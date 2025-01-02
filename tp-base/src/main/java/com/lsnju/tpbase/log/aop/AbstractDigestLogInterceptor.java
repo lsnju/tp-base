@@ -24,7 +24,7 @@ public abstract class AbstractDigestLogInterceptor implements MethodInterceptor,
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    abstract Logger digestLogger();
+    public abstract Logger digestLogger();
 
     // [接口.方法名,耗时,成功失败]
     /** 日志格式 */

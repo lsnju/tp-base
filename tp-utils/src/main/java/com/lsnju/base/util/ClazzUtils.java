@@ -192,7 +192,17 @@ public class ClazzUtils {
 
     private static String jarPath(URL url) {
         String manifestLocation = url.toString();
-        return StringUtils.substringAfter(StringUtils.substringBefore(manifestLocation, "!/META-INF/MANIFEST.MF"), "jar:file:");
+        String jarPath = StringUtils.substringBefore(manifestLocation, "!/META-INF/MANIFEST.MF");
+        if (StringUtils.startsWith(jarPath, "jar:file:")) {
+            return StringUtils.substringAfter(jarPath, "jar:file:");
+        }
+        if (StringUtils.startsWith(jarPath, "jar:nested:")) {
+            return StringUtils.substringAfter(jarPath, "jar:nested:");
+        }
+        if (StringUtils.startsWith(jarPath, "jar:")) {
+            return StringUtils.substringAfter(jarPath, "jar:");
+        }
+        return jarPath;
     }
 
     public static JarInfo fromMF(URL jarManifest) throws IOException {

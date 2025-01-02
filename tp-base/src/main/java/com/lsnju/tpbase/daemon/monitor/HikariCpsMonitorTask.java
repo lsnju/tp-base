@@ -1,7 +1,6 @@
 package com.lsnju.tpbase.daemon.monitor;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -21,12 +20,11 @@ import lombok.Setter;
 public class HikariCpsMonitorTask extends AbstractHikariCpMonitorTask {
 
     @Setter
-    @Autowired
+    @Autowired(required = false)
     private Collection<HikariDataSource> dataSources;
 
     @PostConstruct
     public void setup() {
-        Objects.requireNonNull(dataSources);
         log.debug("{}", dataSources);
     }
 
