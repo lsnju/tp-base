@@ -1,5 +1,6 @@
 package com.lsnju.tpbase.log;
 
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -98,6 +99,7 @@ public class TpTraceInterceptor {
     }
 
     public static <T> T call(String name, String traceId, Callable<T> callable, TpTraceInterceptor interceptor) throws Exception {
+        Objects.requireNonNull(interceptor);
         return interceptor.call(name, traceId, callable);
     }
 
@@ -110,6 +112,7 @@ public class TpTraceInterceptor {
     }
 
     public static void run(String name, String traceId, Runnable runnable, TpTraceInterceptor interceptor) {
+        Objects.requireNonNull(interceptor);
         interceptor.run(name, traceId, runnable);
     }
 
