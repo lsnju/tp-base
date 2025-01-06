@@ -39,6 +39,10 @@ public class TpDateUtils {
         return beginOfDay(DateUtils.addDays(new Date(), 1));
     }
 
+    public static Date toDate(ZonedDateTime zonedDateTime) {
+        return Date.from(zonedDateTime.toInstant());
+    }
+
     public static ZonedDateTime toZoneDateTime(Date date) {
         return toZoneDateTime(date, ZoneId.systemDefault());
     }

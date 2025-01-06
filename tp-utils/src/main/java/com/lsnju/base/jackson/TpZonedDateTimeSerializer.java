@@ -14,12 +14,12 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
  * @since 2024/11/2 10:28
  * @version V1.0
  */
-public class ZonedDateTImeSerializer extends StdSerializer<ZonedDateTime> {
+public class TpZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
 
     /** */
     private static final long serialVersionUID = 1387644815657332923L;
 
-    public ZonedDateTImeSerializer() {
+    public TpZonedDateTimeSerializer() {
         super(ZonedDateTime.class);
     }
 
