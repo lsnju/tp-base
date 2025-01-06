@@ -2,7 +2,9 @@ package com.lsnju.base.jackson;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -65,10 +67,14 @@ public class JacksonUtils {
         module.addSerializer(Money.class, new MoneySerializer());
         module.addSerializer(ZonedDateTime.class, new TpZonedDateTimeSerializer());
         module.addSerializer(LocalDateTime.class, new TpLocalDateTimeSerializer());
+        module.addSerializer(LocalDate.class, new TpLocalDateSerializer());
+        module.addSerializer(LocalTime.class, new TpLocalTimeSerializer());
 
         module.addDeserializer(Money.class, new MoneyDeserializer());
         module.addDeserializer(ZonedDateTime.class, new TpZonedDateTimeDeserializer());
         module.addDeserializer(LocalDateTime.class, new TpLocalDateTimeDeserializer());
+        module.addDeserializer(LocalDate.class, new TpLocalDateDeserializer());
+        module.addDeserializer(LocalTime.class, new TpLocalTimeDeserializer());
         return module;
     }
 
