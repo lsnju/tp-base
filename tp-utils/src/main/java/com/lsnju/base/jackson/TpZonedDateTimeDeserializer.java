@@ -1,7 +1,7 @@
 package com.lsnju.base.jackson;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.lsnju.base.util.TpDateUtils;
 
 /**
  *
@@ -16,20 +17,20 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
  * @since 2024/11/2 11:03
  * @version V1.0
  */
-public class LocalDateTImeDeserializer extends StdDeserializer<LocalDateTime> {
+public class TpZonedDateTimeDeserializer extends StdDeserializer<ZonedDateTime> {
 
     /** */
     private static final long serialVersionUID = 1387644815657332923L;
 
-    public LocalDateTImeDeserializer() {
-        super(LocalDateTime.class);
+    public TpZonedDateTimeDeserializer() {
+        super(ZonedDateTime.class);
     }
 
     @Override
-    public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public ZonedDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         final String valueAsString = jsonParser.getValueAsString();
         if (StringUtils.isNotBlank(valueAsString)) {
-            return LocalDateTime.parse(valueAsString);
+            return TpDateUtils.parseToZonedDateTime(valueAsString);
         }
         return null;
     }
