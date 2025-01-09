@@ -21,6 +21,7 @@ import lombok.Setter;
 public class DateTimeBean extends BaseMo {
 
     private String name;
+    private String value;
     private ZonedDateTime zonedDateTime;
     private LocalDateTime localDateTime;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "GMT+8")

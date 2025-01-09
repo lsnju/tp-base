@@ -12,6 +12,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
@@ -39,12 +40,15 @@ public class JacksonUtils {
     public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, String>>() {};
 
     static {
-        PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-        DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
         SimpleModule module = getDefaultModule();
-        DEFAULT_MAPPER.registerModule(module);
+
+        PRETTY_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
         PRETTY_MAPPER.registerModule(module);
+
+        DEFAULT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        DEFAULT_MAPPER.registerModule(module);
         // MAPPER.registerModule(new JaxbAnnotationModule());
     }
 
