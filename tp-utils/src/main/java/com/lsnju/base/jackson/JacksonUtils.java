@@ -2,7 +2,9 @@ package com.lsnju.base.jackson;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -10,6 +12,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
@@ -19,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.ClazzUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,24 +36,51 @@ public class JacksonUtils {
 
     public static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
     public static final ObjectMapper PRETTY_MAPPER = new ObjectMapper();
-    public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, String>>() {};
+    public static boolean WITH_JSR310 = ClazzUtils.exist("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
+    public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<>() {};
 
     static {
-        PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-//        PRETTY_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
-        DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//        DEFAULT_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
+        SimpleModule module = getDefaultModule();
 
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Money.class, new MoneySerializer());
-        module.addDeserializer(Money.class, new MoneyDeserializer());
-        module.addSerializer(ZonedDateTime.class, new ZonedDateTImeSerializer());
-        module.addDeserializer(ZonedDateTime.class, new ZonedDateTImeDeserializer());
-        module.addSerializer(LocalDateTime.class, new LocalDateTImeSerializer());
-        module.addDeserializer(LocalDateTime.class, new LocalDateTImeDeserializer());
-        DEFAULT_MAPPER.registerModule(module);
+        PRETTY_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
         PRETTY_MAPPER.registerModule(module);
+
+        DEFAULT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        DEFAULT_MAPPER.registerModule(module);
         // MAPPER.registerModule(new JaxbAnnotationModule());
+
+        PRETTY_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
+        DEFAULT_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
+    }
+
+    public static SimpleModule getDefaultModule() {
+        if (WITH_JSR310) {
+            return getJavaTimeModule();
+        }
+        return getSimpleModule();
+    }
+
+    public static SimpleModule getJavaTimeModule() {
+        return JacksonJsr310Utils.JAVA_TIME_MODULE;
+    }
+
+    public static SimpleModule getSimpleModule() {
+        SimpleModule module = new SimpleModule();
+
+        module.addSerializer(Money.class, new MoneySerializer());
+        module.addSerializer(ZonedDateTime.class, new TpZonedDateTimeSerializer());
+        module.addSerializer(LocalDateTime.class, new TpLocalDateTimeSerializer());
+        module.addSerializer(LocalDate.class, new TpLocalDateSerializer());
+        module.addSerializer(LocalTime.class, new TpLocalTimeSerializer());
+
+        module.addDeserializer(Money.class, new MoneyDeserializer());
+        module.addDeserializer(ZonedDateTime.class, new TpZonedDateTimeDeserializer());
+        module.addDeserializer(LocalDateTime.class, new TpLocalDateTimeDeserializer());
+        module.addDeserializer(LocalDate.class, new TpLocalDateDeserializer());
+        module.addDeserializer(LocalTime.class, new TpLocalTimeDeserializer());
+        return module;
     }
 
     public static Map<String, String> toMap(Object obj) throws IOException {
@@ -60,7 +91,9 @@ public class JacksonUtils {
     }
 
     public static String toJson(Object obj) {
-        Objects.requireNonNull(obj);
+        if (obj == null) {
+            return null;
+        }
         try {
             return DEFAULT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
@@ -70,7 +103,9 @@ public class JacksonUtils {
     }
 
     public static String toJsonPretty(Object obj) {
-        Objects.requireNonNull(obj);
+        if (obj == null) {
+            return null;
+        }
         try {
             return PRETTY_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
