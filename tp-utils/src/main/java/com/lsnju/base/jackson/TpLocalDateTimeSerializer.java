@@ -14,12 +14,12 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
  * @since 2024/11/2 10:28
  * @version V1.0
  */
-public class LocalDateTImeSerializer extends StdSerializer<LocalDateTime> {
+public class TpLocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
     /** */
     private static final long serialVersionUID = 1387644815657332923L;
 
-    public LocalDateTImeSerializer() {
+    public TpLocalDateTimeSerializer() {
         super(LocalDateTime.class);
     }
 

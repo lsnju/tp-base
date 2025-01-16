@@ -1,7 +1,9 @@
 package com.lsnju.base.gson;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +38,8 @@ public class GsonUtils {
         builder.registerTypeAdapter(Money.class, new MoneyAdapter());
         builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter());
         builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
+        builder.registerTypeAdapter(LocalTime.class, new LocalTimeAdapter());
         builder.setDateFormat("yyyy-MM-dd HH:mm:ss");
         if (WITH_JACKSON) {
             builder.setFieldNamingStrategy(new FieldNamingStrategyForJackson());
