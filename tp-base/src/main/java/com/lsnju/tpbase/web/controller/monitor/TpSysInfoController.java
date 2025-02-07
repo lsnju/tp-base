@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lsnju.base.model.BaseMo;
 import com.lsnju.base.model.JarInfo;
 import com.lsnju.base.util.ClazzUtils;
@@ -145,6 +146,7 @@ public class TpSysInfoController {
         private String version;
         private String serverUrl;
         private String buildTime;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
         private Date buildDate;
         private String startTime;
         private String now;
