@@ -47,7 +47,7 @@ public class TpTraceInterceptor {
         final String newId = TpTraceUtils.newTraceId(traceId);
         try {
             MDC.put(RequestId.MDC_REQ_ID, newId);
-            Profiler.start(String.format("%s=%s", newId, name));
+            Profiler.start(String.format("%s = %s", newId, name));
             return callable.call();
         } finally {
             Profiler.release();
@@ -68,7 +68,7 @@ public class TpTraceInterceptor {
         final String newId = TpTraceUtils.newTraceId(traceId);
         try {
             MDC.put(RequestId.MDC_REQ_ID, newId);
-            Profiler.start(String.format("%s=%s", newId, name));
+            Profiler.start(String.format("%s = %s", newId, name));
             runnable.run();
         } finally {
             Profiler.release();
