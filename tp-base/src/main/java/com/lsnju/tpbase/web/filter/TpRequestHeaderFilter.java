@@ -70,7 +70,7 @@ public class TpRequestHeaderFilter implements Filter {
                     sb.append(IN).append(name).append(SPLIT).append(value).append(NL);
                 }
             }
-            HTTP_LOGGER.info(">>>\n{}", sb.toString());
+            HTTP_LOGGER.info("REQ_IN >>>\n{}", sb);
         }
     }
 
@@ -84,7 +84,7 @@ public class TpRequestHeaderFilter implements Filter {
                     sb.append(OUT).append(name).append(SPLIT).append(value).append(NL);
                 }
             }
-            HTTP_LOGGER.info("<<<\n{}", sb.toString());
+            HTTP_LOGGER.info("RESP_OUT <<<\n{}", sb);
         }
     }
 }
