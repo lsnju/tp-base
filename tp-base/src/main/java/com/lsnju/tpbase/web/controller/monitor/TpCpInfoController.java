@@ -55,19 +55,18 @@ public class TpCpInfoController {
             return ret;
         }
         for (DataSource ds : dataSources) {
-            final DataSourcePoolMetadata metadata = poolMetadataProvider.getDataSourcePoolMetadata(ds);
-            if (metadata == null) {
-                continue;
-            }
             final CpInfo info = new CpInfo();
-            info.setName(StringUtils.substringAfterLast(getPoolName(ds), "//"));
-            info.setActive(metadata.getActive());
-            info.setMax(metadata.getMax());
-            info.setMin(metadata.getMin());
-            info.setUsage(metadata.getUsage());
             try {
+                info.setName(StringUtils.substringAfterLast(getPoolName(ds), "//"));
                 info.setDetail(TpJdbcUtils.connectionInfo(ds));
             } catch (Exception ignore) {
+            }
+            final DataSourcePoolMetadata metadata = poolMetadataProvider.getDataSourcePoolMetadata(ds);
+            if (metadata != null) {
+                info.setActive(metadata.getActive());
+                info.setMax(metadata.getMax());
+                info.setMin(metadata.getMin());
+                info.setUsage(metadata.getUsage());
             }
             ret.add(info);
         }
