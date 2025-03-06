@@ -1,5 +1,7 @@
 package com.lsnju.base.util;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lsnju.base.jackson.RawJsonDeserializer;
@@ -16,6 +18,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@XmlRootElement
 public class TestBean extends BaseMo {
 
     private int id;

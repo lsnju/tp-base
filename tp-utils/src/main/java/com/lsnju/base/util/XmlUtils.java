@@ -12,13 +12,14 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
+
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.InputSource;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -83,6 +84,10 @@ public class XmlUtils {
         return StringUtils.EMPTY;
     }
 
+    public static String trim(String xml) {
+        return RegExUtils.replacePattern(xml, ">\\s*<", "><");
+    }
+
     public static String simpleFormat(String xml) {
         return RegExUtils.replacePattern(xml, ">\\s*<", ">\n<");
     }
@@ -95,7 +100,7 @@ public class XmlUtils {
         return prettyFormat(xml, "2");
     }
 
-    private static String prettyFormat(String input, String indent) {
+    public static String prettyFormat(String input, String indent) {
         Source xmlInput = new StreamSource(new StringReader(input));
         try (StringWriter stringWriter = new StringWriter()) {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
