@@ -6,7 +6,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-bom -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-bom</artifactId>
-    <version>3.1.10</version>
+    <version>3.1.11</version>
     <packaging>pom</packaging>
 
     <name>tp-bom</name>
@@ -39,6 +39,16 @@
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-json</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-rs-default</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-rs-simple</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

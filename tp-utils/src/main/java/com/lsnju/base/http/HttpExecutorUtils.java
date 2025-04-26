@@ -12,16 +12,11 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
-import org.apache.hc.client5.http.io.HttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
-import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
+import org.apache.hc.client5.http.ssl.HostnameVerificationPolicy;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
+import org.apache.hc.client5.http.ssl.TlsSocketStrategy;
 import org.apache.hc.client5.http.ssl.TrustAllStrategy;
-import org.apache.hc.core5.http.config.Registry;
-import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.util.TimeValue;
 
@@ -36,21 +31,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HttpExecutorUtils {
 
-    public static final Executor TRUST_ALL_EXECUTOR = newTrustAllInstance2();
+    public static final Executor TRUST_ALL_EXECUTOR = newTrustAllInstance();
 
     public static Executor newTrustAllInstance() {
         try {
-            final SSLContext sslcontext = SSLContexts.custom()
-                .loadTrustMaterial(null, new TrustAllStrategy())
+            var sslContext = SSLContexts.custom()
+                .loadTrustMaterial(null, TrustAllStrategy.INSTANCE)
                 .build();
-            final SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder.create()
-                .setSslContext(sslcontext)
+
+            var tlsStrategy = new DefaultClientTlsStrategy(
+                sslContext,
+                HostnameVerificationPolicy.CLIENT,
+                NoopHostnameVerifier.INSTANCE);
+
+            var connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setTlsSocketStrategy(tlsStrategy)
                 .build();
-            final HttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder.create()
-                .setSSLSocketFactory(sslSocketFactory)
-                .build();
-            final CloseableHttpClient httpClient = HttpClients.custom()
-                .setConnectionManager(cm)
+
+            var httpClient = HttpClients.custom()
+                .setConnectionManager(connectionManager)
                 .evictExpiredConnections()
                 .build();
             return Executor.newInstance(httpClient);
@@ -62,25 +61,26 @@ public class HttpExecutorUtils {
 
     public static Executor newTrustAllInstance2() {
         try {
-            final SSLContext sslContext = SSLContexts.custom()
+            SSLContext sslContext = SSLContexts.custom()
                 .loadTrustMaterial(TrustAllStrategy.INSTANCE)
                 .build();
 
-            final LayeredConnectionSocketFactory ssl = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
+            TlsSocketStrategy tlsStrategy = new DefaultClientTlsStrategy(
+                sslContext,
+                HostnameVerificationPolicy.CLIENT,
+                NoopHostnameVerifier.INSTANCE);
 
-            final Registry<ConnectionSocketFactory> sfr = RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .register("https", ssl)
+            PoolingHttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setTlsSocketStrategy(tlsStrategy)
+                .setMaxConnPerRoute(100)
+                .setMaxConnTotal(200)
+                .setConnectionConfigResolver(x -> ConnectionConfig.custom()
+                    .setValidateAfterInactivity(TimeValue.ofMilliseconds(2000)).build())
                 .build();
 
-            final PoolingHttpClientConnectionManager connMgr = new PoolingHttpClientConnectionManager(sfr);
-            connMgr.setDefaultMaxPerRoute(100);
-            connMgr.setMaxTotal(200);
-            connMgr.setConnectionConfigResolver(x -> ConnectionConfig.custom()
-                .setValidateAfterInactivity(TimeValue.ofMilliseconds(2000)).build());
-
-            final CloseableHttpClient httpClient = HttpClients.custom()
-                .setConnectionManager(connMgr)
+            CloseableHttpClient httpClient = HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .evictExpiredConnections()
                 .build();
             return Executor.newInstance(httpClient);
         } catch (Exception e) {
