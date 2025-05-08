@@ -30,6 +30,10 @@
         </dependency>
         <dependency>
             <groupId>com.lsnju</groupId>
+            <artifactId>tp-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lsnju</groupId>
             <artifactId>tp-base-config</artifactId>
         </dependency>
         <dependency>

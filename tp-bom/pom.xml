@@ -52,6 +52,11 @@
             </dependency>
             <dependency>
                 <groupId>com.lsnju</groupId>
+                <artifactId>tp-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju</groupId>
                 <artifactId>tp-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
