@@ -8,8 +8,6 @@ import java.util.List;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.lsnju.base.model.BaseModel;
-
 
 public final class Profiler {
 
@@ -178,7 +176,7 @@ public final class Profiler {
     }
 
     /** 代表一个计时单元。 */
-    public static final class Entry extends BaseModel {
+    public static final class Entry {
 
         private final List<Entry> subEntries = new ArrayList<>(4);
         private final Object message;

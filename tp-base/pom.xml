@@ -26,7 +26,7 @@
 
         <dependency>
             <groupId>com.lsnju.tp3</groupId>
-            <artifactId>tp-utils</artifactId>
+            <artifactId>tp-model</artifactId>
         </dependency>
         <dependency>
             <groupId>com.lsnju.tp3</groupId>

@@ -23,13 +23,14 @@
 
     <modules>
         <module>tp-base-dep</module>
+        <module>tp-utils</module>
         <module>tp-domain-multi</module>
         <module>tp-domain-default</module>
         <module>tp-domain-short</module>
         <module>tp-domain-json</module>
         <module>tp-rs-default</module>
         <module>tp-rs-simple</module>
-        <module>tp-utils</module>
+        <module>tp-model</module>
         <module>tp-base-log</module>
         <module>tp-base-log4j2</module>
         <module>tp-base-config</module>

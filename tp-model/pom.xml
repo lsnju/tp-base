@@ -10,7 +10,7 @@
         <version>3.1.12-SNAPSHOT</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
-    <artifactId>tp-utils</artifactId>
+    <artifactId>tp-model</artifactId>
 
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
@@ -24,14 +24,18 @@
 
     <dependencies>
 
-        <!--        <dependency>-->
-        <!--            <groupId>com.lsnju.tp3</groupId>-->
-        <!--            <artifactId>tp-domain-multi</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.lsnju.tp3</groupId>-->
-        <!--            <artifactId>tp-rs-simple</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.lsnju.tp3</groupId>
+            <artifactId>tp-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lsnju.tp3</groupId>
+            <artifactId>tp-domain-multi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lsnju.tp3</groupId>
+            <artifactId>tp-rs-simple</artifactId>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
