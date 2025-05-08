@@ -47,6 +47,16 @@
             </dependency>
             <dependency>
                 <groupId>com.lsnju</groupId>
+                <artifactId>tp-domain-gson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju</groupId>
+                <artifactId>tp-domain-jackson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju</groupId>
                 <artifactId>tp-rs-default</artifactId>
                 <version>${project.version}</version>
             </dependency>

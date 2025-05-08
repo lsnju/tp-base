@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.lsnju</groupId>
-            <artifactId>tp-domain-multi</artifactId>
+            <artifactId>tp-domain-gson</artifactId>
         </dependency>
         <dependency>
             <groupId>com.lsnju</groupId>
