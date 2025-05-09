@@ -5,10 +5,9 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.lsnju.base.model.BaseMo;
-
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  *
@@ -77,7 +76,8 @@ public class TpIdCardUtils {
 
     @Builder
     @Getter
-    public static class IDInfo extends BaseMo {
+    @ToString
+    public static class IDInfo {
         private final String loc;
         private final String birth;
         private final SexEnum sex;

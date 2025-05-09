@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies -->
+    <parent>
+        <groupId>com.lsnju</groupId>
+        <artifactId>tp-base-dep</artifactId>
+        <version>2.7.22</version>
+        <relativePath>../tp-base-dep</relativePath>
+    </parent>
+    <artifactId>tp-domain-jackson</artifactId>
+
+    <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
+
+    <url>https://github.com/lsnju/tp-base</url>
+    <description>${project.artifactId}</description>
+
+    <properties>
+        <skipTests>false</skipTests>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.lsnju</groupId>
+            <artifactId>tp-utils</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

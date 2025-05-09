@@ -1,9 +1,8 @@
 package com.lsnju.base.jdbc;
 
-import com.lsnju.base.model.BaseMo;
-
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  *
@@ -13,7 +12,8 @@ import lombok.Getter;
  */
 @Getter
 @Builder
-public class ConnectionInfo extends BaseMo {
+@ToString
+public class ConnectionInfo {
     private final String catalog;
     private final String schema;
     private final String driverName;

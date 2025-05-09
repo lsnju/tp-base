@@ -2,6 +2,7 @@ package com.lsnju.base.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  *
@@ -11,7 +12,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class JarInfo extends BaseMo {
+@ToString
+public class JarInfo {
 
     private String mfName;
     private String mfVersion;
