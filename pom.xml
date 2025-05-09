@@ -14,11 +14,11 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-base-parent -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>3.1.12-SNAPSHOT</version>
+    <version>3.1.12</version>
     <packaging>pom</packaging>
 
-    <name>tp-base</name>
-    <description>tp-base</description>
+    <name>tp-base-parent</name>
+    <description>tp-base-parent</description>
     <url>https://github.com/lsnju/tp-base</url>
 
     <modules>
