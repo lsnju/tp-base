@@ -6,7 +6,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-bom -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-bom</artifactId>
-    <version>3.1.11</version>
+    <version>3.1.12</version>
     <packaging>pom</packaging>
 
     <name>tp-bom</name>
@@ -43,6 +43,16 @@
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-domain-gson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-domain-jackson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-rs-default</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -54,6 +64,11 @@
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -146,7 +161,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
+                <version>0.7.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>

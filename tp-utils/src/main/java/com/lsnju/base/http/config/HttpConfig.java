@@ -1,9 +1,8 @@
 package com.lsnju.base.http.config;
 
-import com.lsnju.base.model.BaseMo;
-
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  *
@@ -13,7 +12,8 @@ import lombok.Getter;
  */
 @Getter
 @Builder
-public class HttpConfig extends BaseMo {
+@ToString
+public class HttpConfig {
     private final String userAgent;
     private final int socketTimeout;
     private final int connectTimeout;

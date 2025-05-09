@@ -5,7 +5,6 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lsnju.base.jackson.RawJsonDeserializer;
-import com.lsnju.base.model.BaseMo;
 import com.lsnju.base.money.Money;
 
 import lombok.Getter;
@@ -19,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @XmlRootElement
-public class TestBean extends BaseMo {
+public class TestBean {
 
     private int id;
     private String name;
