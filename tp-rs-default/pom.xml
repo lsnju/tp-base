@@ -27,6 +27,7 @@
         <dependency>
             <groupId>com.lsnju.tp3</groupId>
             <artifactId>tp-domain-multi</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->

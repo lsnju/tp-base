@@ -1,5 +1,6 @@
 package com.lsnju.base.util;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,20 @@ public class TpStringUtils {
 
     public static Date defaultDate(Date date) {
         return date != null ? date : new Date();
+    }
+
+    public static Money toMoney(BigDecimal amount) {
+        if (amount == null) {
+            return new Money();
+        }
+        return new Money(amount);
+    }
+
+    public static BigDecimal toBigDecimal(Money amount) {
+        if (amount == null) {
+            return new BigDecimal(0);
+        }
+        return amount.getAmount();
     }
 
 }
