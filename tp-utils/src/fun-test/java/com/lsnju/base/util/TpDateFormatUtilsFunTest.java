@@ -59,6 +59,7 @@ public class TpDateFormatUtilsFunTest {
         log.info("{}", DateTimeFormatter.ISO_OFFSET_DATE.format(ZonedDateTime.now()));
         log.info("{}", DateTimeFormatter.ISO_OFFSET_TIME.format(ZonedDateTime.now()));
 
+        log.info("---------------");
         log.info("{}", DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now()));
         log.info("{}", DateTimeFormatter.ISO_ZONED_DATE_TIME.format(ZonedDateTime.now()));
 

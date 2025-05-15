@@ -6,16 +6,21 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.lsnju.tpbase.daemon.AbstractNewTask;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author ls
  * @since 2022/1/22 16:58
  * @version V1.0
  */
+@Getter
+@Setter
 public class NewCommonErrorInitTask extends AbstractNewTask {
 
-    @Value("${quartz.task:off}")
-    private String taskStatus;
+    @Value("${tp.quartz.enable:false}")
+    private boolean taskStatus;
 
     @Override
     protected void execute() {
@@ -25,7 +30,7 @@ public class NewCommonErrorInitTask extends AbstractNewTask {
 
     @PostConstruct
     public void setup() {
-        log.info("quartz.taskStatus = {}", taskStatus);
+        log.info("tp.quartz.toggle = {}", taskStatus);
     }
 
 }
