@@ -11,6 +11,7 @@ import com.lsnju.tpbase.TpConstants;
 import com.lsnju.tpbase.config.prop.TpLogConfigProperties;
 import com.lsnju.tpbase.config.prop.TpMoConfigProperties;
 import com.lsnju.tpbase.config.prop.TpRestApiProfilerProperties;
+import com.lsnju.tpbase.config.prop.TpTaskQuartzProperties;
 import com.lsnju.tpbase.debug.env.EnvShowConfig;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
     TpLogConfigProperties.class,
     TpMoConfigProperties.class,
     TpRestApiProfilerProperties.class,
+    TpTaskQuartzProperties.class,
 })
 @Import({
     TpBaseConfiguration.TpSpringWebMvcConfig.class,
