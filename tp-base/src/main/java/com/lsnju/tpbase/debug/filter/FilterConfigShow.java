@@ -3,9 +3,9 @@ package com.lsnju.tpbase.debug.filter;
 import java.util.Collections;
 import java.util.List;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.Filter;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Setter
-public class FilterConfigShow extends AbstractFilterConfigShow {
+public class FilterConfigShow extends AbstractFilterConfigShow implements InitializingBean {
 
     @Autowired(required = false)
     private List<Filter> filters = Collections.emptyList();
@@ -35,8 +35,8 @@ public class FilterConfigShow extends AbstractFilterConfigShow {
     @Autowired(required = false)
     private List<GenericFilterBean> genericFilterBeans = Collections.emptyList();
 
-    @PostConstruct
-    public void setup() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         log.debug(toPrettyString2(filterRegistrationBeans));
         log.debug(toPrettyString("filters", filters));
         log.debug(toPrettyString("orderedFilters", orderedFilters));

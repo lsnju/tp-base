@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-import jakarta.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
 import org.quartz.impl.triggers.AbstractTrigger;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -118,27 +117,27 @@ class TpTaskConfiguration {
     }
 
     @Configuration
-    public static class OldCommonErrorInitConfig {
+    public static class OldCommonErrorInitConfig implements InitializingBean {
         @Autowired(required = false)
         private CommonErrorInitTask commonErrorInitTask;
 
-        @PostConstruct
-        public void setup() {
+        @Override
+        public void afterPropertiesSet() throws Exception {
             log.info("CommonErrorInitTask = {}", commonErrorInitTask);
         }
     }
 
     @Configuration
     @ConditionalOnClass(name = {"org.quartz.Scheduler", "org.springframework.scheduling.quartz.SchedulerFactoryBean"})
-    public static class OldSchedulerFactoryConfig {
+    public static class OldSchedulerFactoryConfig implements InitializingBean {
         @Autowired(required = false)
         @Qualifier("org.springframework.scheduling.quartz.SchedulerFactoryBean#0")
         private Scheduler scheduler;
         @Autowired
         private ApplicationContext context;
 
-        @PostConstruct
-        public void setup() {
+        @Override
+        public void afterPropertiesSet() throws Exception {
             log.info("SchedulerFactory.names = {}", Arrays.toString(context.getBeanNamesForType(SchedulerFactoryBean.class)));
             log.info("Scheduler.names        = {}", Arrays.toString(context.getBeanNamesForType(Scheduler.class)));
             log.info("oldScheduler           = {}", scheduler);
