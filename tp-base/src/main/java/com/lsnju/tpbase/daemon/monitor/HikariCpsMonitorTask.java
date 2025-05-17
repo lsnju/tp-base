@@ -2,8 +2,7 @@ package com.lsnju.tpbase.daemon.monitor;
 
 import java.util.Collection;
 
-import javax.annotation.PostConstruct;
-
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
@@ -17,14 +16,14 @@ import lombok.Setter;
  * @since 2022/1/22 15:15
  * @version V1.0
  */
-public class HikariCpsMonitorTask extends AbstractHikariCpMonitorTask {
+public class HikariCpsMonitorTask extends AbstractHikariCpMonitorTask implements InitializingBean {
 
     @Setter
     @Autowired(required = false)
     private Collection<HikariDataSource> dataSources;
 
-    @PostConstruct
-    public void setup() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         log.debug("{}", dataSources);
     }
 
