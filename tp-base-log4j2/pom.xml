@@ -13,9 +13,10 @@
     <artifactId>tp-base-log4j2</artifactId>
 
     <packaging>jar</packaging>
-    <url>https://github.com/lsnju/alipay-sdk</url>
-    <name>tp-base-log4j2</name>
-    <description>tp-base-log4j2</description>
+
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
+    <url>https://github.com/lsnju/tp-base</url>
 
     <properties>
         <skipTests>true</skipTests>
