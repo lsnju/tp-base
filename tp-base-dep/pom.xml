@@ -13,8 +13,8 @@
     <artifactId>tp-base-dep</artifactId>
 
     <packaging>pom</packaging>
-    <name>tp-base-dep</name>
-    <description>tp-base-dep</description>
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
 
     <properties>
         <skipTests>true</skipTests>
