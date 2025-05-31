@@ -2,9 +2,6 @@ package com.lsnju.tpbase.log;
 
 import java.lang.reflect.Method;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -30,9 +27,8 @@ public class TpTraceMethodInterceptor implements MethodInterceptor {
         this.interceptor = new TpTraceInterceptor(prefix, logName);
     }
 
-    @Nullable
     @Override
-    public Object invoke(@Nonnull MethodInvocation invocation) throws Throwable {
+    public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
         String className = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();

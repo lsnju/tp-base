@@ -1,6 +1,6 @@
 package com.lsnju.tpbase.daemon.base;
 
-import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.InitializingBean;
 
 import com.lsnju.tpbase.daemon.AbstractTask;
 
@@ -9,15 +9,16 @@ import com.lsnju.tpbase.daemon.AbstractTask;
  * @since 2020/2/20 19:38
  * @version V1.0
  */
-public class CommonErrorInitTask extends AbstractTask {
+public class CommonErrorInitTask extends AbstractTask implements InitializingBean {
     @Override
     public void execute() {
         log.error("init");
         log.warn("init");
     }
 
-    @PostConstruct
-    public void setup() {
-        log.info("quartz.taskStatus = {}", getTaskStatus());
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("tp.quartz.toggle = {}", isEnableQuartzTask());
     }
+
 }
