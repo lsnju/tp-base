@@ -9,8 +9,8 @@
     <version>3.1.13-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>tp-bom</name>
-    <description>tp-bom</description>
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
     <url>https://github.com/lsnju/tp-base</url>
 
     <properties>
