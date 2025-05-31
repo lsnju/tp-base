@@ -1,8 +1,8 @@
 package com.lsnju.tpbase.web.controller;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @RestController
 @ConditionalOnClass(name = {"org.springframework.web.servlet.HandlerExceptionResolver"})
 @RequestMapping(path = "${tp.sys.mo.page-path:/tp}")
-public class TpHomeController extends AbstractTpController {
+public class TpHomeController extends AbstractTpController implements InitializingBean {
 
     @Value("${spring.datasource.url:none}")
     private String url;
@@ -32,8 +32,8 @@ public class TpHomeController extends AbstractTpController {
     @Value("${springdoc.swagger-ui.enabled:xx}")
     private String springDocUiEnable;
 
-    @PostConstruct
-    public void setup() {
+    @Override
+    public void afterPropertiesSet() {
         log.info("appName            = {}", getAppName());
         log.info("db-url             = {}", url);
         log.info("swaggerEnable      = {}", swaggerEnable);
@@ -54,9 +54,9 @@ public class TpHomeController extends AbstractTpController {
 
     @GetMapping(path = {"/debug"})
     public String tpDebug() {
-        String path = "" + tpMoConfigProperties.getPagePath() + "/debug";
+        String path = tpMoConfigProperties.getPagePath() + "/debug";
         log.info("{}", path);
-        setup();
+        afterPropertiesSet();
         return getMsg(path);
     }
 

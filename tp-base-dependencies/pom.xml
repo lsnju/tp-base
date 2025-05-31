@@ -7,15 +7,17 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>3.4.5</version>
+        <version>3.5.0</version>
         <relativePath />
     </parent>
 
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-dependencies</artifactId>
-    <version>3.1.12</version>
+    <version>3.1.13</version>
     <packaging>pom</packaging>
 
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
     <url>https://github.com/lsnju/tp-base</url>
 
     <properties>

@@ -7,16 +7,16 @@
     <parent>
         <groupId>com.lsnju.tp3</groupId>
         <artifactId>tp-base-dep</artifactId>
-        <version>3.1.12</version>
+        <version>3.1.13</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
     <artifactId>tp-domain-json</artifactId>
 
     <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
 
-    <url>https://github.com/lsnju/tp-base</url>
+    <name>${project.artifactId}</name>
     <description>${project.artifactId}</description>
+    <url>https://github.com/lsnju/tp-base</url>
 
     <properties>
         <skipTests>false</skipTests>

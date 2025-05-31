@@ -1,10 +1,12 @@
 package com.lsnju.tpbase.daemon.base;
 
-import jakarta.annotation.PostConstruct;
-
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.lsnju.tpbase.daemon.AbstractNewTask;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -12,10 +14,12 @@ import com.lsnju.tpbase.daemon.AbstractNewTask;
  * @since 2022/1/22 16:58
  * @version V1.0
  */
-public class NewCommonErrorInitTask extends AbstractNewTask {
+@Getter
+@Setter
+public class NewCommonErrorInitTask extends AbstractNewTask implements InitializingBean {
 
-    @Value("${quartz.task:off}")
-    private String taskStatus;
+    @Value("${tp.quartz.enable:false}")
+    private boolean taskStatus;
 
     @Override
     protected void execute() {
@@ -23,9 +27,9 @@ public class NewCommonErrorInitTask extends AbstractNewTask {
         log.warn("init");
     }
 
-    @PostConstruct
-    public void setup() {
-        log.info("quartz.taskStatus = {}", taskStatus);
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("tp.quartz.toggle = {}", taskStatus);
     }
 
 }

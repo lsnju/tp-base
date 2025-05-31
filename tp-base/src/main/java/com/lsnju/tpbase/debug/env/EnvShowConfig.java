@@ -1,7 +1,6 @@
 package com.lsnju.tpbase.debug.env;
 
-import jakarta.annotation.PostConstruct;
-
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class EnvShowConfig extends AbstractEnvShow {
+public class EnvShowConfig extends AbstractEnvShow implements InitializingBean {
 
     private final ConfigurableEnvironment env;
 
@@ -21,8 +20,8 @@ public class EnvShowConfig extends AbstractEnvShow {
         this.env = env;
     }
 
-    @PostConstruct
-    public void setup() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         showEnv(log, env);
     }
 
