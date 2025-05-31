@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -91,7 +93,7 @@ public class Money implements Serializable, Comparable<Money> {
     public Money(long yuan, int cent, Currency currency) {
         this.currency = currency;
 
-        this.cent = (yuan * getCentFactor()) + (cent % getCentFactor());
+        this.cent = (yuan * centFactor()) + (cent % centFactor());
     }
 
     /**
@@ -170,7 +172,7 @@ public class Money implements Serializable, Comparable<Money> {
      */
     public Money(double amount, Currency currency) {
         this.currency = currency;
-        this.cent = Math.round(amount * getCentFactor());
+        this.cent = Math.round(amount * centFactor());
     }
 
     /**
@@ -232,6 +234,7 @@ public class Money implements Serializable, Comparable<Money> {
      *
      * @return 金额数，以元为单位。
      */
+    @JsonIgnore
     public BigDecimal getAmount() {
         return BigDecimal.valueOf(cent, currency.getDefaultFractionDigits());
     }
@@ -241,6 +244,7 @@ public class Money implements Serializable, Comparable<Money> {
      *
      * @param amount 金额数，以元为单位。
      */
+    @JsonIgnore
     public void setAmount(BigDecimal amount) {
         if (amount != null) {
             cent = rounding(amount.movePointRight(2), RoundingMode.HALF_EVEN);
@@ -280,6 +284,7 @@ public class Money implements Serializable, Comparable<Money> {
      *
      * @return 币种码
      */
+    @JsonIgnore
     public String getCurrencyCode() {
         if (null == currency) {
             return DEFAULT_CURRENCY_CODE;
@@ -295,6 +300,7 @@ public class Money implements Serializable, Comparable<Money> {
      * @throws IllegalArgumentException 所设置的币种码非ISO 4217标准支持的币种
      * @see #DEFAULT_CURRENCY_CODE
      */
+    @JsonIgnore
     public void setCurrencyCode(String currencyCode) {
         if (null != currencyCode) {
             this.currency = Currency.getInstance(currencyCode);
@@ -310,7 +316,7 @@ public class Money implements Serializable, Comparable<Money> {
      *
      * @return 本货币币种的元/分换算比率。
      */
-    public int getCentFactor() {
+    public int centFactor() {
         return centFactors[currency.getDefaultFractionDigits()];
     }
 
@@ -784,9 +790,7 @@ public class Money implements Serializable, Comparable<Money> {
      */
     protected Money newMoneyWithSameCurrency(long cent) {
         Money money = new Money(0, currency);
-
         money.cent = cent;
-
         return money;
     }
 
@@ -796,13 +800,10 @@ public class Money implements Serializable, Comparable<Money> {
      * @return 本对象内部变量的字符串表示。
      */
     public String dump() {
-        String lineSeparator = System.getProperty("line.separator");
-
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("cent = ").append(cent).append(lineSeparator);
+        StringBuilder sb = new StringBuilder();
+        sb.append("cent = ").append(cent).append(System.lineSeparator());
         sb.append("currency = ").append(currency);
-
         return sb.toString();
     }
+
 }
