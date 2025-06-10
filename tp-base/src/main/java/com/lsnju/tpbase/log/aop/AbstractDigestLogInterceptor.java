@@ -39,6 +39,7 @@ public abstract class AbstractDigestLogInterceptor implements MethodInterceptor,
         String className = getClassName(invocation);
         String methodName = method.getName();
 
+        Object ret = null;
         String code = "S";
         long startTime = System.nanoTime();
         try {
@@ -48,12 +49,13 @@ public abstract class AbstractDigestLogInterceptor implements MethodInterceptor,
             } else {
                 Profiler.enter(String.format("%s.%s", className, methodName));
             }
-            return invocation.proceed();
+            ret = invocation.proceed();
+            return ret;
         } catch (Throwable e) {
             code = "E";
             throw e;
         } finally {
-            Profiler.release();
+            Profiler.release(TpAopUtils.respDesc(ret));
             if (digestLogger().isInfoEnabled()) {
                 digestLogger().info(String.format(FORMAT_STR, className, methodName, (System.nanoTime() - startTime) / MS_SCALE, code));
             }
