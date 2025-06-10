@@ -175,7 +175,10 @@ public final class Profiler {
 
         /** 取得entry的信息。 */
         public String getMessage() {
-            return StringUtils.defaultString(message) + StringUtils.defaultString(this.releaseMsg);
+            if (this.releaseMsg == null) {
+                return StringUtils.defaultString(message);
+            }
+            return StringUtils.defaultString(message) + " " + this.releaseMsg;
         }
 
         /**

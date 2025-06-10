@@ -37,6 +37,7 @@ public abstract class AbstractJpDigestLogInterceptor implements DigestConstants,
         String className = getInterfaceName(pjp);
         String methodName = pjp.getSignature().getName();
 
+        Object ret = null;
         String code = "S";
         long startTime = System.nanoTime();
         try {
@@ -46,12 +47,13 @@ public abstract class AbstractJpDigestLogInterceptor implements DigestConstants,
             } else {
                 Profiler.enter(String.format("[AJ] %s.%s", className, methodName));
             }
-            return pjp.proceed();
+            ret = pjp.proceed();
+            return ret;
         } catch (Throwable e) {
             code = "E";
             throw e;
         } finally {
-            Profiler.release();
+            Profiler.release(TpAopUtils.respDesc(ret));
             if (digestLogger().isInfoEnabled()) {
                 digestLogger().info(String.format(FORMAT_STR, className, methodName, (System.nanoTime() - startTime) / MS_SCALE, code));
             }
