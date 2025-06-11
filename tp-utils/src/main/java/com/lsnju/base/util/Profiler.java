@@ -33,7 +33,7 @@ public final class Profiler {
      * <p>清除以后必须再次调用<code>start</code>方可重新计时。
      */
     public static void reset() {
-        entryStack.set(null);
+        entryStack.remove();
     }
 
     /**
