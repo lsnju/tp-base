@@ -3,10 +3,13 @@ package com.lsnju.base.http;
 import java.io.IOException;
 import java.net.URI;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Executor;
+import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 
+import com.lsnju.base.http.config.HttpMethod;
 import com.lsnju.base.http.config.RequestCustomizer;
 
 /**
@@ -89,5 +92,37 @@ public interface TpHttpClient {
     HttpResponse get(URI targetUrl, Executor executor) throws IOException;
 
     HttpResponse get(URI targetUrl, RequestCustomizer customizer, Executor executor) throws IOException;
+
+    // putJson
+
+    HttpResponse putJson(String targetUrl, String rawReq) throws IOException;
+
+    HttpResponse putJson(String targetUrl, String rawReq, RequestCustomizer customizer) throws IOException;
+
+    HttpResponse putJson(String targetUrl, String rawReq, Executor executor) throws IOException;
+
+    HttpResponse putJson(String targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException;
+
+    HttpResponse putJson(URI targetUrl, String rawReq) throws IOException;
+
+    HttpResponse putJson(URI targetUrl, String rawReq, RequestCustomizer customizer) throws IOException;
+
+    HttpResponse putJson(URI targetUrl, String rawReq, Executor executor) throws IOException;
+
+    HttpResponse putJson(URI targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException;
+
+    // http xxx
+
+    HttpResponse http(HttpMethod method, URI targetUrl, HttpEntity entity) throws IOException;
+
+    HttpResponse http(HttpMethod method, URI targetUrl, HttpEntity entity, RequestCustomizer customizer) throws IOException;
+
+    HttpResponse http(HttpMethod method, URI targetUrl, HttpEntity entity, Executor executor) throws IOException;
+
+    HttpResponse http(HttpMethod method, URI targetUrl, HttpEntity entity, RequestCustomizer customizer, Executor executor) throws IOException;
+
+    // http
+
+    Request request(HttpMethod method, URI targetUrl);
 
 }
