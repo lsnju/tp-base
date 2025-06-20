@@ -15,7 +15,7 @@ public final class Profiler {
 
     /** 开始计时。 */
     public static void start() {
-        start((String) null);
+        start(null);
     }
 
     /**
@@ -28,21 +28,12 @@ public final class Profiler {
     }
 
     /**
-     * 开始计时。
-     *
-     * @param message 第一个entry的信息
-     */
-    public static void start(Message message) {
-        entryStack.set(new Entry(message, null, null));
-    }
-
-    /**
      * 清除计时器。
      *
      * <p>清除以后必须再次调用<code>start</code>方可重新计时。
      */
     public static void reset() {
-        entryStack.set(null);
+        entryStack.remove();
     }
 
     /**
@@ -58,25 +49,20 @@ public final class Profiler {
         }
     }
 
-    /**
-     * 开始一个新的entry，并计时。
-     *
-     * @param message 新entry的信息
-     */
-    public static void enter(Message message) {
-        Entry currentEntry = getCurrentEntry();
-
-        if (currentEntry != null) {
-            currentEntry.enterSubEntry(message);
-        }
-    }
-
     /** 结束最近的一个entry，记录结束时间。 */
     public static void release() {
         Entry currentEntry = getCurrentEntry();
 
         if (currentEntry != null) {
             currentEntry.release();
+        }
+    }
+
+    public static void release(String msg) {
+        Entry currentEntry = getCurrentEntry();
+
+        if (currentEntry != null) {
+            currentEntry.release(msg);
         }
     }
 
@@ -159,32 +145,18 @@ public final class Profiler {
         return entry;
     }
 
-    /** 显示消息的级别。 */
-    public static enum MessageLevel {
-        NO_MESSAGE,
-        BRIEF_MESSAGE,
-        DETAILED_MESSAGE;
-    }
-
-    /** 代表一个profiler entry的详细信息。 */
-    public interface Message {
-        MessageLevel getMessageLevel(Entry entry);
-
-        String getBriefMessage();
-
-        String getDetailedMessage();
-    }
 
     /** 代表一个计时单元。 */
     public static final class Entry {
 
         private final List<Entry> subEntries = new ArrayList<>(4);
-        private final Object message;
+        private final String message;
         private final Entry parentEntry;
         private final Entry firstEntry;
         private final long baseTime;
         private final long startTime;
         private long endTime;
+        private String releaseMsg;
 
         /**
          * 创建一个新的entry。
@@ -193,7 +165,7 @@ public final class Profiler {
          * @param parentEntry 父entry，可以是<code>null</code>
          * @param firstEntry 第一个entry，可以是<code>null</code>
          */
-        private Entry(Object message, Entry parentEntry, Entry firstEntry) {
+        private Entry(String message, Entry parentEntry, Entry firstEntry) {
             this.message = message;
             this.startTime = System.currentTimeMillis();
             this.parentEntry = parentEntry;
@@ -203,26 +175,10 @@ public final class Profiler {
 
         /** 取得entry的信息。 */
         public String getMessage() {
-            String messageString = null;
-
-            if (message instanceof String) {
-                messageString = (String) message;
-            } else if (message instanceof Message) {
-                Message messageObject = (Message) message;
-                MessageLevel level = MessageLevel.BRIEF_MESSAGE;
-
-                if (isReleased()) {
-                    level = messageObject.getMessageLevel(this);
-                }
-
-                if (level == MessageLevel.DETAILED_MESSAGE) {
-                    messageString = messageObject.getDetailedMessage();
-                } else {
-                    messageString = messageObject.getBriefMessage();
-                }
+            if (this.releaseMsg == null) {
+                return StringUtils.defaultString(message);
             }
-
-            return StringUtils.defaultIfEmpty(messageString, null);
+            return StringUtils.defaultString(message) + " " + this.releaseMsg;
         }
 
         /**
@@ -290,7 +246,7 @@ public final class Profiler {
          *
          * @return 百分比
          */
-        public double getPecentage() {
+        public double getPercentage() {
             double parentDuration = 0;
             double duration = getDuration();
 
@@ -310,7 +266,7 @@ public final class Profiler {
          *
          * @return 百分比
          */
-        public double getPecentageOfAll() {
+        public double getPercentageOfAll() {
             double firstDuration = 0;
             double duration = getDuration();
 
@@ -336,7 +292,12 @@ public final class Profiler {
 
         /** 结束当前entry，并记录结束时间。 */
         private void release() {
-            endTime = System.currentTimeMillis();
+            this.endTime = System.currentTimeMillis();
+        }
+
+        private void release(String msg) {
+            this.endTime = System.currentTimeMillis();
+            this.releaseMsg = msg;
         }
 
         /**
@@ -353,7 +314,7 @@ public final class Profiler {
          *
          * @param message 子entry的信息
          */
-        private void enterSubEntry(Object message) {
+        private void enterSubEntry(String message) {
             Entry subEntry = new Entry(message, this, firstEntry);
 
             subEntries.add(subEntry);
@@ -396,7 +357,7 @@ public final class Profiler {
          * @return 字符串表示的entry
          */
         private String toString(String prefix1, String prefix2) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
 
             toString(buffer, prefix1, prefix2);
 
@@ -410,25 +371,24 @@ public final class Profiler {
          * @param prefix1 首行前缀
          * @param prefix2 后续行前缀
          */
-        private void toString(StringBuffer buffer, String prefix1, String prefix2) {
+        private void toString(StringBuilder buffer, String prefix1, String prefix2) {
             buffer.append(prefix1);
 
             String message = getMessage();
             long startTime = getStartTime();
             long duration = getDuration();
             long durationOfSelf = getDurationOfSelf();
-            double percent = getPecentage();
-            double percentOfAll = getPecentageOfAll();
+            double percent = getPercentage();
+            double percentOfAll = getPercentageOfAll();
 
-            Object[] params =
-                new Object[]{
-                    message, // {0} - entry信息
-                    Long.valueOf(startTime), // {1} - 起始时间
-                    Long.valueOf(duration), // {2} - 持续总时间
-                    Long.valueOf(durationOfSelf), // {3} - 自身消耗的时间
-                    Double.valueOf(percent), // {4} - 在父entry中所占的时间比例
-                    Double.valueOf(percentOfAll) // {5} - 在总时间中所旧的时间比例
-                };
+            Object[] params = new Object[]{
+                message, // {0} - entry信息
+                startTime, // {1} - 起始时间
+                duration, // {2} - 持续总时间
+                durationOfSelf, // {3} - 自身消耗的时间
+                percent, // {4} - 在父entry中所占的时间比例
+                percentOfAll // {5} - 在总时间中所旧的时间比例
+            };
 
             StringBuilder pattern = new StringBuilder("{1,number} ");
 
@@ -452,9 +412,7 @@ public final class Profiler {
                 pattern.append("[UNRELEASED]");
             }
 
-            if (message != null) {
-                pattern.append(" - {0}");
-            }
+            pattern.append(" - {0}");
 
             buffer.append(MessageFormat.format(pattern.toString(), params));
 
@@ -465,10 +423,8 @@ public final class Profiler {
 
                 if (i == (subEntries.size() - 1)) {
                     subEntry.toString(buffer, prefix2 + "`---", prefix2 + "    "); // 最后一项
-                } else if (i == 0) {
-                    subEntry.toString(buffer, prefix2 + "+---", prefix2 + "|   "); // 第一项
                 } else {
-                    subEntry.toString(buffer, prefix2 + "+---", prefix2 + "|   "); // 中间项
+                    subEntry.toString(buffer, prefix2 + "+---", prefix2 + "|   ");
                 }
             }
         }

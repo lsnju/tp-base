@@ -286,7 +286,7 @@ public class Money implements Serializable, Comparable<Money> {
      */
     @JsonIgnore
     public String getCurrencyCode() {
-        if (null == currency) {
+        if (currency == null) {
             return DEFAULT_CURRENCY_CODE;
         } else {
             return currency.getCurrencyCode();
