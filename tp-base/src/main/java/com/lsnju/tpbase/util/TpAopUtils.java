@@ -1,6 +1,7 @@
 package com.lsnju.tpbase.util;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -38,6 +39,22 @@ public class TpAopUtils {
             return arg.toString();
         }
         return "na";
+    }
+
+    public static String respDesc(Object resp) {
+        if (resp == null) {
+            return null;
+        }
+        if (resp instanceof String) {
+            return String.valueOf(((String) resp).length());
+        }
+        if (resp instanceof Collection) {
+            return String.valueOf(((Collection<?>) resp).size());
+        }
+        if (ClassUtils.isPrimitiveOrWrapper(resp.getClass())) {
+            return String.valueOf(resp);
+        }
+        return null;
     }
 
 }
