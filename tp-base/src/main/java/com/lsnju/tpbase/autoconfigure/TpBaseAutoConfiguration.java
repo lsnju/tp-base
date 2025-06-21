@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import com.lsnju.tpbase.TpConstants;
-import com.lsnju.tpbase.config.prop.TpLogConfigProperties;
-import com.lsnju.tpbase.config.prop.TpMoConfigProperties;
 import com.lsnju.tpbase.config.prop.TpRestApiProfilerProperties;
 import com.lsnju.tpbase.config.prop.TpTaskQuartzProperties;
 import com.lsnju.tpbase.debug.env.EnvShowConfig;
@@ -24,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @EnableConfigurationProperties({
-    TpLogConfigProperties.class,
-    TpMoConfigProperties.class,
     TpRestApiProfilerProperties.class,
     TpTaskQuartzProperties.class,
 })

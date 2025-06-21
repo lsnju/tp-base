@@ -175,8 +175,7 @@ class TpTaskConfiguration {
         }
 
         private String getTriggerInfo(final Trigger trigger) {
-            if (trigger instanceof AbstractTrigger) {
-                final AbstractTrigger<?> at = (AbstractTrigger<?>) trigger;
+            if (trigger instanceof AbstractTrigger<?> at) {
                 return String.format("%-40s = [%s]", at.getName(), getDesc(at));
             }
             return trigger.getClass().getName();
