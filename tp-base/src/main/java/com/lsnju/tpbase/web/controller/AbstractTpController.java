@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -22,9 +21,9 @@ import lombok.Getter;
  * @since 2021/12/16 10:01
  * @version V1.0
  */
-abstract class AbstractTpController {
+public abstract class AbstractTpController {
 
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+//    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final String MSG = "[%s] The quick brown fox jumps over the lazy dog. [%s]";
     public static final String X_REAL_IP = "X-Real-IP";
@@ -36,6 +35,8 @@ abstract class AbstractTpController {
     protected TpSpringWebMvcHelper tpSpringWebMvcHelper;
     @Autowired
     protected TpMoConfigProperties tpMoConfigProperties;
+
+    protected abstract Logger log();
 
     protected String getMsg() {
         return getMsg(StringUtils.EMPTY);
@@ -57,27 +58,27 @@ abstract class AbstractTpController {
     }
 
     protected void logInfo(HttpServletRequest request, boolean debug) {
-        if (log.isInfoEnabled()) {
+        if (log().isInfoEnabled()) {
             if (debug) {
-                log.info("X_FORWARDED_PROTO : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_PROTO));
-                log.info("X_FORWARDED_HOST  : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_HOST));
-                log.info("X_FORWARDED_PORT  : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_PORT));
-                log.info("X_FORWARDED_FOR   : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_FOR));
-                log.info("X_REAL_IP         : {}", TpHttpHeaderUtils.getHeader(request, X_REAL_IP));
-                log.info("HOST              : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.HOST));
-                log.info("FORWARDED         : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.FORWARDED));
-                log.info("getServerName     : {}", request.getServerName());
-                log.info("getServerPort     : {}", request.getServerPort());
-                log.info("getScheme         : {}", request.getScheme());
-                log.info("getRemoteHost     : {}", request.getRemoteHost());
-                log.info("getRemotePort     : {}", request.getRemotePort());
-                log.info("getProtocol       : {}", request.getProtocol());
-                log.info("getContextPath    : {}", request.getContextPath());
-                log.info("USER_AGENT        : {}", TpHttpHeaderUtils.getUserAgent(request));
+                log().info("X_FORWARDED_PROTO : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_PROTO));
+                log().info("X_FORWARDED_HOST  : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_HOST));
+                log().info("X_FORWARDED_PORT  : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_PORT));
+                log().info("X_FORWARDED_FOR   : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.X_FORWARDED_FOR));
+                log().info("X_REAL_IP         : {}", TpHttpHeaderUtils.getHeader(request, X_REAL_IP));
+                log().info("HOST              : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.HOST));
+                log().info("FORWARDED         : {}", TpHttpHeaderUtils.getHeader(request, HttpHeaders.FORWARDED));
+                log().info("getServerName     : {}", request.getServerName());
+                log().info("getServerPort     : {}", request.getServerPort());
+                log().info("getScheme         : {}", request.getScheme());
+                log().info("getRemoteHost     : {}", request.getRemoteHost());
+                log().info("getRemotePort     : {}", request.getRemotePort());
+                log().info("getProtocol       : {}", request.getProtocol());
+                log().info("getContextPath    : {}", request.getContextPath());
+                log().info("USER_AGENT        : {}", TpHttpHeaderUtils.getUserAgent(request));
             }
-            log.info("url={}", getServerUrl());
-            log.info("url={}", request.getRequestURL());
-            log.info("dir={}", ClazzUtils.getWorkingDir());
+            log().info("url={}", getServerUrl());
+            log().info("url={}", request.getRequestURL());
+            log().info("dir={}", ClazzUtils.getWorkingDir());
         }
     }
 

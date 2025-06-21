@@ -9,10 +9,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Import;
 
-import com.lsnju.tpbase.web.controller.TpHomeController;
-import com.lsnju.tpbase.web.controller.monitor.TpCpInfoController;
-import com.lsnju.tpbase.web.controller.monitor.TpSysInfoController;
-import com.lsnju.tpbase.web.controller.monitor.TpThreadPoolController;
+import com.lsnju.tpbase.autoconfigure.TpWebApiConfiguration;
 
 /**
  *
@@ -25,9 +22,6 @@ import com.lsnju.tpbase.web.controller.monitor.TpThreadPoolController;
 @Documented
 @Inherited
 @EnableTpTask
-@Import({TpSysInfoController.class,
-    TpThreadPoolController.class,
-    TpCpInfoController.class,
-    TpHomeController.class})
+@Import({TpWebApiConfiguration.class})
 public @interface EnableTpMoConfig {
 }
