@@ -264,7 +264,6 @@ public class ClazzUtils {
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("deprecation")
     private static List<URL> parseJavaClassPath() {
         List<URL> urls = new ArrayList<>();
         final String separator = SystemProperties.getPathSeparator();
