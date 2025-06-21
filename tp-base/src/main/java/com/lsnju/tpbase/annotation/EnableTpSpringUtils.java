@@ -9,19 +9,18 @@ import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Import;
 
-import com.lsnju.tpbase.autoconfigure.TpWebApiConfiguration;
+import com.lsnju.tpbase.autoconfigure.TpSpringUtilsAutoConfiguration;
 
 /**
  *
- * @author ls
- * @since 2023-08-03 12:50:47
+ * @author lis614
+ * @since 2025-06-21 19:34:43
  * @version V1.0
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@EnableTpTask
-@Import({TpWebApiConfiguration.class})
-public @interface EnableTpMoConfig {
+@Import({TpSpringUtilsAutoConfiguration.class})
+public @interface EnableTpSpringUtils {
 }

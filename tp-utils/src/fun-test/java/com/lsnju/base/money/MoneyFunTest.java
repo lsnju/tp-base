@@ -20,6 +20,7 @@ public class MoneyFunTest {
     void test_001() {
         log.info("{}", new Money());
         log.info("{}", new Money(11.11));
+        log.info("{}", new Money("-11.11"));
     }
 
     @Test
