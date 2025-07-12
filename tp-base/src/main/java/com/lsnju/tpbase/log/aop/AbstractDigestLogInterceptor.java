@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopProxyUtils;
 
 import com.lsnju.base.util.Profiler;
+import com.lsnju.tpbase.log.AopSkipMethod;
 import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.tpbase.util.TpAopUtils;
 
@@ -20,7 +21,7 @@ import com.lsnju.tpbase.util.TpAopUtils;
  * @since 2024/12/12 14:00
  * @version V1.0
  */
-public abstract class AbstractDigestLogInterceptor implements MethodInterceptor, DigestConstants {
+public abstract class AbstractDigestLogInterceptor implements MethodInterceptor, DigestConstants, AopSkipMethod {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -38,6 +39,9 @@ public abstract class AbstractDigestLogInterceptor implements MethodInterceptor,
         Method method = invocation.getMethod();
         String className = getClassName(invocation);
         String methodName = method.getName();
+        if (skipProfiler(methodName)) {
+            return invocation.proceed();
+        }
 
         Object ret = null;
         String code = "S";
@@ -56,7 +60,7 @@ public abstract class AbstractDigestLogInterceptor implements MethodInterceptor,
             throw e;
         } finally {
             Profiler.release(TpAopUtils.respDesc(ret));
-            if (digestLogger().isInfoEnabled()) {
+            if (digestLogger().isInfoEnabled() && !skipDigest(methodName)) {
                 digestLogger().info(String.format(FORMAT_STR, className, methodName, (System.nanoTime() - startTime) / MS_SCALE, code));
             }
         }
@@ -69,14 +73,17 @@ public abstract class AbstractDigestLogInterceptor implements MethodInterceptor,
         }
 
         if (log.isDebugEnabled()) {
+            boolean proxyClass = Proxy.isProxyClass(target.getClass());
             log.debug("--------------------");
             log.debug("getThis = {}", target);
             log.debug("getThis.class = {}", target.getClass());
-            log.debug("getThis.class is proxy = {}", Proxy.isProxyClass(target.getClass()));
+            log.debug("getThis.class is proxy = {}", proxyClass);
             log.debug("getThis.class.name = {}", target.getClass().getSimpleName());
-            Class<?>[] classes = AopProxyUtils.proxiedUserInterfaces(target);
-            for (Class<?> c : classes) {
-                log.debug("__ c = {}", c);
+            if (proxyClass) {
+                Class<?>[] classes = AopProxyUtils.proxiedUserInterfaces(target);
+                for (Class<?> c : classes) {
+                    log.debug("__ c = {}", c);
+                }
             }
             log.debug("---------------------");
         }
