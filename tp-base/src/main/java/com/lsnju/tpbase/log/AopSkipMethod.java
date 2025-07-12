@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableSet;
  * @author lis614
  * @since 2025/7/12 09:55
  * @version V1.0
- * @since v2.7.26
+ * @since v3.1.26
  */
 public interface AopSkipMethod {
 
