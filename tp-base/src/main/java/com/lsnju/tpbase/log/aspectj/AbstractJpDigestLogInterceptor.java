@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopProxyUtils;
 
 import com.lsnju.base.util.Profiler;
+import com.lsnju.tpbase.log.AopSkipMethod;
 import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.tpbase.util.TpAopUtils;
 
@@ -20,7 +21,7 @@ import com.lsnju.tpbase.util.TpAopUtils;
  * @since 2024/11/15 22:27
  * @version V1.0
  */
-public abstract class AbstractJpDigestLogInterceptor implements DigestConstants, ProceedingJoinPointInterceptor {
+public abstract class AbstractJpDigestLogInterceptor implements DigestConstants, ProceedingJoinPointInterceptor, AopSkipMethod {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -36,6 +37,9 @@ public abstract class AbstractJpDigestLogInterceptor implements DigestConstants,
 
         String className = getInterfaceName(pjp);
         String methodName = pjp.getSignature().getName();
+        if (skipProfiler(methodName)) {
+            return pjp.proceed();
+        }
 
         Object ret = null;
         String code = "S";
@@ -54,7 +58,7 @@ public abstract class AbstractJpDigestLogInterceptor implements DigestConstants,
             throw e;
         } finally {
             Profiler.release(TpAopUtils.respDesc(ret));
-            if (digestLogger().isInfoEnabled()) {
+            if (digestLogger().isInfoEnabled() && !skipDigest(methodName)) {
                 digestLogger().info(String.format(FORMAT_STR, className, methodName, (System.nanoTime() - startTime) / MS_SCALE, code));
             }
         }
