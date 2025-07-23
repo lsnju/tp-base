@@ -15,11 +15,15 @@ public class MaskAnnotationIntrospector extends JacksonAnnotationIntrospector {
     public Object findSerializer(Annotated annotated) {
         Mask annotation = annotated.getAnnotation(Mask.class);
         if (annotation != null) {
-            if (annotation.serClass() != null && annotation.serClass().length > 0) {
-                return annotation.serClass()[0];
+            if (annotation.serClass() != null) {
+                for (Class<?> item : annotation.serClass()) {
+                    return item;
+                }
             }
-            if (annotation.value() != null && annotation.value().length > 0) {
-                return annotation.value()[0];
+            if (annotation.value() != null) {
+                for (Class<?> item : annotation.value()) {
+                    return item;
+                }
             }
             if (annotation.type() == null) {
                 return MaskingSerializerForDefault.class;
