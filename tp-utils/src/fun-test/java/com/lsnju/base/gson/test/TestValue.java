@@ -4,6 +4,8 @@ import com.google.gson.annotations.JsonAdapter;
 import com.lsnju.base.gson.Masked22TypeAdapterFactory;
 import com.lsnju.base.jackson.annotation.Mask;
 import com.lsnju.base.jackson.mask.MaskingSerializerForDefault;
+import com.lsnju.base.jackson.mask.MaskingSerializerForGid;
+import com.lsnju.base.jackson.mask.MaskingSerializerForPhone;
 import com.lsnju.base.money.Money;
 
 import lombok.Getter;
@@ -21,12 +23,22 @@ public class TestValue {
     private int id;
     private String name;
     private Money amount;
+    @Mask(MaskingSerializerForDefault.class)
+    private String desc1;
+    @Mask(MaskingSerializerForGid.class)
+    private String desc2;
+    @Mask(MaskingSerializerForPhone.class)
+    private String desc3;
+    @Mask(serClass = MaskingSerializerForDefault.class)
+    private String desc4;
+    @Mask(serClass = MaskingSerializerForGid.class)
+    private String desc5;
+    @Mask(serClass = MaskingSerializerForPhone.class)
+    private String desc6;
+
     @JsonAdapter(Masked22TypeAdapterFactory.class)
     @Mask(type = Mask.Type.DEFAULT)
     private String memo;
-    @Mask(serClass = MaskingSerializerForDefault.class)
-    private String desc;
-
     @Mask(type = Mask.Type.PHONE)
     private String phone;
     @Mask(type = Mask.Type.GID)

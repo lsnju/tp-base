@@ -26,9 +26,14 @@ public class MaskTest {
         v.setName("name");
         v.setAmount(new Money());
         v.setMemo("123456199901011234");
-        v.setDesc("123456199901011234");
         v.setPhone("123456199901011234");
         v.setGid("123456199901011234");
+        v.setDesc1("123456199901011234");
+        v.setDesc2("123456199901011234");
+        v.setDesc3("123456199901011234");
+        v.setDesc4("123456199901011234");
+        v.setDesc5("123456199901011234");
+        v.setDesc6("123456199901011234");
 
         ObjectMapper mapper = JacksonUtils.PRETTY_MAPPER.copy();
         mapper.setAnnotationIntrospector(new MaskAnnotationIntrospector());
