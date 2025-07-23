@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.core.annotation.AliasFor;
+
 import com.fasterxml.jackson.databind.JsonSerializer;
 
 /**
@@ -17,9 +19,13 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 @Target(ElementType.FIELD)
 public @interface Mask {
 
-    Type type() default Type.DEFAULT;
+    @AliasFor("serClass")
+    Class<? extends JsonSerializer>[] value() default {};
 
+    @AliasFor("value")
     Class<? extends JsonSerializer>[] serClass() default {};
+
+    Type type() default Type.DEFAULT;
 
     enum Type {
         GID,
