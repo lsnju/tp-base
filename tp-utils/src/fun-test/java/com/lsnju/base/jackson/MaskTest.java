@@ -26,6 +26,7 @@ public class MaskTest {
         v.setName("name");
         v.setAmount(new Money());
         v.setMemo("123456199901011234");
+        v.setDesc("123456199901011234");
         v.setPhone("123456199901011234");
         v.setGid("123456199901011234");
 

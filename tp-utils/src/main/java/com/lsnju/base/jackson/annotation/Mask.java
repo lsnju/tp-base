@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
+
 /**
  *
  * @author lis614
@@ -16,6 +18,8 @@ import java.lang.annotation.Target;
 public @interface Mask {
 
     Type type() default Type.DEFAULT;
+
+    Class<? extends JsonSerializer>[] serClass() default {};
 
     enum Type {
         GID,
