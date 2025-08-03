@@ -6,7 +6,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-bom -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-bom</artifactId>
-    <version>3.1.15</version>
+    <version>3.1.16</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -49,6 +49,11 @@
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-jackson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-domain-jackson-mask</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -120,7 +125,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>${java.version}</source>
@@ -146,7 +151,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.2.7</version>
+                <version>3.2.8</version>
                 <executions>
                     <execution>
                         <id>ossrh</id>
@@ -161,7 +166,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.7.0</version>
+                <version>0.8.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>
