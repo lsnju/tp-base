@@ -10,7 +10,7 @@
         <version>2.7.27</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
-    <artifactId>tp-domain-default</artifactId>
+    <artifactId>tp-domain-jackson-mask</artifactId>
 
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
@@ -24,10 +24,15 @@
 
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>com.lsnju</groupId>
+            <artifactId>tp-utils</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
     </dependencies>
