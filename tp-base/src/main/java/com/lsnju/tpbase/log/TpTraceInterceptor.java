@@ -21,6 +21,7 @@ import com.lsnju.tpbase.web.filter.RequestId;
 public class TpTraceInterceptor {
 
     public static final String PREFIX = "<<< ";
+    public static final String FORMAT = "%s = %s";
 
     private final Logger logger;
     private final String prefix;
@@ -47,7 +48,7 @@ public class TpTraceInterceptor {
         final String newId = TpTraceUtils.newTraceId(traceId);
         try {
             MDC.put(RequestId.MDC_REQ_ID, newId);
-            Profiler.start(String.format("%s=%s", newId, name));
+            Profiler.start(String.format(FORMAT, newId, name));
             return callable.call();
         } finally {
             Profiler.release();
@@ -68,7 +69,7 @@ public class TpTraceInterceptor {
         final String newId = TpTraceUtils.newTraceId(traceId);
         try {
             MDC.put(RequestId.MDC_REQ_ID, newId);
-            Profiler.start(String.format("%s=%s", newId, name));
+            Profiler.start(String.format(FORMAT, newId, name));
             runnable.run();
         } finally {
             Profiler.release();
@@ -78,6 +79,52 @@ public class TpTraceInterceptor {
             Profiler.reset();
             MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
         }
+    }
+
+    public Runnable runnable(String name, Runnable runnable) {
+        return this.runnable(name, TpTraceUtils.currentTraceId(), runnable);
+    }
+
+    public Runnable runnable(String name, String traceId, Runnable runnable) {
+        final String newId = TpTraceUtils.newTraceId(traceId);
+        return () -> {
+            final String currentTraceId = TpTraceUtils.currentTraceId();
+            try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
+                Profiler.start(String.format(FORMAT, newId, name));
+                runnable.run();
+            } finally {
+                Profiler.release();
+                if (logger.isInfoEnabled()) {
+                    logger.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
+                }
+                Profiler.reset();
+                MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
+            }
+        };
+    }
+
+    public <T> Callable<T> callable(String name, Callable<T> callable) {
+        return this.callable(name, TpTraceUtils.currentTraceId(), callable);
+    }
+
+    public <T> Callable<T> callable(String name, String traceId, Callable<T> callable) {
+        final String newId = TpTraceUtils.newTraceId(traceId);
+        return () -> {
+            final String currentTraceId = TpTraceUtils.currentTraceId();
+            try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
+                Profiler.start(String.format(FORMAT, newId, name));
+                return callable.call();
+            } finally {
+                Profiler.release();
+                if (logger.isInfoEnabled()) {
+                    logger.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
+                }
+                Profiler.reset();
+                MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
+            }
+        };
     }
 
     public static TpTraceInterceptor newInstance() {
