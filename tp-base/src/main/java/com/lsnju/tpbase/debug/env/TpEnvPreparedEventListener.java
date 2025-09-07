@@ -29,11 +29,11 @@ public class TpEnvPreparedEventListener implements ApplicationListener<Applicati
     }
 
     private void log() {
-        log.error("java.version     = {} ({})({})({})", JavaVersion.getJavaVersion(), TpAppInfo.JAVA_VERSION, TpAppInfo.JAVA_VERSION_DATE, TpAppInfo.JAVA_VENDOR);
-        log.error("spring-boot.ver  = {}", SpringBootVersion.getVersion());
-        log.error("tp.version       = {}", TpAppInfo.TP_BASE_VERSION);
-        log.error("build.version    = {}", TpAppInfo.BUILD_VERSION);
-        log.error("build.time       = {}", TpAppInfo.BUILD_TIME);
-        log.error("app.home         = {}", new ApplicationHome().getDir());
+        log.warn("java.version     = {} ({})({})({})", JavaVersion.getJavaVersion(), TpAppInfo.JAVA_VERSION, TpAppInfo.JAVA_VERSION_DATE, TpAppInfo.JAVA_VENDOR);
+        log.warn("spring-boot.ver  = {}", SpringBootVersion.getVersion());
+        log.warn("tp.version       = {}", TpAppInfo.TP_BASE_VERSION);
+        log.warn("build.version    = {}", TpAppInfo.BUILD_VERSION);
+        log.warn("build.time       = {}", TpAppInfo.BUILD_TIME);
+        log.warn("app.home         = {}", new ApplicationHome().getDir());
     }
 }
