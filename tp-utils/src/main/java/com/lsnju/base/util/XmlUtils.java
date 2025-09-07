@@ -18,6 +18,7 @@ import jakarta.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.xml.sax.InputSource;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ public class XmlUtils {
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             return clazz.cast(unmarshaller.unmarshal(xmlSource));
         } catch (Exception e) {
-            log.warn(String.format("%s", e.getMessage()), e);
+            log.error(String.format("%s", e.getMessage()), e);
             return null;
         }
     }
@@ -72,11 +73,11 @@ public class XmlUtils {
     public static String getTagContent(String xml, String tag) {
         final String startTag = String.format("<%s>", tag);
         final String endTag = String.format("</%s>", tag);
-        final int startIdx = StringUtils.indexOf(xml, startTag);
-        final int endIdx = StringUtils.indexOf(xml, endTag);
+        final int startIdx = Strings.CS.indexOf(xml, startTag);
+        final int endIdx = Strings.CS.indexOf(xml, endTag);
         if (startIdx >= 0 && endIdx > 0) {
             final String content = StringUtils.substring(xml, startIdx + startTag.length(), endIdx);
-            if (StringUtils.startsWith(content, CDATA_START)) {
+            if (Strings.CS.startsWith(content, CDATA_START)) {
                 return StringUtils.substring(content, CDATA_START.length(), -CDATA_END.length());
             }
             return content;
@@ -84,15 +85,15 @@ public class XmlUtils {
         return StringUtils.EMPTY;
     }
 
-    public static String trim(String xml) {
+    public static String trim(CharSequence xml) {
         return RegExUtils.replacePattern(xml, ">\\s*<", "><");
     }
 
-    public static String simpleFormat(String xml) {
+    public static String simpleFormat(CharSequence xml) {
         return RegExUtils.replacePattern(xml, ">\\s*<", ">\n<");
     }
 
-    public static String trimFormat(String xml) {
+    public static String trimFormat(CharSequence xml) {
         return format(RegExUtils.replacePattern(xml, ">\\s*<", "><"));
     }
 

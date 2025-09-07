@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.http.HttpHeaders;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +39,8 @@ public class TpHttpHeaderUtils {
             return value;
         }
         for (String name : headers.keySet()) {
-            if (StringUtils.equalsIgnoreCase(headerName, name)) {
-                if (!StringUtils.equals(headerName, name)) {
+            if (Strings.CI.equals(headerName, name)) {
+                if (!Strings.CS.equals(headerName, name)) {
                     log.info("http-header.key = {}", name);
                 }
                 return headers.get(name);
@@ -56,8 +57,8 @@ public class TpHttpHeaderUtils {
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             final String name = headerNames.nextElement();
-            if (StringUtils.equalsIgnoreCase(headerName, name)) {
-                if (!StringUtils.equals(headerName, name)) {
+            if (Strings.CI.equals(headerName, name)) {
+                if (!Strings.CS.equals(headerName, name)) {
                     log.info("http-header.key = {}", name);
                 }
                 return request.getHeader(name);
@@ -72,8 +73,8 @@ public class TpHttpHeaderUtils {
             return value;
         }
         for (String name : headers.keySet()) {
-            if (StringUtils.equalsIgnoreCase(headerName, name)) {
-                if (!StringUtils.equals(headerName, name)) {
+            if (Strings.CI.equals(headerName, name)) {
+                if (!Strings.CS.equals(headerName, name)) {
                     log.info("http-header.key = {}", name);
                 }
                 return headers.getFirst(headerName);
@@ -103,7 +104,7 @@ public class TpHttpHeaderUtils {
     }
 
     private static String getFirstValue(String httpHeaderValue) {
-        if (!StringUtils.contains(httpHeaderValue, ",")) {
+        if (!Strings.CS.contains(httpHeaderValue, ",")) {
             return httpHeaderValue;
         }
         return StringUtils.trimToEmpty(StringUtils.substringBefore(httpHeaderValue, ","));

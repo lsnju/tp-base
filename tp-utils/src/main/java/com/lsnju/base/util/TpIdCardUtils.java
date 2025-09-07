@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class TpIdCardUtils {
                 int num = Integer.parseInt(StringUtils.substring(idCard, i, i + 1));
                 sum += FACTOR[i] * num;
             }
-            return StringUtils.equalsIgnoreCase(StringUtils.substring(idCard, -1), VERIFY_NUMBER[sum % 11]);
+            return Strings.CI.equals(StringUtils.substring(idCard, -1), VERIFY_NUMBER[sum % 11]);
         }
         return true;
     }
