@@ -1,5 +1,7 @@
 package com.lsnju.base.model;
 
+import java.text.SimpleDateFormat;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsnju.base.jackson.JacksonUtils;
@@ -20,6 +22,7 @@ public class MaskJacksonUtils {
 
     static {
         DEFAULT_MAPPER.setAnnotationIntrospector(new MaskAnnotationIntrospector());
+        DEFAULT_MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
     public static String toJson(Object obj) {
