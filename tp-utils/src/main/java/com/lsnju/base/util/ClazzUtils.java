@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import com.lsnju.base.model.JarInfo;
 
@@ -193,13 +194,13 @@ public class ClazzUtils {
     private static String jarPath(URL url) {
         String manifestLocation = url.toString();
         String jarPath = StringUtils.substringBefore(manifestLocation, "!/META-INF/MANIFEST.MF");
-        if (StringUtils.startsWith(jarPath, "jar:file:")) {
+        if (Strings.CS.startsWith(jarPath, "jar:file:")) {
             return StringUtils.substringAfter(jarPath, "jar:file:");
         }
-        if (StringUtils.startsWith(jarPath, "jar:nested:")) {
+        if (Strings.CS.startsWith(jarPath, "jar:nested:")) {
             return StringUtils.substringAfter(jarPath, "jar:nested:");
         }
-        if (StringUtils.startsWith(jarPath, "jar:")) {
+        if (Strings.CS.startsWith(jarPath, "jar:")) {
             return StringUtils.substringAfter(jarPath, "jar:");
         }
         return jarPath;
@@ -243,7 +244,7 @@ public class ClazzUtils {
         final URL[] all = getURLs(cl);
         return Arrays.stream(all)
             .filter(Objects::nonNull)
-            .filter(x -> StringUtils.endsWith(x.getPath(), ".jar"))
+            .filter(x -> Strings.CS.endsWith(x.getPath(), ".jar"))
             .collect(Collectors.toSet());
     }
 

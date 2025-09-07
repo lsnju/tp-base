@@ -169,7 +169,7 @@ public final class Profiler {
             this.message = message;
             this.startTime = System.currentTimeMillis();
             this.parentEntry = parentEntry;
-            this.firstEntry = ObjectUtils.defaultIfNull(firstEntry, this);
+            this.firstEntry = ObjectUtils.getIfNull(firstEntry, this);
             this.baseTime = (firstEntry == null) ? 0 : firstEntry.startTime;
         }
 

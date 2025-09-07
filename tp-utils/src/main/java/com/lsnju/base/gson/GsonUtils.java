@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -113,7 +114,7 @@ public class GsonUtils {
 
     public static String getRawValue(final String json, final String tag) {
         String aTag = String.format("\"%s\":", tag);
-        int index = StringUtils.indexOf(json, aTag);
+        int index = Strings.CS.indexOf(json, aTag);
         if (index < 0) {
             return StringUtils.EMPTY;
         }
@@ -140,7 +141,7 @@ public class GsonUtils {
             char c = json.charAt(i);
             if (c == ',' || c == '}') {
                 String retValue = sb.toString();
-                if (StringUtils.equals(retValue, "null")) {
+                if (Strings.CS.equals(retValue, "null")) {
                     return null;
                 }
                 return retValue;
