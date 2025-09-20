@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.time.DateUtils;
 
 /**
@@ -65,7 +65,7 @@ public class TpDateUtils {
     }
 
     public static ZonedDateTime parseToZonedDateTime(String date, ZoneId zoneId) {
-        if (StringUtils.endsWithIgnoreCase(date, "Z")) {
+        if (Strings.CI.endsWith(date, "Z")) {
             try {
                 return ZonedDateTime.ofInstant(Instant.parse(date), zoneId);
             } catch (Exception ignore) {
@@ -87,7 +87,7 @@ public class TpDateUtils {
     }
 
     public static Date parseToDate(String zonedDateStr) {
-        if (StringUtils.endsWithIgnoreCase(zonedDateStr, "Z")) {
+        if (Strings.CI.endsWith(zonedDateStr, "Z")) {
             try {
                 return Date.from(Instant.parse(zonedDateStr));
             } catch (Exception ignore) {

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
@@ -68,7 +69,7 @@ public abstract class AbstractEnvShow {
             return name;
         }
         // Config resource 'class path resource [config/application-dev.properties]' via location 'optional:classpath:/config/'
-        if (StringUtils.contains(name, TAG)) {
+        if (Strings.CS.contains(name, TAG)) {
             return StringUtils.substringAfterLast(name, TAG);
         }
         return name;

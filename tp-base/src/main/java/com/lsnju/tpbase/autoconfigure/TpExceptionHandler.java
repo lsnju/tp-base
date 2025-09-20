@@ -5,6 +5,7 @@ import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -66,7 +67,7 @@ public class TpExceptionHandler {
             Throwable rootCause = NetworkExceptionUtils.getMostSpecificCause(e);
             if (rootCause instanceof NoSuchFileException) {
                 String message = rootCause.getMessage();
-                if (StringUtils.startsWith(message, File.separator)) {
+                if (Strings.CS.startsWith(message, File.separator)) {
                     try {
                         log.info("{}", message);
                         boolean mkdirs = new File(StringUtils.substringBeforeLast(message, File.separator)).mkdirs();

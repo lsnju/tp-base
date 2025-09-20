@@ -3,6 +3,7 @@ package com.lsnju.tpbase.web.util;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.MDC;
 
 import com.lsnju.tpbase.config.LogMdcConstants;
@@ -51,7 +52,7 @@ public class RequestUtils {
     private static String tryGetIpFromRequest(HttpServletRequest request) {
         for (String header : HEADERS_TO_TRY) {
             String ip = request.getHeader(header);
-            if (StringUtils.isNotBlank(ip) && !StringUtils.equalsIgnoreCase(UNKNOWN, ip)) {
+            if (StringUtils.isNotBlank(ip) && !Strings.CI.equals(UNKNOWN, ip)) {
                 return ip;
             }
         }
