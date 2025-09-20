@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.core.io.Resource;
 import org.springframework.util.PatternMatchUtils;
 
@@ -65,12 +66,12 @@ public class PageMatcher {
                 }
 
                 str = StringUtils.trim(str);
-                str = StringUtils.remove(str, " ");
+                str = Strings.CS.remove(str, " ");
                 if (StringUtils.isBlank(str)) {
                     continue;
                 }
 
-                if (StringUtils.startsWith(str, "#")) {
+                if (Strings.CS.startsWith(str, "#")) {
                     continue;
                 }
 
@@ -85,7 +86,7 @@ public class PageMatcher {
                 String permissions = StringUtils.trim(ss[1]);
 
                 int level = StringUtils.countMatches(url, "/");
-                if (StringUtils.endsWith(url, "*")) {
+                if (Strings.CS.endsWith(url, "*")) {
                     level--;
                 }
 

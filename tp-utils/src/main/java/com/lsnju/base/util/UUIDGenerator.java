@@ -3,7 +3,7 @@ package com.lsnju.base.util;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 /**
  *
@@ -24,7 +24,7 @@ public class UUIDGenerator {
     private static final int LENGTH = BASE_CHAR.length;
 
     public static String getUUID() {
-        return StringUtils.remove(UUID.randomUUID().toString(), '-');
+        return Strings.CS.remove(UUID.randomUUID().toString(), "-");
     }
 
     public static String getSUID() {
