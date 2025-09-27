@@ -31,10 +31,19 @@ public abstract class AbstractTpController {
     @Getter
     @Value("${spring.application.name:xxoo}")
     private String appName;
-    @Autowired(required = false)
+
     protected TpSpringWebMvcHelper tpSpringWebMvcHelper;
-    @Autowired
     protected TpMoConfigProperties tpMoConfigProperties;
+
+    @Autowired(required = false)
+    public void setTpSpringWebMvcHelper(TpSpringWebMvcHelper tpSpringWebMvcHelper) {
+        this.tpSpringWebMvcHelper = tpSpringWebMvcHelper;
+    }
+
+    @Autowired
+    public void setTpMoConfigProperties(TpMoConfigProperties tpMoConfigProperties) {
+        this.tpMoConfigProperties = tpMoConfigProperties;
+    }
 
     protected abstract Logger log();
 
