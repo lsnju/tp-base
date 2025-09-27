@@ -1,12 +1,10 @@
 package com.lsnju.tpbase.debug.filter;
 
-import java.util.Collections;
 import java.util.List;
 
 import jakarta.servlet.Filter;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
 import org.springframework.web.filter.GenericFilterBean;
@@ -26,14 +24,20 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class FilterConfigShow extends AbstractFilterConfigShow implements InitializingBean {
 
-    @Autowired(required = false)
-    private List<Filter> filters = Collections.emptyList();
-    @Autowired(required = false)
-    private List<FilterRegistrationBean<?>> filterRegistrationBeans = Collections.emptyList();
-    @Autowired(required = false)
-    private List<OrderedFilter> orderedFilters = Collections.emptyList();
-    @Autowired(required = false)
-    private List<GenericFilterBean> genericFilterBeans = Collections.emptyList();
+    private final List<Filter> filters;
+    private final List<FilterRegistrationBean<?>> filterRegistrationBeans;
+    private final List<OrderedFilter> orderedFilters;
+    private final List<GenericFilterBean> genericFilterBeans;
+
+    public FilterConfigShow(List<Filter> filters,
+                            List<FilterRegistrationBean<?>> filterRegistrationBeans,
+                            List<OrderedFilter> orderedFilters,
+                            List<GenericFilterBean> genericFilterBeans) {
+        this.filters = filters;
+        this.filterRegistrationBeans = filterRegistrationBeans;
+        this.orderedFilters = orderedFilters;
+        this.genericFilterBeans = genericFilterBeans;
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {

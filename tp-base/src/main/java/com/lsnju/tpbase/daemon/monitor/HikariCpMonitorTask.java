@@ -3,12 +3,9 @@ package com.lsnju.tpbase.daemon.monitor;
 import java.util.Objects;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.metadata.HikariDataSourcePoolMetadata;
 
 import com.zaxxer.hikari.HikariDataSource;
-
-import lombok.Setter;
 
 /**
  *
@@ -18,9 +15,11 @@ import lombok.Setter;
  */
 public class HikariCpMonitorTask extends AbstractHikariCpMonitorTask implements InitializingBean {
 
-    @Setter
-    @Autowired
-    private HikariDataSource dataSource;
+    private final HikariDataSource dataSource;
+
+    public HikariCpMonitorTask(HikariDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {

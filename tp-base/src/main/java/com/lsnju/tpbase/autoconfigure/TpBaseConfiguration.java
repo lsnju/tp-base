@@ -3,18 +3,26 @@ package com.lsnju.tpbase.autoconfigure;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import jakarta.servlet.Filter;
+
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.filter.OrderedFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.google.common.collect.Lists;
@@ -50,9 +58,9 @@ public class TpBaseConfiguration {
     public static class TpSpringWebMvcConfig {
         @Bean
         @ConditionalOnMissingBean
-        TpSpringWebMvcHelper tpSpringWebMvcHelper() {
+        TpSpringWebMvcHelper tpSpringWebMvcHelper(ObjectProvider<List<HandlerExceptionResolver>> resolvers) {
             log.debug("{} tpSpringWebMvcHelper", TpConstants.PREFIX);
-            return new TpSpringWebMvcHelper();
+            return new TpSpringWebMvcHelper(resolvers.getIfAvailable());
         }
     }
 
@@ -143,16 +151,20 @@ public class TpBaseConfiguration {
         //        @ConditionalOnClass(name = "jakarta.servlet.Filter")
         @Bean
         @ConditionalOnClass(value = jakarta.servlet.Filter.class)
-        FilterConfigShow filterConfigShow() {
+        FilterConfigShow filterConfigShow(ObjectProvider<List<Filter>> filters,
+                                          ObjectProvider<List<FilterRegistrationBean<?>>> filterRegistrationBeans,
+                                          ObjectProvider<List<OrderedFilter>> orderedFilters,
+                                          ObjectProvider<List<GenericFilterBean>> genericFilterBeans) {
             log.debug("{} filterConfigShow", TpConstants.PREFIX);
-            return new FilterConfigShow();
+            return new FilterConfigShow(filters.getIfAvailable(), filterRegistrationBeans.getIfAvailable(),
+                orderedFilters.getIfAvailable(), genericFilterBeans.getIfAvailable());
         }
 
         @Bean
         @ConditionalOnClass(name = "org.springframework.web.server.WebFilter")
-        WebFilterConfigShow webFilterConfigShow() {
+        WebFilterConfigShow webFilterConfigShow(ObjectProvider<List<WebFilter>> webFilters) {
             log.debug("{} webFilterConfigShow", TpConstants.PREFIX);
-            return new WebFilterConfigShow();
+            return new WebFilterConfigShow(webFilters.getIfAvailable());
         }
     }
 

@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -50,8 +49,11 @@ public class RestApiAuthFilter implements Filter {
     @Setter(AccessLevel.PRIVATE)
     private PageMatcher pm = null;
 
-    @Autowired
-    private RestApiTokenManager restApiTokenManager;
+    private final RestApiTokenManager restApiTokenManager;
+
+    public RestApiAuthFilter(RestApiTokenManager restApiTokenManager) {
+        this.restApiTokenManager = restApiTokenManager;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
