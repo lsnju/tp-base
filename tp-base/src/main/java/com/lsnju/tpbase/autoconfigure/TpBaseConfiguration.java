@@ -109,14 +109,14 @@ public class TpBaseConfiguration {
     public static class TpDalDigestConfig {
         @Bean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
-        public static Advice dalDigestLogInterceptor() {
+        public Advice dalDigestLogInterceptor() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME);
             return new DalDigestLogInterceptor();
         }
 
         @Bean(DigestConstants.DAL_DIGEST_PROXY_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_PROXY_NAME)
-        public static BeanNameAutoProxyCreator dalDigestLog() {
+        public BeanNameAutoProxyCreator dalDigestLog() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.DAL_DIGEST_PROXY_NAME);
             BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
             beanNameAutoProxyCreator.setBeanNames("*Dao", "*DaoImpl");
@@ -130,14 +130,14 @@ public class TpBaseConfiguration {
     public static class TpSalDigestConfig {
         @Bean(DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME)
-        public static Advice salDigestLogInterceptor() {
+        public Advice salDigestLogInterceptor() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME);
             return new SalDigestLogInterceptor();
         }
 
         @Bean(DigestConstants.SAL_DIGEST_PROXY_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.SAL_DIGEST_PROXY_NAME)
-        public static BeanNameAutoProxyCreator salDigestLog() {
+        public BeanNameAutoProxyCreator salDigestLog() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.SAL_DIGEST_PROXY_NAME);
             BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
             beanNameAutoProxyCreator.setBeanNames("*ClientImpl");
