@@ -18,4 +18,5 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "tp.aop")
 public class TpAopConfigProperties extends BaseMo {
     private boolean useSpring = true;
+    private boolean enableRestLog;
 }
