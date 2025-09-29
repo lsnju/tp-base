@@ -26,7 +26,7 @@ import org.joor.ReflectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -86,10 +86,14 @@ public class TpWebApiConfiguration {
             private String profile;
             @Value("${server.port:1010}")
             private int serverPort;
-            @Autowired
-            private TpLogConfigProperties tpLogConfigProperties;
-            @Autowired(required = false)
-            private TpSpringWebMvcHelper tpSpringWebMvcHelper;
+
+            private final TpLogConfigProperties tpLogConfigProperties;
+            private final TpSpringWebMvcHelper tpSpringWebMvcHelper;
+
+            public TpSysInfoController(TpLogConfigProperties tpLogConfigProperties, ObjectProvider<TpSpringWebMvcHelper> tpSpringWebMvcHelper) {
+                this.tpLogConfigProperties = tpLogConfigProperties;
+                this.tpSpringWebMvcHelper = tpSpringWebMvcHelper.getIfAvailable();
+            }
 
             private static final ApplicationHome HOME = new ApplicationHome(TpSysInfoController.class);
 
@@ -179,10 +183,14 @@ public class TpWebApiConfiguration {
 
             private static final Logger log = LoggerFactory.getLogger("com.lsnju.tpbase.web.controller.monitor.TpThreadPoolController");
 
-            @Autowired(required = false)
-            private List<ThreadPoolTaskExecutor> threadPools;
-            @Autowired(required = false)
-            private List<TaskScheduler> schedulerList;
+            private final List<ThreadPoolTaskExecutor> threadPools;
+            private final List<TaskScheduler> schedulerList;
+
+            public TpThreadPoolController(ObjectProvider<List<ThreadPoolTaskExecutor>> threadPools,
+                                          ObjectProvider<List<TaskScheduler>> schedulerList) {
+                this.threadPools = threadPools.getIfAvailable();
+                this.schedulerList = schedulerList.getIfAvailable();
+            }
 
             @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/tp.json")
             public ThreadPoolStatusVo show() {
