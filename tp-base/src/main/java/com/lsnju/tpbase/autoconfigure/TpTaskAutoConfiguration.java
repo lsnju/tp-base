@@ -44,12 +44,25 @@ public class TpTaskAutoConfiguration {
     public SchedulingConfigurer tpScheduleTaskConfig(final TpTaskConfigProperties tpTaskConfigProperties) {
         log.debug("{} tpScheduleTaskConfig", TpConstants.PREFIX);
         return new SchedulingConfigurer() {
-            @Autowired(required = false)
+
             private HikariCpsMonitorTask hikariCpsMonitorTask;
-            @Autowired(required = false)
             private NewCommonErrorInitTask newCommonErrorInitTask;
-            @Autowired(required = false)
             private TpMonitorTask tpMonitorTask;
+
+            @Autowired(required = false)
+            public void setHikariCpsMonitorTask(HikariCpsMonitorTask hikariCpsMonitorTask) {
+                this.hikariCpsMonitorTask = hikariCpsMonitorTask;
+            }
+
+            @Autowired(required = false)
+            public void setNewCommonErrorInitTask(NewCommonErrorInitTask newCommonErrorInitTask) {
+                this.newCommonErrorInitTask = newCommonErrorInitTask;
+            }
+
+            @Autowired(required = false)
+            public void setTpMonitorTask(TpMonitorTask tpMonitorTask) {
+                this.tpMonitorTask = tpMonitorTask;
+            }
 
             @Override
             public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {

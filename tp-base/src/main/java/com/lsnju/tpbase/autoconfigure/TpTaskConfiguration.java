@@ -1,6 +1,7 @@
 package com.lsnju.tpbase.autoconfigure;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -11,7 +12,9 @@ import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
 import org.quartz.impl.triggers.AbstractTrigger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -19,6 +22,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -33,6 +37,7 @@ import com.lsnju.tpbase.daemon.base.CommonErrorInitTask;
 import com.lsnju.tpbase.daemon.base.NewCommonErrorInitTask;
 import com.lsnju.tpbase.daemon.monitor.HikariCpsMonitorTask;
 import com.lsnju.tpbase.daemon.monitor.TpMonitorTask;
+import com.zaxxer.hikari.HikariDataSource;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -98,9 +103,9 @@ class TpTaskConfiguration {
     public static class HikariCpsMonitorConfig {
         @Bean
         @ConditionalOnMissingBean
-        public HikariCpsMonitorTask hikariCpsMonitorTask() {
+        public HikariCpsMonitorTask hikariCpsMonitorTask(ObjectProvider<Collection<HikariDataSource>> optional) {
             log.debug("{} hikariCpsMonitorTask", TAG);
-            return new HikariCpsMonitorTask();
+            return new HikariCpsMonitorTask(optional.getIfAvailable());
         }
     }
 
@@ -118,8 +123,12 @@ class TpTaskConfiguration {
 
     @Configuration
     public static class OldCommonErrorInitConfig implements InitializingBean {
-        @Autowired(required = false)
-        private CommonErrorInitTask commonErrorInitTask;
+
+        private final CommonErrorInitTask commonErrorInitTask;
+
+        public OldCommonErrorInitConfig(ObjectProvider<CommonErrorInitTask> commonErrorInitTask) {
+            this.commonErrorInitTask = commonErrorInitTask.getIfAvailable();
+        }
 
         @Override
         public void afterPropertiesSet() throws Exception {
@@ -129,12 +138,21 @@ class TpTaskConfiguration {
 
     @Configuration
     @ConditionalOnClass(name = {"org.quartz.Scheduler", "org.springframework.scheduling.quartz.SchedulerFactoryBean"})
-    public static class OldSchedulerFactoryConfig implements InitializingBean {
+    public static class OldSchedulerFactoryConfig implements InitializingBean, ApplicationContextAware {
+
+        private ApplicationContext context;
+        private Scheduler scheduler;
+
         @Autowired(required = false)
         @Qualifier("org.springframework.scheduling.quartz.SchedulerFactoryBean#0")
-        private Scheduler scheduler;
-        @Autowired
-        private ApplicationContext context;
+        public void setScheduler(Scheduler scheduler) {
+            this.scheduler = scheduler;
+        }
+
+        @Override
+        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+            this.context = applicationContext;
+        }
 
         @Override
         public void afterPropertiesSet() throws Exception {
@@ -146,6 +164,7 @@ class TpTaskConfiguration {
         public boolean isXmlConfig() {
             return scheduler != null;
         }
+
     }
 
     @Configuration

@@ -1,10 +1,8 @@
 package com.lsnju.tpbase.web.mvc;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,8 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TpSpringWebMvcHelper {
 
-    @Autowired(required = false)
-    private List<HandlerExceptionResolver> resolvers = Collections.emptyList();
+    private final List<HandlerExceptionResolver> resolvers;
+
+    public TpSpringWebMvcHelper(List<HandlerExceptionResolver> resolvers) {
+        this.resolvers = resolvers;
+    }
 
     public String getServerUrl() {
         try {

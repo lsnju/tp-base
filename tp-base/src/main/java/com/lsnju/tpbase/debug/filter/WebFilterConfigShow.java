@@ -1,10 +1,8 @@
 package com.lsnju.tpbase.debug.filter;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.WebFilter;
 
 import lombok.Setter;
@@ -20,8 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class WebFilterConfigShow extends AbstractFilterConfigShow implements InitializingBean {
 
-    @Autowired(required = false)
-    private List<WebFilter> webFilters = Collections.emptyList();
+    private final List<WebFilter> webFilters;
+
+    public WebFilterConfigShow(List<WebFilter> webFilters) {
+        this.webFilters = webFilters;
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {

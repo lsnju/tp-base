@@ -1,5 +1,6 @@
 package com.lsnju.tpbase.debug.filter;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.lsnju.tpbase.util.OrderUtils;
@@ -18,6 +19,10 @@ public abstract class AbstractFilterConfigShow {
     protected static final String TAG_2 = "] - size=";
 
     public static String toPrettyString(String tag, List<?> list) {
+        return toPrettyStringInternal(tag, list == null ? Collections.emptyList() : list);
+    }
+
+    private static String toPrettyStringInternal(String tag, List<?> list) {
         StringBuilder sb = new StringBuilder();
         sb.append(SEP).append(System.lineSeparator());
         sb.append(TAG_1).append(tag).append(TAG_2).append(list.size()).append(System.lineSeparator());
