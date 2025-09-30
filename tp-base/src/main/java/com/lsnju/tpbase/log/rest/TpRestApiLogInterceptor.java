@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 
 import com.lsnju.base.model.MaskJacksonUtils;
+import com.lsnju.tpbase.config.prop.TpAopConfigProperties;
 import com.lsnju.tpbase.log.AopSkipMethod;
 import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.tpbase.log.aspectj.ProceedingJoinPointInterceptor;
@@ -32,22 +33,24 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
 
     private static final Logger REST_LOG = LoggerFactory.getLogger(TP_REST_LOG);
 
+    private final TpAopConfigProperties config;
     private final Set<String> skipMethodSet;
     private final Function<Object, String> toJsonStr;
 
-    public TpRestApiLogInterceptor() {
-        this(SKIP_METHOD);
+    public TpRestApiLogInterceptor(TpAopConfigProperties config) {
+        this(config, SKIP_METHOD);
     }
 
-    public TpRestApiLogInterceptor(Set<String> skipMethodSet) {
-        this(skipMethodSet, MaskJacksonUtils::toJson);
+    public TpRestApiLogInterceptor(TpAopConfigProperties config, Set<String> skipMethodSet) {
+        this(config, skipMethodSet, MaskJacksonUtils::toJson);
     }
 
-    public TpRestApiLogInterceptor(Function<Object, String> toJsonStr) {
-        this(SKIP_METHOD, toJsonStr);
+    public TpRestApiLogInterceptor(TpAopConfigProperties config, Function<Object, String> toJsonStr) {
+        this(config, SKIP_METHOD, toJsonStr);
     }
 
-    public TpRestApiLogInterceptor(Set<String> skipMethodSet, Function<Object, String> toJsonStr) {
+    public TpRestApiLogInterceptor(TpAopConfigProperties config, Set<String> skipMethodSet, Function<Object, String> toJsonStr) {
+        this.config = config;
         this.skipMethodSet = skipMethodSet;
         this.toJsonStr = toJsonStr;
     }
@@ -62,14 +65,23 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
         if (skipDigest(joinPoint.getSignature().getName())) {
             return joinPoint.proceed();
         }
-
-        logRequest(joinPoint);
+        if (config == null) {
+            return joinPoint.proceed();
+        }
+        if (!config.isEnableRestLog()) {
+            return joinPoint.proceed();
+        }
+        if (config.isEnableRestLogReq()) {
+            logRequest(joinPoint);
+        }
         Object response = null;
         try {
             response = joinPoint.proceed();
             return response;
         } finally {
-            logResponse(response);
+            if (config.isEnableRestLogResp()) {
+                logResponse(response);
+            }
         }
     }
 
