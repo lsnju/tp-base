@@ -11,7 +11,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +29,6 @@ import com.lsnju.base.jackson.MoneyDeserializer;
 import com.lsnju.base.jackson.MoneySerializer;
 import com.lsnju.base.money.Money;
 import com.lsnju.tpbase.TpConstants;
-import com.lsnju.tpbase.config.prop.TpAopConfigProperties;
 import com.lsnju.tpbase.debug.filter.FilterConfigShow;
 import com.lsnju.tpbase.debug.filter.WebFilterConfigShow;
 import com.lsnju.tpbase.log.DigestConstants;
@@ -104,7 +102,6 @@ public class TpBaseConfiguration {
     }
 
     @Configuration
-    @EnableConfigurationProperties(TpAopConfigProperties.class)
     @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_PROXY_NAME)
     public static class TpDalDigestConfig {
         @Bean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)

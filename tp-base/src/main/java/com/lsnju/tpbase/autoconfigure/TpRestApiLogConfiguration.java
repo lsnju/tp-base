@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+import com.lsnju.tpbase.config.prop.TpAopConfigProperties;
 import com.lsnju.tpbase.log.rest.TpRestApiLogInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,8 +55,15 @@ public class TpRestApiLogConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        TpRestApiLogInterceptor tpRestApiLogInterceptor() {
-            return new TpRestApiLogInterceptor();
+        TpRestApiLogInterceptor tpRestApiLogInterceptor(ObjectProvider<TpAopConfigProperties> config) {
+            return new TpRestApiLogInterceptor(config.getIfAvailable(() -> {
+                TpAopConfigProperties ret = new TpAopConfigProperties();
+                ret.setUseSpring(false);
+                ret.setEnableRestLog(true);
+                ret.setEnableRestLogReq(true);
+                ret.setEnableRestLogResp(true);
+                return ret;
+            }));
         }
 
     }
