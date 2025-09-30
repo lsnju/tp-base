@@ -115,6 +115,7 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
                 return;
             }
             if (response instanceof ServletResponse) {
+                REST_LOG.info("RESP: <ServletResponse>");
                 return;
             }
             if (response instanceof HttpEntity) {
