@@ -3,6 +3,7 @@ package com.lsnju.tpbase.log.rest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -12,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 
-import com.lsnju.base.jackson.JacksonUtils;
+import com.lsnju.base.model.MaskJacksonUtils;
 import com.lsnju.tpbase.log.AopSkipMethod;
 import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.tpbase.log.aspectj.ProceedingJoinPointInterceptor;
@@ -32,13 +33,23 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
     private static final Logger REST_LOG = LoggerFactory.getLogger(TP_REST_LOG);
 
     private final Set<String> skipMethodSet;
+    private final Function<Object, String> toJsonStr;
 
     public TpRestApiLogInterceptor() {
-        this.skipMethodSet = SKIP_METHOD;
+        this(SKIP_METHOD);
     }
 
     public TpRestApiLogInterceptor(Set<String> skipMethodSet) {
+        this(skipMethodSet, MaskJacksonUtils::toJson);
+    }
+
+    public TpRestApiLogInterceptor(Function<Object, String> toJsonStr) {
+        this(SKIP_METHOD, toJsonStr);
+    }
+
+    public TpRestApiLogInterceptor(Set<String> skipMethodSet, Function<Object, String> toJsonStr) {
         this.skipMethodSet = skipMethodSet;
+        this.toJsonStr = toJsonStr;
     }
 
     @Override
@@ -76,7 +87,7 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
                     if (arg instanceof ServletRequest) {
                         continue;
                     }
-                    argsList.add(String.format("arg%d=%s", i, JacksonUtils.toJson(arg)));
+                    argsList.add(String.format("arg%d=%s", i, toJson(arg)));
                 }
             }
             REST_LOG.info("REQ: {}", String.join(", ", argsList));
@@ -97,14 +108,18 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
             if (response instanceof HttpEntity) {
                 Object body = ((HttpEntity<?>) response).getBody();
                 if (body != null) {
-                    REST_LOG.info("RESP: {}", JacksonUtils.toJson(body));
+                    REST_LOG.info("RESP: {}", toJson(body));
                 }
                 return;
             }
-            REST_LOG.info("RESP: {}", JacksonUtils.toJson(response));
+            REST_LOG.info("RESP: {}", toJson(response));
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
         }
+    }
+
+    private String toJson(Object response) {
+        return toJsonStr.apply(response);
     }
 
 }
