@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.vo.TestVo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,7 +59,7 @@ public class JacksonUtilsTest {
         final List<TestBean> list = JacksonUtils.fromJson(js, new TypeReference<>() {});
         log.info("{}", list);
         Assertions.assertNotNull(list);
-        Assertions.assertEquals(list.size(), 1, "xx");
+        Assertions.assertEquals(1, list.size(), "xx");
     }
 
     @Test
@@ -68,6 +69,8 @@ public class JacksonUtilsTest {
         map.put("key", "value");
         map.put("date", new Date());
         log.info("{}", JacksonUtils.toJson(map));
+        log.info("{}", JacksonUtils.toJson(new Object()));
+        log.info("{}", JacksonUtils.toJson(new TestVo()));
     }
 
     @Test
