@@ -127,8 +127,12 @@ class TpJsonFactory {
 
         static {
             final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            PRETTY_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
             PRETTY_MAPPER.setDateFormat(dateFormat);
+
+            DEFAULT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             DEFAULT_MAPPER.setDateFormat(dateFormat);
 
