@@ -31,11 +31,12 @@ public class LogRun implements Runnable {
         final String currentReqId = TpTraceUtils.currentTraceId();
         final String newId = TpTraceUtils.newTraceId(currentReqId);
         return () -> {
+            final String innerReqId = TpTraceUtils.currentTraceId();
             try {
                 MDC.put(RequestId.MDC_REQ_ID, newId);
                 runnable.run();
             } finally {
-                MDC.put(RequestId.MDC_REQ_ID, currentReqId);
+                MDC.put(RequestId.MDC_REQ_ID, innerReqId);
             }
         };
     }
@@ -44,11 +45,12 @@ public class LogRun implements Runnable {
         final String currentReqId = TpTraceUtils.currentTraceId();
         final String newId = TpTraceUtils.newTraceId(currentReqId);
         return () -> {
+            final String innerReqId = TpTraceUtils.currentTraceId();
             try {
                 MDC.put(RequestId.MDC_REQ_ID, newId);
                 return runnable.call();
             } finally {
-                MDC.put(RequestId.MDC_REQ_ID, currentReqId);
+                MDC.put(RequestId.MDC_REQ_ID, innerReqId);
             }
         };
     }
@@ -68,11 +70,12 @@ public class LogRun implements Runnable {
         final String currentReqId = TpTraceUtils.currentTraceId();
         final String newId = TpTraceUtils.newTraceId(currentReqId);
         return () -> {
+            final String innerReqId = TpTraceUtils.currentTraceId();
             try {
                 MDC.put(RequestId.MDC_REQ_ID, newId);
                 return supplier.get();
             } finally {
-                MDC.put(RequestId.MDC_REQ_ID, currentReqId);
+                MDC.put(RequestId.MDC_REQ_ID, innerReqId);
             }
         };
     }
@@ -81,23 +84,25 @@ public class LogRun implements Runnable {
         final String currentReqId = TpTraceUtils.currentTraceId();
         final String newId = TpTraceUtils.newTraceId(currentReqId);
         return (T arg) -> {
+            final String innerReqId = TpTraceUtils.currentTraceId();
             try {
                 MDC.put(RequestId.MDC_REQ_ID, newId);
                 consumer.accept(arg);
             } finally {
-                MDC.put(RequestId.MDC_REQ_ID, currentReqId);
+                MDC.put(RequestId.MDC_REQ_ID, innerReqId);
             }
         };
     }
 
     @Override
     public void run() {
+        final String innerReqId = TpTraceUtils.currentTraceId();
         final String newId = TpTraceUtils.newTraceId(currentId);
         try {
             MDC.put(RequestId.MDC_REQ_ID, newId);
             this.run.run();
         } finally {
-            MDC.put(RequestId.MDC_REQ_ID, currentId);
+            MDC.put(RequestId.MDC_REQ_ID, innerReqId);
         }
     }
 
