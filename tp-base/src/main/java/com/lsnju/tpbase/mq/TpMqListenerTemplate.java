@@ -39,7 +39,7 @@ public class TpMqListenerTemplate implements DigestConstants {
         } finally {
             long endTime = System.nanoTime();
             DIGEST_LOG.info("[{}, {}, {}, {}, {}, {}ms, {}]", msg.getExchange(), msg.getRoutingKey(), msg.getQueue(),
-                msg.getMsgId(), msg.getCorrelationId(), endTime - startTime / MS_SCALE, code);
+                msg.getMsgId(), msg.getCorrelationId(), (endTime - startTime) / MS_SCALE, code);
         }
     }
 
