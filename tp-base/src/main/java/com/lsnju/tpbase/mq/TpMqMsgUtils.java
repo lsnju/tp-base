@@ -47,7 +47,7 @@ public class TpMqMsgUtils implements DigestConstants {
             msg.setBody(getBodyContentAsString(message));
         }
         DIGEST_LOG.info("[{}, {}, {}, {}, {}]", msg.getExchange(), msg.getRoutingKey(), msg.getQueue(), msg.getMsgId(), msg.getCorrelationId());
-        log.debug("app_mq_in_header = {}, app_mq_in_body = {}", msg, msg.getBody());
+        log.debug("tp_mq_in_header = {}, tp_mq_in_body = {}", msg, msg.getBody());
         return msg;
     }
 
