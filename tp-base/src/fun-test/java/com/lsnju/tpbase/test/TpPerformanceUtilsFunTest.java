@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class BasePerformanceFunTest extends BasePerformance {
+public class TpPerformanceUtilsFunTest {
 
     @Test
     void test_001() {
@@ -37,7 +37,7 @@ public class BasePerformanceFunTest extends BasePerformance {
         for (int i = 0; i < 4; i++) {
             allTask.add(Lists.newArrayList("a", "b", "c"));
         }
-        PerfResult result = perfTest(allTask, s -> {
+        PerfResult result = TpPerformanceUtils.perfTest(allTask, s -> {
             //
             try {
                 log.info("{}", s);

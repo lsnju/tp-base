@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class BasePerformance {
+public class TpPerformanceUtils {
 
     public static <T> PerfResult perfTest(List<List<T>> groupTask, Consumer<T> consumer) throws Exception {
         final int threadSize = groupTask.size();
