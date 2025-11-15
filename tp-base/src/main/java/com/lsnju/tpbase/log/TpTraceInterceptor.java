@@ -2,6 +2,7 @@ package com.lsnju.tpbase.log;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -37,6 +38,27 @@ public class TpTraceInterceptor {
     public TpTraceInterceptor(String prefix, String logName) {
         this.prefix = prefix;
         this.logger = LoggerFactory.getLogger(logName);
+    }
+
+    public <T> T get(String name, Supplier<T> supplier) {
+        return this.get(name, TpTraceUtils.currentTraceId(), supplier);
+    }
+
+    public <T> T get(String name, String traceId, Supplier<T> supplier) {
+        final String currentTraceId = TpTraceUtils.currentTraceId();
+        final String newId = TpTraceUtils.newTraceId(traceId);
+        try {
+            MDC.put(RequestId.MDC_REQ_ID, newId);
+            Profiler.start(String.format(FORMAT, newId, name));
+            return supplier.get();
+        } finally {
+            Profiler.release();
+            if (logger.isInfoEnabled()) {
+                logger.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
+            }
+            Profiler.reset();
+            MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
+        }
     }
 
     public <T> T call(String name, Callable<T> callable) throws Exception {
@@ -80,6 +102,9 @@ public class TpTraceInterceptor {
             MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
         }
     }
+
+    // ---------------------------------------------
+    // ---------------------------------------------
 
     public Runnable runnable(String name, Runnable runnable) {
         return this.runnable(name, TpTraceUtils.currentTraceId(), runnable);
@@ -127,6 +152,29 @@ public class TpTraceInterceptor {
         };
     }
 
+    public <T> Supplier<T> supplier(String name, Supplier<T> supplier) {
+        return this.supplier(name, TpTraceUtils.currentTraceId(), supplier);
+    }
+
+    public <T> Supplier<T> supplier(String name, String traceId, Supplier<T> supplier) {
+        final String newId = TpTraceUtils.newTraceId(traceId);
+        return () -> {
+            final String currentTraceId = TpTraceUtils.currentTraceId();
+            try {
+                MDC.put(RequestId.MDC_REQ_ID, newId);
+                Profiler.start(String.format(FORMAT, newId, name));
+                return supplier.get();
+            } finally {
+                Profiler.release();
+                if (logger.isInfoEnabled()) {
+                    logger.info("\n{}\n", Profiler.dump(StringUtils.defaultString(prefix)));
+                }
+                Profiler.reset();
+                MDC.put(RequestId.MDC_REQ_ID, currentTraceId);
+            }
+        };
+    }
+
     public static TpTraceInterceptor newInstance() {
         return new TpTraceInterceptor();
     }
@@ -136,6 +184,23 @@ public class TpTraceInterceptor {
     }
 
     public static final TpTraceInterceptor DEFAULT = newInstance();
+
+    // ---------------------------------------------
+
+    public static <T> T getByDefault(String name, Supplier<T> supplier) throws Exception {
+        return getByDefault(name, TpTraceUtils.currentTraceId(), supplier);
+    }
+
+    public static <T> T getByDefault(String name, String traceId, Supplier<T> supplier) throws Exception {
+        return get(name, traceId, supplier, DEFAULT);
+    }
+
+    public static <T> T get(String name, String traceId, Supplier<T> supplier, TpTraceInterceptor interceptor) throws Exception {
+        Objects.requireNonNull(interceptor);
+        return interceptor.get(name, traceId, supplier);
+    }
+
+    // ---------------------------------------------
 
     public static <T> T callByDefault(String name, Callable<T> callable) throws Exception {
         return callByDefault(name, TpTraceUtils.currentTraceId(), callable);
@@ -150,6 +215,8 @@ public class TpTraceInterceptor {
         return interceptor.call(name, traceId, callable);
     }
 
+    // ---------------------------------------------
+
     public static void runByDefault(String name, Runnable runnable) {
         runByDefault(name, TpTraceUtils.currentTraceId(), runnable);
     }
@@ -162,5 +229,7 @@ public class TpTraceInterceptor {
         Objects.requireNonNull(interceptor);
         interceptor.run(name, traceId, runnable);
     }
+
+    // ---------------------------------------------
 
 }
