@@ -3,6 +3,7 @@ package com.lsnju.tpbase.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
@@ -40,12 +41,15 @@ public class BasePerformanceFunTest extends BasePerformance {
             //
             try {
                 log.info("{}", s);
-                Thread.sleep(1000);
+                Thread.sleep(RandomUtils.insecure().randomInt(0, 1000));
             } catch (InterruptedException e) {
                 log.error(String.format("%s", e.getMessage()), e);
             }
         });
         log.info("{}, {}, avg={}", result.getTotalCost(), result.getTotalCount(), result.avg());
+        for (PerfResult item : result.getSubList()) {
+            log.info("{}, avg={}", item, item.avg());
+        }
     }
 
 }
