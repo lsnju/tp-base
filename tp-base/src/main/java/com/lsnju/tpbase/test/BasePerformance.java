@@ -61,8 +61,8 @@ public class BasePerformance {
         return () -> {
             final PerfResult ret = new PerfResult();
             ret.setName(name);
+            ready.countDown();
             try {
-                ready.countDown();
                 start.await();
                 final long startTime = System.nanoTime();
                 for (T item : list) {
@@ -70,7 +70,6 @@ public class BasePerformance {
                 }
                 long end = System.nanoTime();
                 long total = (end - startTime) / DigestConstants.MS_SCALE;
-                done.countDown();
 
                 ret.setSuccess(true);
                 ret.setTotalCost(total);
@@ -80,6 +79,8 @@ public class BasePerformance {
                 log.error(String.format("%s", e.getMessage()), e);
                 ret.setSuccess(false);
                 return ret;
+            } finally {
+                done.countDown();
             }
         };
     }
