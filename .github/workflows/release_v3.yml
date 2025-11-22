@@ -1,8 +1,8 @@
-name: Publish V3 to Maven
+name: Publish V4 to Maven
 on:
   push:
     tags:
-      - 'v3*'
+      - 'v4*'
 jobs:
   publish:
     runs-on: ubuntu-latest
