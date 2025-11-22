@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.lang.NonNull;
 import org.springframework.web.server.ServerWebExchange;
 
 import com.lsnju.tpbase.config.LogMdcConstants;
@@ -23,11 +22,11 @@ import reactor.core.publisher.Signal;
  */
 public class RxLogUtils {
 
-    public static void logWithContext(@NonNull ServerWebExchange exchange, @NonNull Runnable logAction) {
+    public static void logWithContext(ServerWebExchange exchange, Runnable logAction) {
         logWithContext(exchange, exchange.getAttribute(RequestId.RX_CTX_ID), logAction);
     }
 
-    public static void logWithContext(@NonNull ServerWebExchange exchange, String requestId, @NonNull Runnable logAction) {
+    public static void logWithContext(ServerWebExchange exchange, String requestId, Runnable logAction) {
         try {
             MDC.put(RequestId.MDC_REQ_ID, requestId);
             insertIntoMDC(exchange);

@@ -3,6 +3,7 @@ package com.lsnju.base.model;
 import java.text.SimpleDateFormat;
 
 import com.lsnju.base.jackson.JacksonUtils;
+import com.lsnju.base.jackson.mask.MaskAnnotationIntrospector;
 
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.ObjectMapper;
@@ -21,9 +22,8 @@ public class MaskJacksonUtils {
     static {
         DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
             .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+            .annotationIntrospector(new MaskAnnotationIntrospector())
             .build();
-//        DEFAULT_MAPPER.setAnnotationIntrospector(new MaskAnnotationIntrospector());
-//        DEFAULT_MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
     public static String toJson(Object obj) {

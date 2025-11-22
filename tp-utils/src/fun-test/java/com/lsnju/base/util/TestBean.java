@@ -3,12 +3,12 @@ package com.lsnju.base.util;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lsnju.base.jackson.RawJsonDeserializer;
 import com.lsnju.base.money.Money;
 
 import lombok.Getter;
 import lombok.Setter;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * @author lisong
