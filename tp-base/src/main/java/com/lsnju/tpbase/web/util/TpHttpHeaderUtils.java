@@ -72,7 +72,7 @@ public class TpHttpHeaderUtils {
         if (StringUtils.isNotBlank(value)) {
             return value;
         }
-        for (String name : headers.keySet()) {
+        for (String name : headers.toSingleValueMap().keySet()) {
             if (Strings.CI.equals(headerName, name)) {
                 if (!Strings.CS.equals(headerName, name)) {
                     log.info("http-header.key = {}", name);

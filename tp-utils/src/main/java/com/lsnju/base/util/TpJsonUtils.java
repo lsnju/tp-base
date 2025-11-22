@@ -67,21 +67,21 @@ public class TpJsonUtils {
 
     public interface TpJson {
 
-        Map<String, String> toMap(Object obj) throws IOException;
+        Map<String, String> toMap(Object obj);
 
-        String toJson(Object obj) throws IOException;
+        String toJson(Object obj);
 
-        String toJsonPretty(Object obj) throws IOException;
+        String toJsonPretty(Object obj);
 
-        <T> T fromJson(String jsonStr, Class<T> clazz) throws IOException;
+        <T> T fromJson(String jsonStr, Class<T> clazz);
 
-        <T> T fromJson(String jsonStr, Type type) throws IOException;
+        <T> T fromJson(String jsonStr, Type type);
 
         <T> T fromMap(Map<?, ?> map, Class<T> clazz);
 
         <T> T fromMap(Map<?, ?> map, Type type);
 
-        String toPrettyFormat(String jsonString) throws IOException;
+        String toPrettyFormat(String jsonString);
 
         boolean isValidJson(String jsonString);
 

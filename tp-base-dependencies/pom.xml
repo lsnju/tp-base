@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>3.5.7</version>
+        <version>4.0.0</version>
         <relativePath />
     </parent>
 
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-dependencies</artifactId>
-    <version>3.1.26-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>

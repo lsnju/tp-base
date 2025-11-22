@@ -1,12 +1,11 @@
 package com.lsnju.base.jackson;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 /**
  *
@@ -16,19 +15,17 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
  */
 public class TpLocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 
-    /** */
-    private static final long serialVersionUID = 1387644815657332923L;
-
     public TpLocalDateTimeSerializer() {
         super(LocalDateTime.class);
     }
 
     @Override
-    public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(LocalDateTime value, JsonGenerator gen, SerializationContext serializerProvider) {
         if (value != null) {
             gen.writeString(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         } else {
             gen.writeNull();
         }
     }
+
 }

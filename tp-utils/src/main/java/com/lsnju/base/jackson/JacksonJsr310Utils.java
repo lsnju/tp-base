@@ -6,11 +6,11 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.lsnju.base.money.Money;
+
+import tools.jackson.databind.ext.javatime.ser.LocalDateSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalTimeSerializer;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  *
@@ -22,8 +22,8 @@ public class JacksonJsr310Utils {
 
     public static final SimpleModule JAVA_TIME_MODULE = javaTimeModule();
 
-    public static JavaTimeModule javaTimeModule() {
-        JavaTimeModule module = new JavaTimeModule();
+    public static SimpleModule javaTimeModule() {
+        SimpleModule module = new SimpleModule();
 
         module.addSerializer(Money.class, new MoneySerializer());
         module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
