@@ -126,6 +126,9 @@ public class JacksonUtilsTest {
         log.info("{}", jsonStr);
         final DateTimeBean ret = JacksonUtils.fromJson(jsonStr, DateTimeBean.class);
         log.info("{}", ret);
+
+        log.info("{}", TpJsonUtils.jackson().toJsonPretty(b));
+        log.info("{}", TpJsonUtils.gson().toJsonPretty(b));
     }
 
 }

@@ -10,8 +10,8 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lsnju.base.money.Money;
-import com.lsnju.base.util.ClazzUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.core.StreamReadFeature;
@@ -19,6 +19,7 @@ import tools.jackson.core.StreamWriteFeature;
 import tools.jackson.core.json.JsonWriteFeature;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.MapperFeature;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.module.SimpleModule;
@@ -31,7 +32,6 @@ import tools.jackson.databind.module.SimpleModule;
 @Slf4j
 public class JacksonUtils {
 
-    public static boolean WITH_JSR310 = ClazzUtils.exist("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
     public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<>() {};
     public static final JsonMapper DEFAULT_MAPPER;
     public static final JsonMapper PRETTY_MAPPER;
@@ -39,6 +39,7 @@ public class JacksonUtils {
     static {
         DEFAULT_MAPPER = JsonMapper.builder()
             // write
+            .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
             .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .enable(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL)
             .enable(JsonWriteFeature.WRITE_HEX_UPPER_CASE)
@@ -48,6 +49,7 @@ public class JacksonUtils {
             .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)
             // add module
             .addModule(getDefaultModule())
+            .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_NULL))
             .build();
 
         PRETTY_MAPPER = DEFAULT_MAPPER.rebuild()
@@ -57,14 +59,7 @@ public class JacksonUtils {
     }
 
     public static SimpleModule getDefaultModule() {
-        if (WITH_JSR310) {
-            return getJavaTimeModule();
-        }
         return getSimpleModule();
-    }
-
-    public static SimpleModule getJavaTimeModule() {
-        return JacksonJsr310Utils.JAVA_TIME_MODULE;
     }
 
     public static SimpleModule getSimpleModule() {
