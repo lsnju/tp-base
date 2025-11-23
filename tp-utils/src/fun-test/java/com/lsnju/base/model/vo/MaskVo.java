@@ -1,0 +1,52 @@
+package com.lsnju.base.model.vo;
+
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lsnju.base.jackson.annotation.Mask;
+import com.lsnju.base.jackson.mask.MaskingSerializerForDefault;
+import com.lsnju.base.jackson.mask.MaskingSerializerForGid;
+import com.lsnju.base.jackson.mask.MaskingSerializerForPhone;
+import com.lsnju.base.money.Money;
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * @author lisong
+ * @since 2020/3/18 19:39
+ * @version V1.0
+ */
+@Getter
+@Setter
+public class MaskVo {
+
+    private int id;
+    private String name;
+    private Money amount;
+
+    private Date date1;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "GMT+8")
+    private Date date2;
+
+    @Mask(MaskingSerializerForDefault.class)
+    private String desc1;
+    @Mask(MaskingSerializerForGid.class)
+    private String desc2;
+    @Mask(MaskingSerializerForPhone.class)
+    private String desc3;
+    @Mask(serClass = MaskingSerializerForDefault.class)
+    private String desc4;
+    @Mask(serClass = MaskingSerializerForGid.class)
+    private String desc5;
+    @Mask(serClass = MaskingSerializerForPhone.class)
+    private String desc6;
+
+    @Mask(type = Mask.Type.DEFAULT)
+    private String memo;
+    @Mask(type = Mask.Type.PHONE)
+    private String phone;
+    @Mask(type = Mask.Type.GID)
+    private String gid;
+
+}
