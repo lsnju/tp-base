@@ -5,7 +5,8 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
-import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.SerializationFeature;
 import tools.jackson.dataformat.yaml.YAMLMapper;
 
 /**
@@ -16,7 +17,10 @@ import tools.jackson.dataformat.yaml.YAMLMapper;
 @Slf4j
 public class JacksonYamlUtils {
 
-    private static final YAMLMapper MAPPER = new YAMLMapper(new YAMLFactory());
+    private static final YAMLMapper MAPPER = YAMLMapper.builder()
+        .enable(SerializationFeature.INDENT_OUTPUT)
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .build();
 
     public static String toYml(Object obj) {
         Objects.requireNonNull(obj);

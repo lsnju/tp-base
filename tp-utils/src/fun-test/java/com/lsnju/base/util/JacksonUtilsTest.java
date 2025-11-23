@@ -18,7 +18,7 @@ import com.lsnju.base.util.vo.TestVo;
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author lisong
@@ -102,7 +102,7 @@ public class JacksonUtilsTest {
     void test_jackson() {
         try {
             String json = "{\"date\":\"2022-09-01 14:47:32\",\"abc\":\"def\",\"blank\":\"\"}";
-            ObjectMapper mapper = new ObjectMapper();
+            JsonMapper mapper = new JsonMapper();
 
             final Map<String, String> value = mapper.readValue(json, new TypeReference<>() {});
             log.info("{}", value);

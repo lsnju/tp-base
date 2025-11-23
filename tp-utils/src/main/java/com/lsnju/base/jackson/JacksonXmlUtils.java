@@ -14,8 +14,8 @@ import tools.jackson.dataformat.xml.XmlMapper;
 public class JacksonXmlUtils {
 
     private static final XmlMapper MAPPER = XmlMapper.builder()
-        .configure(SerializationFeature.INDENT_OUTPUT, true)
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .enable(SerializationFeature.INDENT_OUTPUT)
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         .build();
 
     public static String toXml(Object obj) {

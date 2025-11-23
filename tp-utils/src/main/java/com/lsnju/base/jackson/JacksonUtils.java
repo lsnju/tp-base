@@ -39,20 +39,20 @@ public class JacksonUtils {
     static {
         DEFAULT_MAPPER = JsonMapper.builder()
             // write
-            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-            .configure(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL, true)
-            .configure(JsonWriteFeature.WRITE_HEX_UPPER_CASE, true)
-            .configure(StreamWriteFeature.IGNORE_UNKNOWN, true)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .enable(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL)
+            .enable(JsonWriteFeature.WRITE_HEX_UPPER_CASE)
+            .enable(StreamWriteFeature.IGNORE_UNKNOWN)
             // read
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION, true)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)
             // add module
             .addModule(getDefaultModule())
             .build();
 
         PRETTY_MAPPER = DEFAULT_MAPPER.rebuild()
             // write
-            .configure(SerializationFeature.INDENT_OUTPUT, true)
+            .enable(SerializationFeature.INDENT_OUTPUT)
             .build();
     }
 
