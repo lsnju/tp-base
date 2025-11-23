@@ -29,18 +29,25 @@ public class MaskVo {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "GMT+8")
     private Date date2;
 
+    private String sep0 = "---------------------------";
+
     @Mask(MaskingSerializerForDefault.class)
     private String desc1;
     @Mask(MaskingSerializerForGid.class)
     private String desc2;
     @Mask(MaskingSerializerForPhone.class)
     private String desc3;
+
+    private String sep1 = "---------------------------";
+
     @Mask(serClass = MaskingSerializerForDefault.class)
     private String desc4;
     @Mask(serClass = MaskingSerializerForGid.class)
     private String desc5;
     @Mask(serClass = MaskingSerializerForPhone.class)
     private String desc6;
+
+    private String sep2 = "---------------------------";
 
     @Mask(type = Mask.Type.DEFAULT)
     private String memo;
