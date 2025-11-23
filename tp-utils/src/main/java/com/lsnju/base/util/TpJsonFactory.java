@@ -121,12 +121,11 @@ class TpJsonFactory {
         public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<>() {};
 
         static {
-            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
-                .defaultDateFormat(dateFormat)
+                .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
                 .build();
             PRETTY_MAPPER = JacksonUtils.PRETTY_MAPPER.rebuild()
-                .defaultDateFormat(dateFormat)
+                .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
                 .build();
         }
 
