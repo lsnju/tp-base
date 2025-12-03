@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.enums.StatusEnum;
 import com.lsnju.base.util.vo.TestVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -130,6 +131,19 @@ public class JacksonUtilsTest {
         log.info("{}", jsonStr);
         final DateTimeBean ret = JacksonUtils.fromJson(jsonStr, DateTimeBean.class);
         log.info("{}", ret);
+    }
+
+    @Test
+    void test_enum() {
+        TestBean bean = new TestBean();
+        bean.setId(11);
+        bean.setName("name");
+        bean.setAmount(new Money("11.11"));
+        bean.setStatus(StatusEnum.E);
+        log.info("{}", JacksonUtils.toJson(bean));
+        String jsonStr = "{\"id\":11,\"name\":\"name\",\"amount\":\"11.11\",\"status\":\"UNKNOW\"}";
+        log.info("{}", JsonUtils.fromJson(jsonStr, TestBean.class));
+        log.info("{}", JacksonUtils.fromJson(jsonStr, TestBean.class));
     }
 
 }
