@@ -50,6 +50,7 @@ public class JacksonUtils {
         DEFAULT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         DEFAULT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        DEFAULT_MAPPER.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL);
         DEFAULT_MAPPER.registerModule(module);
         // MAPPER.registerModule(new JaxbAnnotationModule());
 
