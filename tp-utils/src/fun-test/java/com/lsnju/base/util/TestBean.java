@@ -4,17 +4,16 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lsnju.base.jackson.RawJsonDeserializer;
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.enums.StatusEnum;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * @author lisong
  * @since 2020/3/18 19:39
  * @version V1.0
  */
-@Getter
-@Setter
+@Data
 public class TestBean {
 
     private int id;
@@ -25,4 +24,7 @@ public class TestBean {
     private String memo;
 
     private Money amount;
+
+    private StatusEnum status;
+
 }
