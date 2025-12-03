@@ -21,6 +21,7 @@ import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.MapperFeature;
 import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.cfg.EnumFeature;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.module.SimpleModule;
 
@@ -47,6 +48,7 @@ public class JacksonUtils {
             // read
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)
+            .enable(EnumFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
             // add module
             .addModule(getDefaultModule())
             .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_NULL))
