@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
         <relativePath />
     </parent>
 
@@ -81,7 +81,7 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.82</version>
+                <version>1.83</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -109,7 +109,7 @@
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>3.0.5</version>
+                <version>4.0.0</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
@@ -123,7 +123,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
-                <version>1.14.0</version>
+                <version>1.15.0</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
@@ -194,7 +194,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-gateway-server</artifactId>
-                <version>4.3.2</version>
+                <version>4.3.3</version>
                 <optional>true</optional>
             </dependency>
 
@@ -202,7 +202,7 @@
             <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
-                <version>10.5</version>
+                <version>10.6</version>
                 <optional>true</optional>
             </dependency>
 
