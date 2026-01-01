@@ -81,14 +81,14 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.82</version>
+                <version>1.83</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.json/json -->
             <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
-                <version>20250517</version>
+                <version>20251224</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
