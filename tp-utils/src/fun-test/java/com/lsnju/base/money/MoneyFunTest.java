@@ -1,5 +1,6 @@
 package com.lsnju.base.money;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
@@ -31,10 +32,12 @@ public class MoneyFunTest {
             Objects.requireNonNull(serialize);
 
             log.info("{}", new String(serialize));
-            Object m = json.deserialize(serialize);
-            log.info("{}", m);
+            log.info("{}", json.deserialize(serialize));
+            log.info("{}", json.deserialize("{\"@class\":\"com.lsnju.base.money.Money\",\"cent\":1110,\"currency\":\"CNY\"}".getBytes(StandardCharsets.UTF_8)));
+            log.info("{}", json.deserialize("{\"@class\":\"com.lsnju.base.money.Money\",\"cent\":1110}".getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
         }
     }
+
 }
