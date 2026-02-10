@@ -72,8 +72,7 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
             return joinPoint.proceed();
         }
 
-        if (joinPoint.getSignature() instanceof MethodSignature) {
-            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        if (joinPoint.getSignature() instanceof MethodSignature signature) {
             Method method = signature.getMethod();
             TpSkipLog clazzAnnotation = AnnotationUtils.findAnnotation(method.getDeclaringClass(), TpSkipLog.class);
             if (clazzAnnotation != null) {
