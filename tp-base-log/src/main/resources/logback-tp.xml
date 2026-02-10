@@ -4,6 +4,7 @@
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
+    <springProperty scope="context" name="logger.debug" source="logger.debug" />
     <springProperty scope="context" name="log_config_ext" source="logger.config-ext" defaultValue="" />
     <springProperty scope="context" name="sys_name" source="logger.sys-name" defaultValue="tp" />
     <springProperty scope="context" name="log_level" source="logger.level" defaultValue="info" />
@@ -19,7 +20,10 @@
     <property name="logging_level_info" value="info" />
     <property name="logging_level_warn" value="warn" />
 
-    <if condition='p("log_path").length() > 0'>
+    <condition class="com.lsnju.tpbase.log.boolex.IsPropertyNotBlankCondition">
+        <key>log_path</key>
+    </condition>
+    <if>
         <then>
             <property name="log_file_path" value="${log_home}/${sys_name}/${log_path}" />
         </then>
@@ -28,7 +32,10 @@
         </else>
     </if>
 
-    <if condition='p("his_log_path").length() > 0'>
+    <condition class="com.lsnju.tpbase.log.boolex.IsPropertyNotBlankCondition">
+        <key>his_log_path</key>
+    </condition>
+    <if>
         <then>
             <property name="log_file_his_path" value="${his_log_path}" />
         </then>
@@ -78,25 +85,17 @@
     <!-- ================================================== -->
     <!-- ================================================== -->
 
-    <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
+    <condition class="ch.qos.logback.core.boolex.PropertyEqualityCondition">
+        <key>log_console_pattern</key>
+        <value>spring</value>
+    </condition>
+    <if>
         <then>
             <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
                 <encoder>
                     <pattern>${logging_console_pattern}</pattern>
                 </encoder>
             </appender>
-        </then>
-        <else>
-            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-                <encoder>
-                    <pattern>${logging_default_pattern}</pattern>
-                </encoder>
-            </appender>
-        </else>
-    </if>
-
-    <if condition='property("log_console_pattern").equalsIgnoreCase("spring")'>
-        <then>
             <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
                 <encoder>
                     <pattern>${logging_console_pattern}</pattern>
@@ -105,6 +104,11 @@
             </appender>
         </then>
         <else>
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>${logging_default_pattern}</pattern>
+                </encoder>
+            </appender>
             <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
                 <encoder>
                     <pattern>${logging_default_pattern}</pattern>
@@ -113,7 +117,6 @@
             </appender>
         </else>
     </if>
-
 
     <appender name="COMMON_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -446,6 +449,7 @@
     <logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer" level="info" />
 
     <logger name="org.apache.http.headers" level="debug" />
+    <logger name="org.apache.hc.client5.http.headers" level="debug" />
 
     <!-- ====================================== -->
     <!-- ====================================== -->
@@ -497,9 +501,12 @@
         <appender-ref ref="STDERR" />
     </logger>
 
-    <if condition='isDefined("log_config_ext") &amp;&amp; p("log_config_ext").length() > 0'>
+    <condition class="com.lsnju.tpbase.log.boolex.IsPropertyNotBlankCondition">
+        <key>log_config_ext</key>
+    </condition>
+    <if>
         <then>
-            <include optional="true" resource="logback-ext.xml" />
+            <include optional="true" resource="${log_config_ext}" />
         </then>
     </if>
 
@@ -508,7 +515,10 @@
         <appender-ref ref="COMMON_ERROR" />
         <appender-ref ref="COMMON_WARN" />
     </root>
-    <if condition='property("log_env").contains("dev") || property("log_out").contains("console")'>
+
+    <condition class="com.lsnju.tpbase.log.boolex.IsConsoleOutputCondition">
+    </condition>
+    <if>
         <then>
             <logger name="${base_package}.web">
                 <appender-ref ref="STDOUT" />

@@ -27,4 +27,5 @@ public class TpLogConfigProperties extends BaseMo {
     private String consolePattern;
     private String configExt;
     private String maxHistory;
+    private boolean debug;
 }
