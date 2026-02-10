@@ -1,11 +1,11 @@
 package com.lsnju.base.jackson;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.lsnju.base.money.Money;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 /**
  * @author lisong
@@ -14,20 +14,17 @@ import com.lsnju.base.money.Money;
  */
 public class MoneySerializer extends StdSerializer<Money> {
 
-    /** */
-    private static final long serialVersionUID = 4216204308988360618L;
-
     public MoneySerializer() {
         super(Money.class);
     }
 
     @Override
-    public void serialize(Money value, JsonGenerator gen, SerializerProvider provider)
-        throws IOException {
+    public void serialize(Money value, JsonGenerator gen, SerializationContext provider) throws JacksonException {
         if (value != null) {
             gen.writeString(value.toString());
         } else {
             gen.writeNull();
         }
     }
+
 }

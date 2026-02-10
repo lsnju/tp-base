@@ -7,7 +7,8 @@ import java.lang.annotation.Target;
 
 import org.springframework.core.annotation.AliasFor;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
+import tools.jackson.databind.ValueSerializer;
+
 
 /**
  *
@@ -20,10 +21,10 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 public @interface Mask {
 
     @AliasFor("serClass")
-    Class<? extends JsonSerializer>[] value() default {};
+    Class<? extends ValueSerializer>[] value() default {};
 
     @AliasFor("value")
-    Class<? extends JsonSerializer>[] serClass() default {};
+    Class<? extends ValueSerializer>[] serClass() default {};
 
     Type type() default Type.DEFAULT;
 

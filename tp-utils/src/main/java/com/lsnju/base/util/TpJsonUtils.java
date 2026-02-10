@@ -1,6 +1,5 @@
 package com.lsnju.base.util;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
@@ -13,23 +12,23 @@ import java.util.Objects;
  */
 public class TpJsonUtils {
 
-    public static Map<String, String> toMap(Object obj) throws IOException {
+    public static Map<String, String> toMap(Object obj) {
         return DEFAULT.toMap(obj);
     }
 
-    public static String toJson(Object obj) throws IOException {
+    public static String toJson(Object obj) {
         return DEFAULT.toJson(obj);
     }
 
-    public static String toJsonPretty(Object obj) throws IOException {
+    public static String toJsonPretty(Object obj) {
         return DEFAULT.toJsonPretty(obj);
     }
 
-    public static <T> T fromJson(String jsonStr, Class<T> clazz) throws IOException {
+    public static <T> T fromJson(String jsonStr, Class<T> clazz) {
         return DEFAULT.fromJson(jsonStr, clazz);
     }
 
-    public static <T> T fromJson(String jsonStr, Type type) throws IOException {
+    public static <T> T fromJson(String jsonStr, Type type) {
         return DEFAULT.fromJson(jsonStr, type);
     }
 
@@ -41,7 +40,7 @@ public class TpJsonUtils {
         return DEFAULT.fromMap(map, type);
     }
 
-    public static String toPrettyFormat(String jsonString) throws IOException {
+    public static String toPrettyFormat(String jsonString) {
         return DEFAULT.toPrettyFormat(jsonString);
     }
 
@@ -67,21 +66,21 @@ public class TpJsonUtils {
 
     public interface TpJson {
 
-        Map<String, String> toMap(Object obj) throws IOException;
+        Map<String, String> toMap(Object obj);
 
-        String toJson(Object obj) throws IOException;
+        String toJson(Object obj);
 
-        String toJsonPretty(Object obj) throws IOException;
+        String toJsonPretty(Object obj);
 
-        <T> T fromJson(String jsonStr, Class<T> clazz) throws IOException;
+        <T> T fromJson(String jsonStr, Class<T> clazz);
 
-        <T> T fromJson(String jsonStr, Type type) throws IOException;
+        <T> T fromJson(String jsonStr, Type type);
 
         <T> T fromMap(Map<?, ?> map, Class<T> clazz);
 
         <T> T fromMap(Map<?, ?> map, Type type);
 
-        String toPrettyFormat(String jsonString) throws IOException;
+        String toPrettyFormat(String jsonString);
 
         boolean isValidJson(String jsonString);
 

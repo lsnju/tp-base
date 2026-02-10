@@ -1,7 +1,7 @@
 package com.lsnju.base.guava;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemProperties;
@@ -30,9 +30,11 @@ public class StandardSystemPropertyTest {
         log.info("{}", classpath);
 
         log.info("------------------------------");
+        Objects.requireNonNull(separator);
+        Objects.requireNonNull(classpath);
         final Iterable<String> split = Splitter.on(separator).split(classpath);
 
-        final List<String> list = Streams.of(split).collect(Collectors.toList());
+        final List<String> list = Streams.of(split).toList();
         log.info("{}", list.size());
 
         for (String entry : list) {
@@ -50,7 +52,7 @@ public class StandardSystemPropertyTest {
         log.info("------------------------------");
         final String[] split = StringUtils.split(classpath, separator);
 
-        final List<String> list = Streams.of(split).collect(Collectors.toList());
+        final List<String> list = Streams.of(split).toList();
         log.info("{}", list.size());
 
         for (String entry : list) {

@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
@@ -65,7 +64,7 @@ public class TpTaskAutoConfiguration {
             }
 
             @Override
-            public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
+            public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
                 if (hikariCpsMonitorTask != null && tpTaskConfigProperties.isCpMoEnable()) {
                     final String cron = tpTaskConfigProperties.getCpMoCron();
                     taskRegistrar.addCronTask(hikariCpsMonitorTask, cron);

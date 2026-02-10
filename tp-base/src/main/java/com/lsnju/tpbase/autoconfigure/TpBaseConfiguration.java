@@ -10,14 +10,13 @@ import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
+import org.springframework.boot.servlet.filter.OrderedFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.filter.OrderedFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.server.WebFilter;
@@ -40,6 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRuleConvention;
 import springfox.documentation.schema.AlternateTypeRules;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  *
@@ -83,20 +84,22 @@ public class TpBaseConfiguration {
     }
 
     @Configuration
-    @ConditionalOnClass(Jackson2ObjectMapperBuilderCustomizer.class)
+    @ConditionalOnClass(JsonMapperBuilderCustomizer.class)
     public static class TpJacksonCustomConfig {
         @Bean
-        public Jackson2ObjectMapperBuilderCustomizer tpJackson2ObjectMapperBuilderCustomizer() {
+        public JsonMapperBuilderCustomizer tpJackson2ObjectMapperBuilderCustomizer() {
             log.debug("{} tpJackson2ObjectMapperBuilderCustomizer", TpConstants.PREFIX);
             return new TpJackson2ObjectMapperBuilderCustomizer();
         }
 
-        static class TpJackson2ObjectMapperBuilderCustomizer implements Jackson2ObjectMapperBuilderCustomizer {
+        static class TpJackson2ObjectMapperBuilderCustomizer implements JsonMapperBuilderCustomizer {
             @Override
-            public void customize(Jackson2ObjectMapperBuilder builder) {
-                builder.serializers(new MoneySerializer());
-                builder.deserializers(new MoneyDeserializer());
-                //builder.simpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            public void customize(JsonMapper.Builder builder) {
+                SimpleModule module = new SimpleModule();
+                module.addSerializer(Money.class, new MoneySerializer());
+                module.addDeserializer(Money.class, new MoneyDeserializer());
+                builder.addModule(module);
+                // builder.defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
             }
         }
     }

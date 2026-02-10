@@ -1,8 +1,10 @@
 package com.lsnju.base.jackson.mask;
 
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.lsnju.base.jackson.annotation.Mask;
+
+import tools.jackson.databind.cfg.MapperConfig;
+import tools.jackson.databind.introspect.Annotated;
+import tools.jackson.databind.introspect.JacksonAnnotationIntrospector;
 
 /**
  *
@@ -11,8 +13,9 @@ import com.lsnju.base.jackson.annotation.Mask;
  * @version V1.0
  */
 public class MaskAnnotationIntrospector extends JacksonAnnotationIntrospector {
+
     @Override
-    public Object findSerializer(Annotated annotated) {
+    public Object findSerializer(MapperConfig<?> config, Annotated annotated) {
         Mask annotation = annotated.getAnnotation(Mask.class);
         if (annotation != null) {
             if (annotation.serClass() != null) {
@@ -28,15 +31,13 @@ public class MaskAnnotationIntrospector extends JacksonAnnotationIntrospector {
             if (annotation.type() == null) {
                 return MaskingSerializerForDefault.class;
             }
-            switch (annotation.type()) {
-                case GID:
-                    return MaskingSerializerForGid.class;
-                case PHONE:
-                    return MaskingSerializerForPhone.class;
-                default:
-                    return MaskingSerializerForDefault.class;
-            }
+            return switch (annotation.type()) {
+                case GID -> MaskingSerializerForGid.class;
+                case PHONE -> MaskingSerializerForPhone.class;
+                default -> MaskingSerializerForDefault.class;
+            };
         }
-        return super.findSerializer(annotated);
+        return super.findSerializer(config, annotated);
     }
+
 }

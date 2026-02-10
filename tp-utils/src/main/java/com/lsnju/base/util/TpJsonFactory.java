@@ -1,6 +1,5 @@
 package com.lsnju.base.util;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -8,17 +7,13 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lsnju.base.gson.GsonUtils;
 import com.lsnju.base.jackson.JacksonUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  *
@@ -29,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class TpJsonFactory {
 
-    static boolean WITH_JACKSON = ClazzUtils.exist("com.fasterxml.jackson.databind.ObjectMapper");
+    static boolean WITH_JACKSON = ClazzUtils.exist("tools.jackson.databind.json.JsonMapper");
     static boolean WITH_GSON = ClazzUtils.exist("com.google.gson.Gson");
     private static TpJsonUtils.TpJson GSON;
     private static TpJsonUtils.TpJson JACKSON;
@@ -121,29 +116,21 @@ class TpJsonFactory {
 
     static class JacksonTpJson implements TpJsonUtils.TpJson {
 
-        public static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
-        public static final ObjectMapper PRETTY_MAPPER = new ObjectMapper();
-        public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, String>>() {};
+        public static final JsonMapper DEFAULT_MAPPER;
+        public static final JsonMapper PRETTY_MAPPER;
+        public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<>() {};
 
         static {
-            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            PRETTY_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-            PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-            PRETTY_MAPPER.setDateFormat(dateFormat);
-
-            DEFAULT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-            DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            DEFAULT_MAPPER.setDateFormat(dateFormat);
-
-            SimpleModule module = JacksonUtils.getDefaultModule();
-            DEFAULT_MAPPER.registerModule(module);
-            PRETTY_MAPPER.registerModule(module);
-            // MAPPER.registerModule(new JaxbAnnotationModule());
+            DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
+                .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+                .build();
+            PRETTY_MAPPER = JacksonUtils.PRETTY_MAPPER.rebuild()
+                .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+                .build();
         }
 
         @Override
-        public Map<String, String> toMap(Object obj) throws IOException {
+        public Map<String, String> toMap(Object obj) {
             if (obj instanceof String) {
                 return DEFAULT_MAPPER.readValue((String) obj, MAP_TYPE_REFERENCE);
             }
@@ -151,19 +138,19 @@ class TpJsonFactory {
         }
 
         @Override
-        public String toJson(Object obj) throws IOException {
+        public String toJson(Object obj) {
             Objects.requireNonNull(obj);
             return DEFAULT_MAPPER.writeValueAsString(obj);
         }
 
         @Override
-        public String toJsonPretty(Object obj) throws IOException {
+        public String toJsonPretty(Object obj) {
             Objects.requireNonNull(obj);
             return PRETTY_MAPPER.writeValueAsString(obj);
         }
 
         @Override
-        public <T> T fromJson(String jsonStr, Class<T> clazz) throws IOException {
+        public <T> T fromJson(String jsonStr, Class<T> clazz) {
             if (StringUtils.isBlank(jsonStr)) {
                 return null;
             }
@@ -172,7 +159,7 @@ class TpJsonFactory {
         }
 
         @Override
-        public <T> T fromJson(String jsonStr, Type type) throws IOException {
+        public <T> T fromJson(String jsonStr, Type type) {
             if (StringUtils.isBlank(jsonStr)) {
                 return null;
             }
@@ -191,7 +178,7 @@ class TpJsonFactory {
         }
 
         @Override
-        public String toPrettyFormat(String jsonString) throws IOException {
+        public String toPrettyFormat(String jsonString) {
             JsonNode root = DEFAULT_MAPPER.readTree(jsonString);
             if (root == null) {
                 return jsonString;
@@ -201,13 +188,8 @@ class TpJsonFactory {
 
         @Override
         public boolean isValidJson(String jsonString) {
-            try {
-                JsonNode root = DEFAULT_MAPPER.readTree(jsonString);
-                return root != null;
-            } catch (JsonProcessingException e) {
-                log.info("{}", e.getMessage());
-                return false;
-            }
+            JsonNode root = DEFAULT_MAPPER.readTree(jsonString);
+            return root != null;
         }
 
         @Override

@@ -31,17 +31,18 @@ public class TpStartedEventListener implements ApplicationListener<ApplicationSt
         ConfigurableApplicationContext ctx = event.getApplicationContext();
         final String appName = ctx.getEnvironment().getProperty("spring.application.name");
         final String port = ctx.getEnvironment().getProperty("server.port");
+        final long costTime = event.getTimeTaken() != null ? event.getTimeTaken().toMillis() : -1;
         if (level == Level.ERROR) {
             log.error("{} : -------------------------------------------------------", appName);
-            log.error("{} : start success (port = {})(cost = {}ms)...", appName, port, event.getTimeTaken().toMillis());
+            log.error("{} : start success (port = {})(cost = {}ms)...", appName, port, costTime);
             log.error("{} : -------------------------------------------------------", appName);
         } else if (level == Level.WARN) {
             log.warn("{} : -------------------------------------------------------", appName);
-            log.warn("{} : start success (port = {})(cost = {}ms)...", appName, port, event.getTimeTaken().toMillis());
+            log.warn("{} : start success (port = {})(cost = {}ms)...", appName, port, costTime);
             log.warn("{} : -------------------------------------------------------", appName);
         } else {
             log.info("{} : -------------------------------------------------------", appName);
-            log.info("{} : start success (port = {})(cost = {}ms)...", appName, port, event.getTimeTaken().toMillis());
+            log.info("{} : start success (port = {})(cost = {}ms)...", appName, port, costTime);
             log.info("{} : -------------------------------------------------------", appName);
         }
     }

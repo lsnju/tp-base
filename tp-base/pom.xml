@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lsnju.tp3</groupId>
         <artifactId>tp-base-dep</artifactId>
-        <version>3.1.25</version>
+        <version>4.0.0</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
     <artifactId>tp-base</artifactId>
@@ -59,21 +59,22 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-jdbc -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-jdbc</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
             <optional>true</optional>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp -->
@@ -136,6 +137,7 @@
             <artifactId>freemarker</artifactId>
             <optional>true</optional>
         </dependency>
+
 
     </dependencies>
 

@@ -1,15 +1,13 @@
 package com.lsnju.base.jackson;
 
-import java.io.IOException;
-
 import org.joor.Reflect;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.io.IOContext;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.io.IOContext;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
 
 /**
  * @author lisong
@@ -17,9 +15,10 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class RawJsonDeserializer extends JsonDeserializer<String> {
+public class RawJsonDeserializer extends ValueDeserializer<String> {
+
     @Override
-    public String deserialize(JsonParser jp, DeserializationContext ctx) throws IOException {
+    public String deserialize(JsonParser jp, DeserializationContext ctx) throws JacksonException {
         // return jp.getCodec().readTree(jp).toString();
         final long begin = jp.currentLocation().getCharOffset();
         jp.skipChildren();
@@ -37,4 +36,5 @@ public class RawJsonDeserializer extends JsonDeserializer<String> {
         log.debug("rawJson={}", json);
         return json.substring((int) begin - 1, (int) end);
     }
+
 }

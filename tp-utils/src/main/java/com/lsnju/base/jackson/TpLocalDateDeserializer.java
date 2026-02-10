@@ -1,14 +1,13 @@
 package com.lsnju.base.jackson;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 /**
  *
@@ -18,15 +17,12 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
  */
 public class TpLocalDateDeserializer extends StdDeserializer<LocalDate> {
 
-    /** */
-    private static final long serialVersionUID = 1387644815657332923L;
-
     public TpLocalDateDeserializer() {
         super(LocalDate.class);
     }
 
     @Override
-    public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws JacksonException {
         final String valueAsString = jsonParser.getValueAsString();
         if (StringUtils.isNotBlank(valueAsString)) {
             return LocalDate.parse(valueAsString);
