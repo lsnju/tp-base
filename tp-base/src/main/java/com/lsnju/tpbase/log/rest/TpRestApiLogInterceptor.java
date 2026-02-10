@@ -1,5 +1,6 @@
 package com.lsnju.tpbase.log.rest;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -8,15 +9,20 @@ import java.util.function.Function;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.http.HttpEntity;
 
 import com.lsnju.base.model.MaskJacksonUtils;
 import com.lsnju.tpbase.config.prop.TpAopConfigProperties;
 import com.lsnju.tpbase.log.AopSkipMethod;
 import com.lsnju.tpbase.log.DigestConstants;
+import com.lsnju.tpbase.log.annotation.TpSkipLog;
 import com.lsnju.tpbase.log.aspectj.ProceedingJoinPointInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -65,14 +71,35 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
         if (skipDigest(joinPoint.getSignature().getName())) {
             return joinPoint.proceed();
         }
+
+        if (joinPoint.getSignature() instanceof MethodSignature) {
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            Method method = signature.getMethod();
+            TpSkipLog clazzAnnotation = AnnotationUtils.findAnnotation(method.getDeclaringClass(), TpSkipLog.class);
+            if (clazzAnnotation != null) {
+                log.debug("class_has_annotation_TpSkipLog");
+                return joinPoint.proceed();
+            }
+
+            TpSkipLog methodAnnotation = AnnotationUtils.findAnnotation(method, TpSkipLog.class);
+            if (methodAnnotation != null) {
+                log.debug("method_has_annotation_TpSkipLog");
+                return joinPoint.proceed();
+            }
+        } else {
+            log.debug("joinPoint_is_not_MethodSignature");
+            return joinPoint.proceed();
+        }
+
         if (config == null) {
             return joinPoint.proceed();
         }
         if (!config.isEnableRestLog()) {
             return joinPoint.proceed();
         }
+        String reqStr = null;
         if (config.isEnableRestLogReq()) {
-            logRequest(joinPoint);
+            reqStr = logRequest(joinPoint);
         }
         Object response = null;
         try {
@@ -80,12 +107,12 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
             return response;
         } finally {
             if (config.isEnableRestLogResp()) {
-                logResponse(response);
+                logResponse(response, reqStr);
             }
         }
     }
 
-    public void logRequest(ProceedingJoinPoint joinPoint) {
+    public String logRequest(ProceedingJoinPoint joinPoint) {
         try {
             REST_LOG.info("START_PROCESSING: {}", joinPoint.getSignature());
             List<String> argsList = new ArrayList<>();
@@ -99,33 +126,39 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
                     if (arg instanceof ServletRequest) {
                         continue;
                     }
+                    if (arg instanceof InputStreamSource) {
+                        continue;
+                    }
                     argsList.add(String.format("arg%d=%s", i, toJson(arg)));
                 }
             }
-            REST_LOG.info("REQ: {}", String.join(", ", argsList));
+            String reqStr = String.join(", ", argsList);
+            REST_LOG.info("REQ: {}", reqStr);
+            return reqStr;
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
+            return StringUtils.EMPTY;
         }
     }
 
-    public void logResponse(Object response) {
+    public void logResponse(Object response, String reqStr) {
         try {
             if (response == null) {
-                REST_LOG.info("RESP: <null>");
+                REST_LOG.info("RESP: <null>; IN: {}", reqStr);
                 return;
             }
             if (response instanceof ServletResponse) {
-                REST_LOG.info("RESP: <ServletResponse>");
+                REST_LOG.info("RESP: <ServletResponse>; IN: {}", reqStr);
                 return;
             }
             if (response instanceof HttpEntity) {
                 Object body = ((HttpEntity<?>) response).getBody();
                 if (body != null) {
-                    REST_LOG.info("RESP: {}", toJson(body));
+                    REST_LOG.info("RESP: {}; IN: {}", toJson(body), reqStr);
                 }
                 return;
             }
-            REST_LOG.info("RESP: {}", toJson(response));
+            REST_LOG.info("RESP: {}; IN: {}", toJson(response), reqStr);
         } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
         }
