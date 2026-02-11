@@ -57,7 +57,7 @@ public class TpBaseConfiguration {
     public static class TpSpringWebMvcConfig {
         @Bean
         @ConditionalOnMissingBean
-        TpSpringWebMvcHelper tpSpringWebMvcHelper(ObjectProvider<List<HandlerExceptionResolver>> resolvers) {
+        static TpSpringWebMvcHelper tpSpringWebMvcHelper(ObjectProvider<List<HandlerExceptionResolver>> resolvers) {
             log.debug("{} tpSpringWebMvcHelper", TpConstants.PREFIX);
             return new TpSpringWebMvcHelper(resolvers.getIfAvailable());
         }
@@ -67,7 +67,7 @@ public class TpBaseConfiguration {
     @ConditionalOnClass(AlternateTypeRuleConvention.class)
     public static class TpSpringFoxConfig {
         @Bean
-        public AlternateTypeRuleConvention moneyTypeConvention() {
+        public static AlternateTypeRuleConvention moneyTypeConvention() {
             log.debug("{} moneyTypeConvention", TpConstants.PREFIX);
             return new AlternateTypeRuleConvention() {
                 @Override
@@ -87,7 +87,7 @@ public class TpBaseConfiguration {
     @ConditionalOnClass(JsonMapperBuilderCustomizer.class)
     public static class TpJacksonCustomConfig {
         @Bean
-        public JsonMapperBuilderCustomizer tpJackson2ObjectMapperBuilderCustomizer() {
+        public static JsonMapperBuilderCustomizer tpJackson2ObjectMapperBuilderCustomizer() {
             log.debug("{} tpJackson2ObjectMapperBuilderCustomizer", TpConstants.PREFIX);
             return new TpJackson2ObjectMapperBuilderCustomizer();
         }
@@ -109,14 +109,14 @@ public class TpBaseConfiguration {
     public static class TpDalDigestConfig {
         @Bean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME)
-        public Advice dalDigestLogInterceptor() {
+        public static Advice dalDigestLogInterceptor() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.DAL_DIGEST_INTERCEPTOR_NAME);
             return new DalDigestLogInterceptor();
         }
 
         @Bean(DigestConstants.DAL_DIGEST_PROXY_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.DAL_DIGEST_PROXY_NAME)
-        public BeanNameAutoProxyCreator dalDigestLog() {
+        public static BeanNameAutoProxyCreator dalDigestLog() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.DAL_DIGEST_PROXY_NAME);
             BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
             beanNameAutoProxyCreator.setBeanNames("*Dao", "*DaoImpl");
@@ -130,14 +130,14 @@ public class TpBaseConfiguration {
     public static class TpSalDigestConfig {
         @Bean(DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME)
-        public Advice salDigestLogInterceptor() {
+        public static Advice salDigestLogInterceptor() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.SAL_DIGEST_INTERCEPTOR_NAME);
             return new SalDigestLogInterceptor();
         }
 
         @Bean(DigestConstants.SAL_DIGEST_PROXY_NAME)
         @ConditionalOnMissingBean(name = DigestConstants.SAL_DIGEST_PROXY_NAME)
-        public BeanNameAutoProxyCreator salDigestLog() {
+        public static BeanNameAutoProxyCreator salDigestLog() {
             log.debug("{} {}", TpConstants.PREFIX, DigestConstants.SAL_DIGEST_PROXY_NAME);
             BeanNameAutoProxyCreator beanNameAutoProxyCreator = new BeanNameAutoProxyCreator();
             beanNameAutoProxyCreator.setBeanNames("*ClientImpl");
@@ -151,10 +151,10 @@ public class TpBaseConfiguration {
         //        @ConditionalOnClass(name = "jakarta.servlet.Filter")
         @Bean
         @ConditionalOnClass(value = jakarta.servlet.Filter.class)
-        FilterConfigShow filterConfigShow(ObjectProvider<List<Filter>> filters,
-                                          ObjectProvider<List<FilterRegistrationBean<?>>> filterRegistrationBeans,
-                                          ObjectProvider<List<OrderedFilter>> orderedFilters,
-                                          ObjectProvider<List<GenericFilterBean>> genericFilterBeans) {
+        static FilterConfigShow filterConfigShow(ObjectProvider<List<Filter>> filters,
+                                                 ObjectProvider<List<FilterRegistrationBean<?>>> filterRegistrationBeans,
+                                                 ObjectProvider<List<OrderedFilter>> orderedFilters,
+                                                 ObjectProvider<List<GenericFilterBean>> genericFilterBeans) {
             log.debug("{} filterConfigShow", TpConstants.PREFIX);
             return new FilterConfigShow(filters.getIfAvailable(), filterRegistrationBeans.getIfAvailable(),
                 orderedFilters.getIfAvailable(), genericFilterBeans.getIfAvailable());
@@ -162,7 +162,7 @@ public class TpBaseConfiguration {
 
         @Bean
         @ConditionalOnClass(name = "org.springframework.web.server.WebFilter")
-        WebFilterConfigShow webFilterConfigShow(ObjectProvider<List<WebFilter>> webFilters) {
+        static WebFilterConfigShow webFilterConfigShow(ObjectProvider<List<WebFilter>> webFilters) {
             log.debug("{} webFilterConfigShow", TpConstants.PREFIX);
             return new WebFilterConfigShow(webFilters.getIfAvailable());
         }
@@ -178,7 +178,7 @@ public class TpBaseConfiguration {
         @Primary
         @Bean(name = TP_DEFAULT, destroyMethod = "shutdown")
         @ConditionalOnMissingBean(name = TP_DEFAULT)
-        public ThreadPoolTaskExecutor tpThreadPool() {
+        public static ThreadPoolTaskExecutor tpThreadPool() {
             log.debug("{} tpThreadPool", TpConstants.PREFIX);
             final int coreSize = getCoreSize();
             final ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -191,7 +191,7 @@ public class TpBaseConfiguration {
 
         @Bean(name = TP_FOR_TASK, destroyMethod = "shutdown")
         @ConditionalOnMissingBean(name = TP_FOR_TASK)
-        public ThreadPoolTaskExecutor tpForTask() {
+        public static ThreadPoolTaskExecutor tpForTask() {
             log.debug("{} tpForTask", TpConstants.PREFIX);
             final int coreSize = getCoreSize();
             final ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -202,7 +202,7 @@ public class TpBaseConfiguration {
             return taskExecutor;
         }
 
-        private int getCoreSize() {
+        private static int getCoreSize() {
             return Math.max(Runtime.getRuntime().availableProcessors(), 2);
         }
 

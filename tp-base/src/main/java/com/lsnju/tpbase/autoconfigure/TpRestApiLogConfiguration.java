@@ -55,7 +55,7 @@ public class TpRestApiLogConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        TpRestApiLogInterceptor tpRestApiLogInterceptor(ObjectProvider<TpAopConfigProperties> config) {
+        static TpRestApiLogInterceptor tpRestApiLogInterceptor(ObjectProvider<TpAopConfigProperties> config) {
             return new TpRestApiLogInterceptor(config.getIfAvailable(() -> {
                 TpAopConfigProperties ret = new TpAopConfigProperties();
                 ret.setUseSpring(false);
