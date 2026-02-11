@@ -49,7 +49,7 @@ public class TpExceptionHandler {
     @Order()
     public static class TpDefaultExceptionConfiguration {
         @ExceptionHandler(Exception.class)
-        public ResponseEntity<BaseResp<Void>> defaultExceptionHandler(Exception e) {
+        public static ResponseEntity<BaseResp<Void>> defaultExceptionHandler(Exception e) {
             log.warn("[异常类型] class = {}", e.getClass());
             log.error(String.format("%s [未知系统异常]", TAG), e);
             ResponseStatus rs = e.getClass().getAnnotation(ResponseStatus.class);
@@ -61,7 +61,7 @@ public class TpExceptionHandler {
             }
         }
 
-        private void makeTmpDir(Exception e) {
+        private static void makeTmpDir(Exception e) {
             // Failed to parse multipart servlet request; nested exception is java.lang.RuntimeException:
             // java.nio.file.NoSuchFileException: /tmp/undertow.8080.6560013878513610352/undertow8245999266619841888upload
             Throwable rootCause = NetworkExceptionUtils.getMostSpecificCause(e);
