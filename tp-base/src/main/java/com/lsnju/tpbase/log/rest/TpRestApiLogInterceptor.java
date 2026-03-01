@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.http.HttpEntity;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.CollectionUtils;
 
 import com.lsnju.base.model.MaskJacksonUtils;
 import com.lsnju.tpbase.config.prop.TpAopConfigProperties;
@@ -24,6 +26,7 @@ import com.lsnju.tpbase.log.AopSkipMethod;
 import com.lsnju.tpbase.log.DigestConstants;
 import com.lsnju.tpbase.log.annotation.TpSkipLog;
 import com.lsnju.tpbase.log.aspectj.ProceedingJoinPointInterceptor;
+import com.lsnju.tpbase.web.util.RequestUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +45,7 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
     private final TpAopConfigProperties config;
     private final Set<String> skipMethodSet;
     private final Function<Object, String> toJsonStr;
+    private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     public TpRestApiLogInterceptor(TpAopConfigProperties config) {
         this(config, SKIP_METHOD);
@@ -56,6 +60,7 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
     }
 
     public TpRestApiLogInterceptor(TpAopConfigProperties config, Set<String> skipMethodSet, Function<Object, String> toJsonStr) {
+        log.info("TpAopConfigProperties.init = {}", config);
         this.config = config;
         this.skipMethodSet = skipMethodSet;
         this.toJsonStr = toJsonStr;
@@ -70,6 +75,31 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
     public Object proceed(ProceedingJoinPoint joinPoint) throws Throwable {
         if (skipDigest(joinPoint.getSignature().getName())) {
             return joinPoint.proceed();
+        }
+
+        String servletPath = RequestUtils.getServletPath();
+        if (StringUtils.isNotBlank(servletPath)) {
+            if (!CollectionUtils.isEmpty(config.getPathsToExclude())) {
+                for (String pathToExclude : config.getPathsToExclude()) {
+                    if (antPathMatcher.match(pathToExclude, servletPath)) {
+                        log.debug("pathToExclude pattern={}, path={}", pathToExclude, servletPath);
+                        return joinPoint.proceed();
+                    }
+                }
+            }
+            if (!CollectionUtils.isEmpty(config.getPathsToMatch())) {
+                boolean match = false;
+                for (String pathToMatch : config.getPathsToMatch()) {
+                    if (antPathMatcher.match(pathToMatch, servletPath)) {
+                        log.debug("pathToMatch pattern={}, path={}", pathToMatch, servletPath);
+                        match = true;
+                        break;
+                    }
+                }
+                if (!match) {
+                    return joinPoint.proceed();
+                }
+            }
         }
 
         if (joinPoint.getSignature() instanceof MethodSignature) {
