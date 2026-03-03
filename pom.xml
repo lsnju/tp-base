@@ -14,7 +14,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-base-parent -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>4.0.1</version>
+    <version>4.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -109,7 +109,7 @@
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>4.0.1</version>
+                <version>4.0.2-SNAPSHOT</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
