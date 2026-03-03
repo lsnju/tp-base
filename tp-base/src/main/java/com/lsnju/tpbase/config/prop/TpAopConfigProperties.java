@@ -1,5 +1,7 @@
 package com.lsnju.tpbase.config.prop;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.lsnju.base.model.BaseMo;
@@ -21,4 +23,6 @@ public class TpAopConfigProperties extends BaseMo {
     private boolean enableRestLog = true;
     private boolean enableRestLogReq = true;
     private boolean enableRestLogResp = true;
+    private List<String> pathsToMatch;
+    private List<String> pathsToExclude;
 }

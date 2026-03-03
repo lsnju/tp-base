@@ -40,7 +40,7 @@ public class TpServletFilterConfiguration {
     @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class, MDCInsertingServletFilter.class})
     public static class TpBaseLogbackFilterConfig implements FilterOrderConstants {
         @Bean
-        public FilterRegistrationBean<MDCInsertingServletFilter> logFilter() {
+        public static FilterRegistrationBean<MDCInsertingServletFilter> logFilter() {
             log.debug("{} logFilter", TpConstants.PREFIX);
             FilterRegistrationBean<MDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new MDCInsertingServletFilter());
@@ -55,7 +55,7 @@ public class TpServletFilterConfiguration {
     @ConditionalOnMissingClass("ch.qos.logback.classic.helpers.MDCInsertingServletFilter")
     public static class TpBaseLog4j2FilterConfig implements FilterOrderConstants {
         @Bean
-        public FilterRegistrationBean<TpMDCInsertingServletFilter> logFilter() {
+        public static FilterRegistrationBean<TpMDCInsertingServletFilter> logFilter() {
             log.debug("{} logFilter", TpConstants.PREFIX);
             FilterRegistrationBean<TpMDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpMDCInsertingServletFilter());
@@ -71,7 +71,7 @@ public class TpServletFilterConfiguration {
     public static class TpBaseFilterConfig implements FilterOrderConstants {
 
         @Bean
-        public FilterRegistrationBean<TpRequestFilter> requestFilter(TpRequestFilter newBaseRequestFilter) {
+        public static FilterRegistrationBean<TpRequestFilter> requestFilter(TpRequestFilter newBaseRequestFilter) {
             log.debug("{} requestFilter", TpConstants.PREFIX);
             FilterRegistrationBean<TpRequestFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(newBaseRequestFilter);
@@ -82,13 +82,13 @@ public class TpServletFilterConfiguration {
 
         @Bean
         @ConditionalOnMissingBean(TpRequestFilter.class)
-        public TpRequestFilter newBaseRequestFilter(TpFilterConfigProperties tpFilterConfigProperties) {
+        public static TpRequestFilter newBaseRequestFilter(TpFilterConfigProperties tpFilterConfigProperties) {
             log.debug("{} newBaseRequestFilter", TpConstants.PREFIX);
             return new TpRequestFilter(tpFilterConfigProperties);
         }
 
         @Bean
-        public FilterRegistrationBean<TpPagePerfFilter> pagePerfFilter() {
+        public static FilterRegistrationBean<TpPagePerfFilter> pagePerfFilter() {
             log.debug("{} pagePerfFilter", TpConstants.PREFIX);
             FilterRegistrationBean<TpPagePerfFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpPagePerfFilter());
@@ -98,7 +98,7 @@ public class TpServletFilterConfiguration {
         }
 
         @Bean
-        public FilterRegistrationBean<TpRequestHeaderFilter> requestHeaderFilter() {
+        public static FilterRegistrationBean<TpRequestHeaderFilter> requestHeaderFilter() {
             log.debug("{} requestHeaderFilter", TpConstants.PREFIX);
             FilterRegistrationBean<TpRequestHeaderFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpRequestHeaderFilter());
@@ -108,7 +108,7 @@ public class TpServletFilterConfiguration {
         }
 
         @Bean
-        public FilterRegistrationBean<TpUidLogFilter> userIdLogFilter() {
+        public static FilterRegistrationBean<TpUidLogFilter> userIdLogFilter() {
             log.debug("{} userIdLogFilter", TpConstants.PREFIX);
             FilterRegistrationBean<TpUidLogFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpUidLogFilter());
@@ -123,7 +123,7 @@ public class TpServletFilterConfiguration {
     public static class TpFilterConfig implements FilterOrderConstants {
 
         @Bean
-        public FilterRegistrationBean<TpSessionFilter> sessionFilter() {
+        public static FilterRegistrationBean<TpSessionFilter> sessionFilter() {
             log.debug("{} sessionFilter", TpConstants.PREFIX);
             FilterRegistrationBean<TpSessionFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpSessionFilter());
@@ -139,7 +139,7 @@ public class TpServletFilterConfiguration {
     public static class ProfilerFilterConfig implements FilterOrderConstants {
 
         @Bean
-        public FilterRegistrationBean<RestProfilerFilter> restProfilerFilter() {
+        public static FilterRegistrationBean<RestProfilerFilter> restProfilerFilter() {
             log.debug("{} restProfilerFilter", TpConstants.PREFIX);
             FilterRegistrationBean<RestProfilerFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(newRestProfilerFilter());
@@ -149,14 +149,14 @@ public class TpServletFilterConfiguration {
         }
 
         @Bean
-        public RestProfilerFilter newRestProfilerFilter() {
+        public static RestProfilerFilter newRestProfilerFilter() {
             log.debug("{} newRestProfilerFilter", TpConstants.PREFIX);
             return new RestProfilerFilter();
         }
 
         @Bean
         @ConditionalOnMissingBean(TpRestApiDigestFilter.class)
-        public TpRestApiDigestFilter tpRestApiDigestFilter() {
+        public static TpRestApiDigestFilter tpRestApiDigestFilter() {
             log.debug("{} tpRestApiDigestFilter", TpConstants.PREFIX);
             return new TpRestApiDigestFilter();
         }

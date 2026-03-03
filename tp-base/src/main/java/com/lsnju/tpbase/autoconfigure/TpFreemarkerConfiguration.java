@@ -26,7 +26,7 @@ public class TpFreemarkerConfiguration {
     public static class FreemarkerNonWebConfig {
 
         @Bean
-        public FreemarkerNonWebConfigBean freemarkerNonWebConfigBean(ApplicationContext context, FreemarkerStaticModels models) {
+        public static FreemarkerNonWebConfigBean freemarkerNonWebConfigBean(ApplicationContext context, FreemarkerStaticModels models) {
             log.debug("=========================================");
             log.debug("== setup freemarkerNonWeb staticModels ==");
             log.debug("=========================================");
@@ -47,7 +47,7 @@ public class TpFreemarkerConfiguration {
     public static class FreemarkerWebConfig {
 
         @Bean
-        public FreemarkerWebConfigBean freemarkerWebConfigBean(ApplicationContext context, FreemarkerStaticModels models) {
+        public static FreemarkerWebConfigBean freemarkerWebConfigBean(ApplicationContext context, FreemarkerStaticModels models) {
             log.debug("======================================");
             log.debug("== setup freemarkerWeb staticModels ==");
             log.debug("======================================");

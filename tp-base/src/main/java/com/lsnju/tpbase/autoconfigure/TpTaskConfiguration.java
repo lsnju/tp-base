@@ -61,7 +61,7 @@ class TpTaskConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public TpMonitorTask tpMonitorTask(@Autowired List<TaskExecutor> threadPools) {
+        public static TpMonitorTask tpMonitorTask(@Autowired List<TaskExecutor> threadPools) {
             log.debug("{} tpMonitorTask {}", TAG, threadPools);
             if (CollectionUtils.isEmpty(threadPools)) {
                 return new TpMonitorTask(Collections.emptyList());
@@ -72,7 +72,7 @@ class TpTaskConfiguration {
             return new TpMonitorTask(threadPools);
         }
 
-        private String getTaskExecutorInfo(TaskExecutor e) {
+        private static String getTaskExecutorInfo(TaskExecutor e) {
             if (e instanceof ThreadPoolTaskExecutor) {
                 return showThreadPoolTaskExecutor((ThreadPoolTaskExecutor) e);
             }
@@ -82,18 +82,18 @@ class TpTaskConfiguration {
             return e.toString();
         }
 
-        private String showThreadPoolTaskExecutor(ThreadPoolTaskExecutor item) {
+        private static String showThreadPoolTaskExecutor(ThreadPoolTaskExecutor item) {
             return String.format(TP_INFO_TEMPLATE, getTpName(item),
                 item.getCorePoolSize(), item.getPoolSize(), item.getMaxPoolSize(), item);
         }
 
-        private String showThreadPoolTaskScheduler(ThreadPoolTaskScheduler item) {
+        private static String showThreadPoolTaskScheduler(ThreadPoolTaskScheduler item) {
             final ScheduledThreadPoolExecutor executor = item.getScheduledThreadPoolExecutor();
             return String.format(TP_INFO_TEMPLATE, getTpName(item),
                 executor.getCorePoolSize(), executor.getPoolSize(), executor.getMaximumPoolSize(), item);
         }
 
-        private String getTpName(CustomizableThreadCreator tp) {
+        private static String getTpName(CustomizableThreadCreator tp) {
             return StringUtils.substring(tp.getThreadNamePrefix(), 0, -1);
         }
     }
@@ -103,7 +103,7 @@ class TpTaskConfiguration {
     public static class HikariCpsMonitorConfig {
         @Bean
         @ConditionalOnMissingBean
-        public HikariCpsMonitorTask hikariCpsMonitorTask(ObjectProvider<Collection<HikariDataSource>> optional) {
+        public static HikariCpsMonitorTask hikariCpsMonitorTask(ObjectProvider<Collection<HikariDataSource>> optional) {
             log.debug("{} hikariCpsMonitorTask", TAG);
             return new HikariCpsMonitorTask(optional.getIfAvailable());
         }
@@ -115,7 +115,7 @@ class TpTaskConfiguration {
     public static class NewCommonErrorInitConfig {
         @Bean
         @ConditionalOnMissingBean
-        public NewCommonErrorInitTask newCommonErrorInitTask() {
+        public static NewCommonErrorInitTask newCommonErrorInitTask() {
             log.debug("{} newCommonErrorInitTask", TAG);
             return new NewCommonErrorInitTask();
         }
@@ -172,10 +172,10 @@ class TpTaskConfiguration {
     @AutoConfigureAfter(value = {TpBaseConfiguration.TpThreadPoolConfig.class})
     public static class TpQuartzTaskConfig {
         @Bean
-        SchedulerFactoryBeanCustomizer tpSchedulerFactoryBeanCustomizer(@Qualifier("tpForTask") @Autowired(required = false)
-                                                                        ThreadPoolTaskExecutor tpForTask,
-                                                                        @Autowired ThreadPoolTaskExecutor tpThreadPool,
-                                                                        @Autowired Trigger[] triggers) {
+        static SchedulerFactoryBeanCustomizer tpSchedulerFactoryBeanCustomizer(@Qualifier("tpForTask") @Autowired(required = false)
+                                                                               ThreadPoolTaskExecutor tpForTask,
+                                                                               @Autowired ThreadPoolTaskExecutor tpThreadPool,
+                                                                               @Autowired Trigger[] triggers) {
             show(tpForTask, tpThreadPool, triggers);
             final Executor executor = tpForTask != null ? tpForTask : tpThreadPool;
             return schedulerFactoryBean -> {
@@ -184,7 +184,7 @@ class TpTaskConfiguration {
             };
         }
 
-        private void show(ThreadPoolTaskExecutor tpForTask, ThreadPoolTaskExecutor tpThreadPool, Trigger[] triggers) {
+        private static void show(ThreadPoolTaskExecutor tpForTask, ThreadPoolTaskExecutor tpThreadPool, Trigger[] triggers) {
             log.info("--> trigger.size = {}", triggers.length);
             log.info("--> tpForTask  = {}", tpForTask);
             log.info("--> tpDefault  = {}", tpThreadPool);
@@ -193,14 +193,14 @@ class TpTaskConfiguration {
             }
         }
 
-        private String getTriggerInfo(final Trigger trigger) {
+        private static String getTriggerInfo(final Trigger trigger) {
             if (trigger instanceof AbstractTrigger<?> at) {
                 return String.format("%-40s = [%s]", at.getName(), getDesc(at));
             }
             return trigger.getClass().getName();
         }
 
-        private String getDesc(final AbstractTrigger<?> trigger) {
+        private static String getDesc(final AbstractTrigger<?> trigger) {
             if (trigger instanceof CronTrigger) {
                 return ((CronTrigger) trigger).getCronExpression();
             }
