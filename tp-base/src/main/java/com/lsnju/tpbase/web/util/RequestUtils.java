@@ -63,4 +63,8 @@ public class RequestUtils {
         return MDC.get(RequestId.MDC_REQ_ID);
     }
 
+    public static String getServletPath() {
+        return MDC.get(LogMdcConstants.REQUEST_SERVLET_PATH);
+    }
+
 }

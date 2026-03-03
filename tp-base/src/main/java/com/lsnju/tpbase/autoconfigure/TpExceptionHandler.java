@@ -49,7 +49,7 @@ public class TpExceptionHandler {
     @Order()
     public static class TpDefaultExceptionConfiguration {
         @ExceptionHandler(Exception.class)
-        public ResponseEntity<BaseResp<Void>> defaultExceptionHandler(Exception e) {
+        public static ResponseEntity<BaseResp<Void>> defaultExceptionHandler(Exception e) {
             log.warn("[异常类型] class = {}", e.getClass());
             log.error(String.format("%s [未知系统异常]", TAG), e);
             ResponseStatus rs = e.getClass().getAnnotation(ResponseStatus.class);
@@ -61,7 +61,7 @@ public class TpExceptionHandler {
             }
         }
 
-        private void makeTmpDir(Exception e) {
+        private static void makeTmpDir(Exception e) {
             // Failed to parse multipart servlet request; nested exception is java.lang.RuntimeException:
             // java.nio.file.NoSuchFileException: /tmp/undertow.8080.6560013878513610352/undertow8245999266619841888upload
             Throwable rootCause = NetworkExceptionUtils.getMostSpecificCause(e);
@@ -93,14 +93,14 @@ public class TpExceptionHandler {
             MissingServletRequestPartException.class,
             HttpMessageNotReadableException.class,
         })
-        public ResponseEntity<BaseResp<Void>> springWebReadExceptionHandler(Exception e) {
+        public static ResponseEntity<BaseResp<Void>> springWebReadExceptionHandler(Exception e) {
             log.warn("[异常类型] class = {}", e.getClass());
             log.error("{} errMsg = {}", TAG, e.getMessage());
             return RespEntityUtils.fail(BizErrorEnum.INVALID_PARAM, HttpStatus.BAD_REQUEST);
         }
 
         @ExceptionHandler({HttpMessageNotWritableException.class})
-        public void springWebWriteExceptionHandler(HttpMessageNotWritableException e) {
+        public static void springWebWriteExceptionHandler(HttpMessageNotWritableException e) {
             log.error(String.format("%s [HttpMessageNotWritableException]", TAG), e);
         }
     }
@@ -110,7 +110,7 @@ public class TpExceptionHandler {
     @Order(0)
     public static class SpringValidationExceptionConfiguration {
         @ExceptionHandler(BindException.class)
-        public ResponseEntity<BaseResp<Void>> bindExceptionHandler(BindException e) {
+        public static ResponseEntity<BaseResp<Void>> bindExceptionHandler(BindException e) {
             log.warn("[异常类型] class={}", e.getClass());
             log.error("{} [参数校验失败] errMsg = {}", TAG, e.getMessage());
             List<FieldError> fieldErrors = e.getFieldErrors();
@@ -138,7 +138,7 @@ public class TpExceptionHandler {
     @Order(0)
     public static class SpringDaoExceptionConfiguration {
         @ExceptionHandler(DuplicateKeyException.class)
-        public ResponseEntity<BaseResp<Void>> duplicateKeyExceptionHandler(DuplicateKeyException e) {
+        public static ResponseEntity<BaseResp<Void>> duplicateKeyExceptionHandler(DuplicateKeyException e) {
             log.error("{} [数据库唯一键异常] errMsg = {}", TAG, e.getMessage());
             return RespEntityUtils.fail(BizErrorEnum.DUPLICATED, HttpStatus.CONFLICT);
         }

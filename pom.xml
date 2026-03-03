@@ -7,14 +7,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.3</version>
         <relativePath />
     </parent>
 
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-base-parent -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-parent</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -202,7 +202,7 @@
             <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
-                <version>10.6</version>
+                <version>10.8</version>
                 <optional>true</optional>
             </dependency>
 
@@ -210,7 +210,7 @@
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>3.0.1</version>
+                <version>3.0.2</version>
                 <optional>true</optional>
             </dependency>
 
@@ -221,13 +221,6 @@
                 <version>1.6.16</version>
                 <optional>true</optional>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
-            <!--            <dependency>-->
-            <!--                <groupId>io.swagger.core.v3</groupId>-->
-            <!--                <artifactId>swagger-annotations</artifactId>-->
-            <!--                <version>2.2.42</version>-->
-            <!--                <optional>true</optional>-->
-            <!--            </dependency>-->
             <!-- Source: https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations-jakarta -->
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
@@ -332,14 +325,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
             <plugin>
@@ -391,7 +376,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.8.0</version>
+                <version>0.10.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>
