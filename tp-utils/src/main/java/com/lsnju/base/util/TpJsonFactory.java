@@ -1,7 +1,6 @@
 package com.lsnju.base.util;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Objects;
 
@@ -122,10 +121,8 @@ class TpJsonFactory {
 
         static {
             DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
-                .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
                 .build();
             PRETTY_MAPPER = JacksonUtils.PRETTY_MAPPER.rebuild()
-                .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
                 .build();
         }
 

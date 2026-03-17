@@ -1,7 +1,5 @@
 package com.lsnju.base.model;
 
-import java.text.SimpleDateFormat;
-
 import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.jackson.mask.MaskAnnotationIntrospector;
 
@@ -21,7 +19,6 @@ public class MaskJacksonUtils {
 
     static {
         DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
-            .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
             .annotationIntrospector(new MaskAnnotationIntrospector())
             .build();
     }
