@@ -15,7 +15,8 @@ public final class TaskCountContext {
     private static final ThreadLocal<Long> TOTAL_SIZE = new ThreadLocal<>();
 
     public static long getTotalSize() {
-        return TOTAL_SIZE.get() == null ? 0L : TOTAL_SIZE.get();
+        Long v = TOTAL_SIZE.get();
+        return v == null ? 0L : v;
     }
 
     public static void setTotalSize(long total) {
@@ -23,7 +24,8 @@ public final class TaskCountContext {
     }
 
     public static long getTaskSize() {
-        return TASK_SIZE.get() == null ? 0L : TASK_SIZE.get();
+        Long v = TASK_SIZE.get();
+        return v == null ? 0L : v;
     }
 
     public static void setTaskSize(long taskSize) {
