@@ -45,7 +45,7 @@ public class JacksonUtils {
         SimpleModule module = getDefaultModule();
 
         StdDateFormat dateFormat = new StdDateFormat()
-            .withColonInTimeZone(false)
+            .withColonInTimeZone(true)
             .withLenient(true)
             .withTimeZone(TimeZone.getDefault());
 
