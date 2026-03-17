@@ -41,7 +41,7 @@ public class JacksonUtils {
 
     static {
         StdDateFormat dateFormat = new StdDateFormat()
-            .withColonInTimeZone(false)
+            .withColonInTimeZone(true)
             .withLenient(true)
             .withTimeZone(TimeZone.getDefault());
 
