@@ -28,6 +28,12 @@ public class MaskVo {
     private Date date1;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "GMT+8")
     private Date date2;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "GMT+8")
+    private Date date3;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXX", timezone = "GMT+8")
+    private Date date4;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "GMT+8")
+    private Date date5;
 
     private String sep0 = "---------------------------";
 

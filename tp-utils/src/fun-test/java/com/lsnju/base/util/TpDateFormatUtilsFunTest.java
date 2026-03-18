@@ -41,6 +41,28 @@ public class TpDateFormatUtilsFunTest {
     }
 
     @Test
+    void test_002() {
+        String[] patterns = new String[]{
+            "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZZ",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ",
+        };
+        Date now = new Date();
+        ZonedDateTime zonedDateTime = TpDateUtils.toZoneDateTime(now);
+        for (String pattern : patterns) {
+            log.info("==> pattern : {}", pattern);
+            log.info("{}", new SimpleDateFormat(pattern).format(now));
+            log.info("{}", DateTimeFormatter.ofPattern(pattern).format(zonedDateTime));
+            log.info("{}", DateFormatUtils.format(now, pattern));
+        }
+    }
+
+    @Test
     void test_java8() {
         // local
         log.info("{}", DateTimeFormatter.ISO_LOCAL_DATE.format(LocalDateTime.now()));
