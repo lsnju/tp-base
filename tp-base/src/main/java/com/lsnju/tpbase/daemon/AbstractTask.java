@@ -35,7 +35,11 @@ public abstract class AbstractTask implements Runnable, DigestConstants {
     @Override
     public void run() {
         if (!enableQuartzTask) {
-            log.debug("enableQuartzTask = {}", enableQuartzTask);
+            log.debug("tp.quartz.enable = {}", enableQuartzTask);
+            return;
+        }
+        if (isTaskDisable()) {
+            log.debug("isTaskDisable() = true");
             return;
         }
 
@@ -53,7 +57,7 @@ public abstract class AbstractTask implements Runnable, DigestConstants {
 
             long taskSize = TaskCountContext.getTaskSize();
             long total = TaskCountContext.getTotalSize();
-            String tag = taskSize > 0 ? String.format("====%s", total) : "";
+            String tag = taskSize > 0 ? String.format("count=%s", total) : "";
 
             DIGEST_LOG.info(String.format(FORMAT_STR, clazzName, (endTime - startTime) / MS_SCALE, success, taskSize, tag));
             TaskCountContext.clean();
@@ -63,5 +67,9 @@ public abstract class AbstractTask implements Runnable, DigestConstants {
 
     /** 定时任务处理 */
     public abstract void execute();
+
+    public boolean isTaskDisable() {
+        return false;
+    }
 
 }
