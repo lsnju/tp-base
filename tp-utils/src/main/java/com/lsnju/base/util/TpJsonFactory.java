@@ -2,7 +2,6 @@ package com.lsnju.base.util;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Objects;
 
@@ -10,11 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lsnju.base.gson.GsonUtils;
 import com.lsnju.base.jackson.JacksonUtils;
 
@@ -121,27 +117,9 @@ class TpJsonFactory {
 
     static class JacksonTpJson implements TpJsonUtils.TpJson {
 
-        public static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
-        public static final ObjectMapper PRETTY_MAPPER = new ObjectMapper();
+        public static final ObjectMapper DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.copy();
+        public static final ObjectMapper PRETTY_MAPPER = JacksonUtils.PRETTY_MAPPER.copy();
         public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, String>>() {};
-
-        static {
-            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            PRETTY_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-            PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-            PRETTY_MAPPER.setDateFormat(dateFormat);
-
-            DEFAULT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-            DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            DEFAULT_MAPPER.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL);
-            DEFAULT_MAPPER.setDateFormat(dateFormat);
-
-            SimpleModule module = JacksonUtils.getDefaultModule();
-            DEFAULT_MAPPER.registerModule(module);
-            PRETTY_MAPPER.registerModule(module);
-            // MAPPER.registerModule(new JaxbAnnotationModule());
-        }
 
         @Override
         public Map<String, String> toMap(Object obj) throws IOException {
