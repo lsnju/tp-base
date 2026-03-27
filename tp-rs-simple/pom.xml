@@ -30,6 +30,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Source: https://mvnrepository.com/artifact/org.jspecify/jspecify -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
         <dependency>
             <groupId>org.springframework</groupId>
