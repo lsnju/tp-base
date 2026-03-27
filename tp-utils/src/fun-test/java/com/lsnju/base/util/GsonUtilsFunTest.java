@@ -3,6 +3,7 @@ package com.lsnju.base.util;
 import org.junit.jupiter.api.Test;
 
 import com.lsnju.base.gson.GsonUtils;
+import com.lsnju.base.util.vo.DateTimeBean;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class GsonUtilsTest {
+public class GsonUtilsFunTest {
 
     @Test
     void test_001() {

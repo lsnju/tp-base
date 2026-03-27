@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import com.lsnju.base.money.Money;
-import com.lsnju.base.util.TestBean;
+import com.lsnju.base.util.vo.TestBean;
 
 import lombok.extern.slf4j.Slf4j;
 
