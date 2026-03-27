@@ -20,10 +20,10 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 public @interface Mask {
 
     @AliasFor("serClass")
-    Class<? extends JsonSerializer>[] value() default {};
+    Class<? extends JsonSerializer<?>>[] value() default {};
 
     @AliasFor("value")
-    Class<? extends JsonSerializer>[] serClass() default {};
+    Class<? extends JsonSerializer<?>>[] serClass() default {};
 
     Type type() default Type.DEFAULT;
 

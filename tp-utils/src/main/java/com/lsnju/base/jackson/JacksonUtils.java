@@ -96,8 +96,15 @@ public class JacksonUtils {
     }
 
     public static Map<String, String> toMap(Object obj) throws IOException {
+        if (obj == null) {
+            return null;
+        }
         if (obj instanceof String) {
-            return DEFAULT_MAPPER.readValue((String) obj, MAP_TYPE_REFERENCE);
+            String json = (String) obj;
+            if (StringUtils.isBlank(json)) {
+                return null;
+            }
+            return DEFAULT_MAPPER.readValue(json, MAP_TYPE_REFERENCE);
         }
         return DEFAULT_MAPPER.convertValue(obj, MAP_TYPE_REFERENCE);
     }
