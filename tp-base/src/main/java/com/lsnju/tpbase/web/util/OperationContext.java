@@ -72,10 +72,11 @@ public class OperationContext {
         USER.remove();
         UID.remove();
         PID.remove();
-        if (CTX.get() != null) {
-            CTX.get().clear();
-            CTX.remove();
+        Map<String, Object> map = CTX.get();
+        if (map != null) {
+            map.clear();
         }
+        CTX.remove();
     }
 
 }

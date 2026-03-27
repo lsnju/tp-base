@@ -320,7 +320,10 @@ public class TpWebApiConfiguration {
             private String getPoolName(DataSource ds) {
                 for (String field : FIELD_NAMES) {
                     try {
-                        return Reflect.on(ds).field(field).get();
+                        Object value = Reflect.on(ds).field(field).get();
+                        if (value != null) {
+                            return value.toString();
+                        }
                     } catch (ReflectException ignore) {
                     }
                 }

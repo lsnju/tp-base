@@ -94,19 +94,23 @@ public class TpRequestFilter implements Filter {
             log.debug("type={}", type);
             if (type.isArray()) {
                 Object[] array = reflect.get();
-                for (Object obj : array) {
-                    if (obj == null) {
-                        continue;
+                if (array != null) {
+                    for (Object obj : array) {
+                        if (obj == null) {
+                            continue;
+                        }
+                        log.debug("{}", obj);
                     }
-                    log.debug("{}", obj);
                 }
             } else if (Iterable.class.isAssignableFrom(type)) {
                 Iterable<?> it = reflect.get();
-                for (Object obj : it) {
-                    if (obj == null) {
-                        continue;
+                if (it != null) {
+                    for (Object obj : it) {
+                        if (obj == null) {
+                            continue;
+                        }
+                        log.debug("{}", obj);
                     }
-                    log.debug("{}", obj);
                 }
             }
         } catch (ReflectException e) {
@@ -137,6 +141,6 @@ public class TpRequestFilter implements Filter {
 
     @Override
     public void destroy() {
-        log.warn("RequsetFilter.destroy");
+        log.warn("RequestFilter.destroy");
     }
 }
