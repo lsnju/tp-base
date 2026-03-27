@@ -21,10 +21,10 @@ import tools.jackson.databind.ValueSerializer;
 public @interface Mask {
 
     @AliasFor("serClass")
-    Class<? extends ValueSerializer>[] value() default {};
+    Class<? extends ValueSerializer<?>>[] value() default {};
 
     @AliasFor("value")
-    Class<? extends ValueSerializer>[] serClass() default {};
+    Class<? extends ValueSerializer<?>>[] serClass() default {};
 
     Type type() default Type.DEFAULT;
 
