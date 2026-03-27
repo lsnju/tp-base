@@ -27,6 +27,9 @@ public class MaskJacksonUtilsFunTest {
         v.setAmount(new Money(11.11));
         v.setDate1(new Date());
         v.setDate2(new Date());
+        v.setDate3(new Date());
+        v.setDate4(new Date());
+        v.setDate5(new Date());
         v.setMemo("123456199901011234");
         v.setPhone("123456199901011234");
         v.setGid("123456199901011234");

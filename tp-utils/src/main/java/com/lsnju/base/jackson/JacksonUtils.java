@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,6 +25,7 @@ import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.cfg.EnumFeature;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.util.StdDateFormat;
 
 /**
  * @author lisong
@@ -38,6 +40,11 @@ public class JacksonUtils {
     public static final JsonMapper PRETTY_MAPPER;
 
     static {
+        StdDateFormat dateFormat = new StdDateFormat()
+            .withColonInTimeZone(true)
+            .withLenient(true)
+            .withTimeZone(TimeZone.getDefault());
+
         DEFAULT_MAPPER = JsonMapper.builder()
             // write
             .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
@@ -52,6 +59,7 @@ public class JacksonUtils {
             // add module
             .addModule(getDefaultModule())
             .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_NULL))
+            .defaultDateFormat(dateFormat)
             .build();
 
         PRETTY_MAPPER = DEFAULT_MAPPER.rebuild()
@@ -82,8 +90,15 @@ public class JacksonUtils {
     }
 
     public static Map<String, String> toMap(Object obj) {
+        if (obj == null) {
+            return null;
+        }
         if (obj instanceof String) {
-            return DEFAULT_MAPPER.readValue((String) obj, MAP_TYPE_REFERENCE);
+            String json = (String) obj;
+            if (StringUtils.isBlank(json)) {
+                return null;
+            }
+            return DEFAULT_MAPPER.readValue(json, MAP_TYPE_REFERENCE);
         }
         return DEFAULT_MAPPER.convertValue(obj, MAP_TYPE_REFERENCE);
     }

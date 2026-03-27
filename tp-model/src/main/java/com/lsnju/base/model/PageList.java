@@ -24,7 +24,7 @@ public class PageList<T> extends BaseMo {
     public static final PageList EMPTY_PAGE_LIST = new PageList() {
 
         {
-            super.setResultList(Collections.EMPTY_LIST);
+            super.setResultList(Collections.emptyList());
         }
 
         @Override
