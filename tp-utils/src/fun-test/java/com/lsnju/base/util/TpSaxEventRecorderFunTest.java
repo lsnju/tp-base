@@ -17,10 +17,10 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class TpSaxEventRecorderTest {
+public class TpSaxEventRecorderFunTest {
     @Test
     public void test_001() {
-        final ClassLoader classLoader = TpSaxEventRecorderTest.class.getClassLoader();
+        final ClassLoader classLoader = TpSaxEventRecorderFunTest.class.getClassLoader();
         TpSaxEventRecorder recorder = new TpSaxEventRecorder();
         try {
             recorder.recordEvents(classLoader.getResourceAsStream("logback-test.xml"));

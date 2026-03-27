@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 
 import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.vo.DateTimeBean;
+import com.lsnju.base.util.vo.TestBean;
 import com.lsnju.base.util.vo.TestVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,7 @@ import tools.jackson.databind.json.JsonMapper;
  * @version V1.0
  */
 @Slf4j
-public class JacksonUtilsTest {
+public class JacksonUtilsFunTest {
 
     @Test
     public void test_001() {

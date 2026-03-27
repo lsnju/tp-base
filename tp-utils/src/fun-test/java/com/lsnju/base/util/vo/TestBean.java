@@ -1,4 +1,4 @@
-package com.lsnju.base.util;
+package com.lsnju.base.util.vo;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
 

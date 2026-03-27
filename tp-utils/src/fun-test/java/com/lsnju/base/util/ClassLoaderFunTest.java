@@ -11,11 +11,11 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class ClassLoaderTest {
+public class ClassLoaderFunTest {
 
     @Test
     void test_001() {
-        ClassLoader classLoader = ClassLoaderTest.class.getClassLoader();
+        ClassLoader classLoader = ClassLoaderFunTest.class.getClassLoader();
         while (classLoader != null) {
             log.info("{}", classLoader);
             log.info("{}", classLoader.equals(ClassLoader.getSystemClassLoader()));
