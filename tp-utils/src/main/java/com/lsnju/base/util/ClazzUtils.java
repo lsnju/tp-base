@@ -94,11 +94,7 @@ public class ClazzUtils {
         Package aPackage = type.getPackage();
         if (aPackage != null) {
             String v = aPackage.getImplementationVersion();
-            if (v == null) {
-                return "na";
-            } else {
-                return v;
-            }
+            return Objects.requireNonNullElse(v, "na");
         }
         return "na";
     }

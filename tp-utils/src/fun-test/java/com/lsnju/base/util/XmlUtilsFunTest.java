@@ -3,6 +3,7 @@ package com.lsnju.base.util;
 import org.junit.jupiter.api.Test;
 
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.vo.TestBean;
 
 import lombok.extern.slf4j.Slf4j;
 

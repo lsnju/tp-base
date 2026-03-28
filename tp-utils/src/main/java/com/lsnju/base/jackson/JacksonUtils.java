@@ -93,8 +93,7 @@ public class JacksonUtils {
         if (obj == null) {
             return null;
         }
-        if (obj instanceof String) {
-            String json = (String) obj;
+        if (obj instanceof String json) {
             if (StringUtils.isBlank(json)) {
                 return null;
             }
