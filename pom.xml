@@ -327,6 +327,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <!-- 显式启用「编译 + 注解处理」，避免 javac 关于“类路径上发现处理程序”的未来行为提示 -->
+                <configuration>
+                    <proc>full</proc>
+                </configuration>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
             <plugin>
