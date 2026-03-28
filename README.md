@@ -1,6 +1,6 @@
 # tp-base
 
-## current version <version>4.0.3-SNAPSHOT</version>
+## current version <version>4.0.3</version>
 
 ## usage
 
@@ -12,7 +12,7 @@
         <dependency>
             <groupId>com.lsnju.tp3</groupId>
             <artifactId>tp-bom</artifactId>
-            <version>4.0.3-SNAPSHOT</version>
+            <version>4.0.3</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
