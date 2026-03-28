@@ -1,7 +1,7 @@
 package com.lsnju.base.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.jackson.mask.MaskAnnotationIntrospector;
 
@@ -16,10 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MaskJacksonUtils {
 
-    private static final ObjectMapper DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.copy();
+    private static final JsonMapper DEFAULT_MAPPER;
 
     static {
-        DEFAULT_MAPPER.setAnnotationIntrospector(new MaskAnnotationIntrospector());
+        DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
+            .annotationIntrospector(new MaskAnnotationIntrospector())
+            .build();
     }
 
     public static String toJson(Object obj) {

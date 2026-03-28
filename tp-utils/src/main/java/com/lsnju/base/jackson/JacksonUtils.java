@@ -17,10 +17,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.StreamReadFeature;
+import com.fasterxml.jackson.core.StreamWriteFeature;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.lsnju.base.money.Money;
@@ -36,35 +40,38 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JacksonUtils {
 
-    public static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
-    public static final ObjectMapper PRETTY_MAPPER = new ObjectMapper();
+    public static final JsonMapper DEFAULT_MAPPER;
+    public static final JsonMapper PRETTY_MAPPER;
     public static boolean WITH_JSR310 = ClazzUtils.exist("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
     public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<>() {};
 
     static {
-        SimpleModule module = getDefaultModule();
-
         StdDateFormat dateFormat = new StdDateFormat()
             .withColonInTimeZone(true)
             .withLenient(true)
             .withTimeZone(TimeZone.getDefault());
 
-        PRETTY_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        PRETTY_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-        PRETTY_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        PRETTY_MAPPER.registerModule(module);
-        PRETTY_MAPPER.setDateFormat(dateFormat);
+        DEFAULT_MAPPER = JsonMapper.builder()
+            // write
+            .defaultPropertyInclusion(JsonInclude.Value.ALL_NON_NULL)
+            .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .enable(SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL)
+            .enable(JsonWriteFeature.WRITE_HEX_UPPER_CASE)
+            .enable(StreamWriteFeature.IGNORE_UNKNOWN)
+            // read
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)
+            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+            // add module
+            .addModule(getDefaultModule())
+            .defaultDateFormat(dateFormat)
+            .build();
 
-        DEFAULT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        DEFAULT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        DEFAULT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DEFAULT_MAPPER.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL);
-        DEFAULT_MAPPER.registerModule(module);
-        DEFAULT_MAPPER.setDateFormat(dateFormat);
-        // MAPPER.registerModule(new JaxbAnnotationModule());
-
-        PRETTY_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
-        DEFAULT_MAPPER.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
+        PRETTY_MAPPER = DEFAULT_MAPPER.rebuild()
+            // write
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .build();
     }
 
     public static SimpleModule getDefaultModule() {
@@ -99,8 +106,7 @@ public class JacksonUtils {
         if (obj == null) {
             return null;
         }
-        if (obj instanceof String) {
-            String json = (String) obj;
+        if (obj instanceof String json) {
             if (StringUtils.isBlank(json)) {
                 return null;
             }

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.lsnju.base.gson.GsonUtils;
 import com.lsnju.base.jackson.JacksonUtils;
 
@@ -117,9 +117,16 @@ class TpJsonFactory {
 
     static class JacksonTpJson implements TpJsonUtils.TpJson {
 
-        public static final ObjectMapper DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.copy();
-        public static final ObjectMapper PRETTY_MAPPER = JacksonUtils.PRETTY_MAPPER.copy();
-        public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, String>>() {};
+        public static final JsonMapper DEFAULT_MAPPER;
+        public static final JsonMapper PRETTY_MAPPER;
+        public static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<>() {};
+
+        static {
+            DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
+                .build();
+            PRETTY_MAPPER = JacksonUtils.PRETTY_MAPPER.rebuild()
+                .build();
+        }
 
         @Override
         public Map<String, String> toMap(Object obj) throws IOException {
