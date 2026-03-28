@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -55,7 +56,7 @@ public class TpRestApiLogConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        static TpRestApiLogInterceptor tpRestApiLogInterceptor(ObjectProvider<TpAopConfigProperties> config) {
+        static TpRestApiLogInterceptor tpRestApiLogInterceptor(ObjectProvider<@NonNull TpAopConfigProperties> config) {
             return new TpRestApiLogInterceptor(config.getIfAvailable(() -> {
                 TpAopConfigProperties ret = new TpAopConfigProperties();
                 ret.setUseSpring(false);

@@ -8,6 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NonNull;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
@@ -103,7 +104,7 @@ class TpTaskConfiguration {
     public static class HikariCpsMonitorConfig {
         @Bean
         @ConditionalOnMissingBean
-        public static HikariCpsMonitorTask hikariCpsMonitorTask(ObjectProvider<Collection<HikariDataSource>> optional) {
+        public static HikariCpsMonitorTask hikariCpsMonitorTask(ObjectProvider<@NonNull Collection<HikariDataSource>> optional) {
             log.debug("{} hikariCpsMonitorTask", TAG);
             return new HikariCpsMonitorTask(optional.getIfAvailable());
         }
@@ -126,7 +127,7 @@ class TpTaskConfiguration {
 
         private final CommonErrorInitTask commonErrorInitTask;
 
-        public OldCommonErrorInitConfig(ObjectProvider<CommonErrorInitTask> commonErrorInitTask) {
+        public OldCommonErrorInitConfig(ObjectProvider<@NonNull CommonErrorInitTask> commonErrorInitTask) {
             this.commonErrorInitTask = commonErrorInitTask.getIfAvailable();
         }
 
@@ -150,7 +151,7 @@ class TpTaskConfiguration {
         }
 
         @Override
-        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
             this.context = applicationContext;
         }
 

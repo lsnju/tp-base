@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import jakarta.servlet.Filter;
 
 import org.aopalliance.aop.Advice;
+import org.jspecify.annotations.NonNull;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -57,7 +58,7 @@ public class TpBaseConfiguration {
     public static class TpSpringWebMvcConfig {
         @Bean
         @ConditionalOnMissingBean
-        static TpSpringWebMvcHelper tpSpringWebMvcHelper(ObjectProvider<List<HandlerExceptionResolver>> resolvers) {
+        static TpSpringWebMvcHelper tpSpringWebMvcHelper(ObjectProvider<@NonNull List<HandlerExceptionResolver>> resolvers) {
             log.debug("{} tpSpringWebMvcHelper", TpConstants.PREFIX);
             return new TpSpringWebMvcHelper(resolvers.getIfAvailable());
         }
@@ -151,10 +152,10 @@ public class TpBaseConfiguration {
         //        @ConditionalOnClass(name = "jakarta.servlet.Filter")
         @Bean
         @ConditionalOnClass(value = jakarta.servlet.Filter.class)
-        static FilterConfigShow filterConfigShow(ObjectProvider<List<Filter>> filters,
-                                                 ObjectProvider<List<FilterRegistrationBean<?>>> filterRegistrationBeans,
-                                                 ObjectProvider<List<OrderedFilter>> orderedFilters,
-                                                 ObjectProvider<List<GenericFilterBean>> genericFilterBeans) {
+        static FilterConfigShow filterConfigShow(ObjectProvider<@NonNull List<Filter>> filters,
+                                                 ObjectProvider<@NonNull List<FilterRegistrationBean<?>>> filterRegistrationBeans,
+                                                 ObjectProvider<@NonNull List<OrderedFilter>> orderedFilters,
+                                                 ObjectProvider<@NonNull List<GenericFilterBean>> genericFilterBeans) {
             log.debug("{} filterConfigShow", TpConstants.PREFIX);
             return new FilterConfigShow(filters.getIfAvailable(), filterRegistrationBeans.getIfAvailable(),
                 orderedFilters.getIfAvailable(), genericFilterBeans.getIfAvailable());
@@ -162,7 +163,7 @@ public class TpBaseConfiguration {
 
         @Bean
         @ConditionalOnClass(name = "org.springframework.web.server.WebFilter")
-        static WebFilterConfigShow webFilterConfigShow(ObjectProvider<List<WebFilter>> webFilters) {
+        static WebFilterConfigShow webFilterConfigShow(ObjectProvider<@NonNull List<WebFilter>> webFilters) {
             log.debug("{} webFilterConfigShow", TpConstants.PREFIX);
             return new WebFilterConfigShow(webFilters.getIfAvailable());
         }

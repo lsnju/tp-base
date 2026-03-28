@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.joor.Reflect;
 import org.joor.ReflectException;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -90,7 +91,8 @@ public class TpWebApiConfiguration {
             private final TpLogConfigProperties tpLogConfigProperties;
             private final TpSpringWebMvcHelper tpSpringWebMvcHelper;
 
-            public TpSysInfoController(TpLogConfigProperties tpLogConfigProperties, ObjectProvider<TpSpringWebMvcHelper> tpSpringWebMvcHelper) {
+            public TpSysInfoController(TpLogConfigProperties tpLogConfigProperties,
+                                       ObjectProvider<@NonNull TpSpringWebMvcHelper> tpSpringWebMvcHelper) {
                 this.tpLogConfigProperties = tpLogConfigProperties;
                 this.tpSpringWebMvcHelper = tpSpringWebMvcHelper.getIfAvailable();
             }
@@ -136,7 +138,7 @@ public class TpWebApiConfiguration {
 
             @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/dep-simple-mf.json")
             public Map<String, String> depSimpleMf(@RequestParam(name = "sorted", defaultValue = "false", required = false) boolean sorted) throws IOException {
-                log.debug("depInfo");
+                log.debug("depSimpleMf");
                 Map<String, String> map = new LinkedHashMap<>();
                 List<JarInfo> list = ClazzUtils.allJarInfo();
                 for (JarInfo item : list) {
@@ -163,7 +165,7 @@ public class TpWebApiConfiguration {
             }
 
             @GetMapping(path = "${tp.sys.mo.base-path:/tp/mo}/classpath-jar.json")
-            public Collection<String> uselessJar() throws IOException {
+            public Collection<String> uselessJar() {
                 log.debug("uselessJar");
                 final ClassLoader classLoader = ClazzUtils.class.getClassLoader();
                 Set<String> jarUrlList = ClazzUtils.getJarURLs(classLoader).stream().map(URL::getPath).collect(Collectors.toSet());
@@ -186,8 +188,8 @@ public class TpWebApiConfiguration {
             private final List<ThreadPoolTaskExecutor> threadPools;
             private final List<TaskScheduler> schedulerList;
 
-            public TpThreadPoolController(ObjectProvider<List<ThreadPoolTaskExecutor>> threadPools,
-                                          ObjectProvider<List<TaskScheduler>> schedulerList) {
+            public TpThreadPoolController(ObjectProvider<@NonNull List<ThreadPoolTaskExecutor>> threadPools,
+                                          ObjectProvider<@NonNull List<TaskScheduler>> schedulerList) {
                 this.threadPools = threadPools.getIfAvailable();
                 this.schedulerList = schedulerList.getIfAvailable();
             }

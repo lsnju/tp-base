@@ -2,6 +2,7 @@ package com.lsnju.tpbase.autoconfigure;
 
 import jakarta.servlet.Filter;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -40,9 +41,9 @@ public class TpServletFilterConfiguration {
     @ConditionalOnClass(value = {Filter.class, FilterRegistrationBean.class, MDCInsertingServletFilter.class})
     public static class TpBaseLogbackFilterConfig implements FilterOrderConstants {
         @Bean
-        public static FilterRegistrationBean<MDCInsertingServletFilter> logFilter() {
+        public static FilterRegistrationBean<@NonNull MDCInsertingServletFilter> logFilter() {
             log.debug("{} logFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<MDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull MDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new MDCInsertingServletFilter());
             registrationBean.addUrlPatterns("/*");
             registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + LOG_ORDER);
@@ -55,9 +56,9 @@ public class TpServletFilterConfiguration {
     @ConditionalOnMissingClass("ch.qos.logback.classic.helpers.MDCInsertingServletFilter")
     public static class TpBaseLog4j2FilterConfig implements FilterOrderConstants {
         @Bean
-        public static FilterRegistrationBean<TpMDCInsertingServletFilter> logFilter() {
+        public static FilterRegistrationBean<@NonNull TpMDCInsertingServletFilter> logFilter() {
             log.debug("{} logFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<TpMDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull TpMDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpMDCInsertingServletFilter());
             registrationBean.addUrlPatterns("/*");
             registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + LOG_ORDER);
@@ -71,9 +72,9 @@ public class TpServletFilterConfiguration {
     public static class TpBaseFilterConfig implements FilterOrderConstants {
 
         @Bean
-        public static FilterRegistrationBean<TpRequestFilter> requestFilter(TpRequestFilter newBaseRequestFilter) {
+        public static FilterRegistrationBean<@NonNull TpRequestFilter> requestFilter(TpRequestFilter newBaseRequestFilter) {
             log.debug("{} requestFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<TpRequestFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull TpRequestFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(newBaseRequestFilter);
             registrationBean.addUrlPatterns("/*");
             registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + REQ_ORDER);
@@ -88,9 +89,9 @@ public class TpServletFilterConfiguration {
         }
 
         @Bean
-        public static FilterRegistrationBean<TpPagePerfFilter> pagePerfFilter() {
+        public static FilterRegistrationBean<@NonNull TpPagePerfFilter> pagePerfFilter() {
             log.debug("{} pagePerfFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<TpPagePerfFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull TpPagePerfFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpPagePerfFilter());
             registrationBean.addUrlPatterns("/*");
             registrationBean.setOrder(PERF_ORDER);
@@ -98,9 +99,9 @@ public class TpServletFilterConfiguration {
         }
 
         @Bean
-        public static FilterRegistrationBean<TpRequestHeaderFilter> requestHeaderFilter() {
+        public static FilterRegistrationBean<@NonNull TpRequestHeaderFilter> requestHeaderFilter() {
             log.debug("{} requestHeaderFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<TpRequestHeaderFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull TpRequestHeaderFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpRequestHeaderFilter());
             registrationBean.addUrlPatterns("/*");
             registrationBean.setOrder(REQUEST_HEADER_ORDER);
@@ -108,9 +109,9 @@ public class TpServletFilterConfiguration {
         }
 
         @Bean
-        public static FilterRegistrationBean<TpUidLogFilter> userIdLogFilter() {
+        public static FilterRegistrationBean<@NonNull TpUidLogFilter> userIdLogFilter() {
             log.debug("{} userIdLogFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<TpUidLogFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull TpUidLogFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpUidLogFilter());
             registrationBean.addUrlPatterns("/*");
             registrationBean.setOrder(UID_ORDER);
@@ -123,9 +124,9 @@ public class TpServletFilterConfiguration {
     public static class TpFilterConfig implements FilterOrderConstants {
 
         @Bean
-        public static FilterRegistrationBean<TpSessionFilter> sessionFilter() {
+        public static FilterRegistrationBean<@NonNull TpSessionFilter> sessionFilter() {
             log.debug("{} sessionFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<TpSessionFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull TpSessionFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(new TpSessionFilter());
             registrationBean.addUrlPatterns("*.htm", "*.json");
             registrationBean.setOrder(SESSION_ORDER);
@@ -139,9 +140,9 @@ public class TpServletFilterConfiguration {
     public static class ProfilerFilterConfig implements FilterOrderConstants {
 
         @Bean
-        public static FilterRegistrationBean<RestProfilerFilter> restProfilerFilter() {
+        public static FilterRegistrationBean<@NonNull RestProfilerFilter> restProfilerFilter() {
             log.debug("{} restProfilerFilter", TpConstants.PREFIX);
-            FilterRegistrationBean<RestProfilerFilter> registrationBean = new FilterRegistrationBean<>();
+            FilterRegistrationBean<@NonNull RestProfilerFilter> registrationBean = new FilterRegistrationBean<>();
             registrationBean.setFilter(newRestProfilerFilter());
             registrationBean.addUrlPatterns("/*");
             registrationBean.setOrder(PROFILER_ORDER);

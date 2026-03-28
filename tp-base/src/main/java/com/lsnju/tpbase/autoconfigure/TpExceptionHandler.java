@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -49,7 +50,7 @@ public class TpExceptionHandler {
     @Order()
     public static class TpDefaultExceptionConfiguration {
         @ExceptionHandler(Exception.class)
-        public static ResponseEntity<BaseResp<Void>> defaultExceptionHandler(Exception e) {
+        public static ResponseEntity<@NonNull BaseResp<Void>> defaultExceptionHandler(Exception e) {
             log.warn("[异常类型] class = {}", e.getClass());
             log.error(String.format("%s [未知系统异常]", TAG), e);
             ResponseStatus rs = e.getClass().getAnnotation(ResponseStatus.class);
@@ -93,7 +94,7 @@ public class TpExceptionHandler {
             MissingServletRequestPartException.class,
             HttpMessageNotReadableException.class,
         })
-        public static ResponseEntity<BaseResp<Void>> springWebReadExceptionHandler(Exception e) {
+        public static ResponseEntity<@NonNull BaseResp<Void>> springWebReadExceptionHandler(Exception e) {
             log.warn("[异常类型] class = {}", e.getClass());
             log.error("{} errMsg = {}", TAG, e.getMessage());
             return RespEntityUtils.fail(BizErrorEnum.INVALID_PARAM, HttpStatus.BAD_REQUEST);
@@ -110,7 +111,7 @@ public class TpExceptionHandler {
     @Order(0)
     public static class SpringValidationExceptionConfiguration {
         @ExceptionHandler(BindException.class)
-        public static ResponseEntity<BaseResp<Void>> bindExceptionHandler(BindException e) {
+        public static ResponseEntity<@NonNull BaseResp<Void>> bindExceptionHandler(BindException e) {
             log.warn("[异常类型] class={}", e.getClass());
             log.error("{} [参数校验失败] errMsg = {}", TAG, e.getMessage());
             List<FieldError> fieldErrors = e.getFieldErrors();
@@ -138,7 +139,7 @@ public class TpExceptionHandler {
     @Order(0)
     public static class SpringDaoExceptionConfiguration {
         @ExceptionHandler(DuplicateKeyException.class)
-        public static ResponseEntity<BaseResp<Void>> duplicateKeyExceptionHandler(DuplicateKeyException e) {
+        public static ResponseEntity<@NonNull BaseResp<Void>> duplicateKeyExceptionHandler(DuplicateKeyException e) {
             log.error("{} [数据库唯一键异常] errMsg = {}", TAG, e.getMessage());
             return RespEntityUtils.fail(BizErrorEnum.DUPLICATED, HttpStatus.CONFLICT);
         }
