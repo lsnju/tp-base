@@ -44,6 +44,8 @@
 
     <properties>
         <java.version>17</java.version>
+        <!-- javac release：与 source 对齐的系统模块 API，避免未设置系统模块路径类警告 -->
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
