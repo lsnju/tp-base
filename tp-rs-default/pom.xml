@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lsnju.tp3</groupId>
         <artifactId>tp-base-dep</artifactId>
-        <version>3.1.28</version>
+        <version>3.1.29</version>
         <relativePath>../tp-base-dep</relativePath>
     </parent>
     <artifactId>tp-rs-default</artifactId>
@@ -28,6 +28,13 @@
             <groupId>com.lsnju.tp3</groupId>
             <artifactId>tp-domain-multi</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/org.jspecify/jspecify -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
