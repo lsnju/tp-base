@@ -6,8 +6,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  *
@@ -15,8 +14,7 @@ import lombok.Setter;
  * @since 2024/11/2 12:21
  * @version V1.0
  */
-@Getter
-@Setter
+@Data
 public class DateTimeBean {
 
     private String name;
