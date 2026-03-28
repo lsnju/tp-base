@@ -4,7 +4,7 @@ import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.jackson.mask.MaskAnnotationIntrospector;
 
 import lombok.extern.slf4j.Slf4j;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  *
@@ -15,7 +15,7 @@ import tools.jackson.databind.ObjectMapper;
 @Slf4j
 public class MaskJacksonUtils {
 
-    private static final ObjectMapper DEFAULT_MAPPER;
+    private static final JsonMapper DEFAULT_MAPPER;
 
     static {
         DEFAULT_MAPPER = JacksonUtils.DEFAULT_MAPPER.rebuild()
