@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class GuavaTest {
+public class GuavaFunTest {
 
     // https://www.baeldung.com/jvm-list-all-classes-loaded
 
@@ -96,7 +96,7 @@ public class GuavaTest {
     @Test
     void test_show_top_level_class() {
         try {
-            ClassPath classPath = ClassPath.from(GuavaTest.class.getClassLoader());
+            ClassPath classPath = ClassPath.from(GuavaFunTest.class.getClassLoader());
             Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
             log.info("total = {}", classes.size());
 
@@ -118,7 +118,7 @@ public class GuavaTest {
                 log.info("{} = {}", k, v);
             });
 
-            final ClassLoader classLoader = GuavaTest.class.getClassLoader();
+            final ClassLoader classLoader = GuavaFunTest.class.getClassLoader();
             Vector<Class<?>> clsOfClassLoader = Reflect.on(classLoader).field("classes").get();
             log.info("{}", clsOfClassLoader.size());
 
@@ -129,7 +129,7 @@ public class GuavaTest {
 
     @Test
     void show_class_list_of_cl() {
-        final ClassLoader classLoader = GuavaTest.class.getClassLoader();
+        final ClassLoader classLoader = GuavaFunTest.class.getClassLoader();
         show_classes_of_cl(classLoader);
         show_classes_of_cl(classLoader.getParent());
         show_classes_of_cl(classLoader.getParent().getParent());
@@ -166,7 +166,7 @@ public class GuavaTest {
 
     @Test
     void test_show_loaded_class_location() {
-        final ClassLoader classLoader = GuavaTest.class.getClassLoader();
+        final ClassLoader classLoader = GuavaFunTest.class.getClassLoader();
         Vector<Class<?>> classes = Reflect.on(classLoader).field("classes").get();
         log.info("{}", classes.size());
         Set<URL> set = classes.stream().map(ClazzUtils::getURL).filter(Objects::nonNull).collect(Collectors.toSet());

@@ -1,4 +1,4 @@
-package com.lsnju.base.util;
+package com.lsnju.base.util.vo;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

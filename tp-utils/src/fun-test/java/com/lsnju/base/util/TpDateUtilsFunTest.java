@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class TpDateUtilsTest {
+public class TpDateUtilsFunTest {
 
     @Test
     void test_dayOfBegin() {
