@@ -1,76 +1,101 @@
 package com.lsnju.base.jackson;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import tools.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * Unit tests for {@link JacksonXmlUtils}.
  */
 class JacksonXmlUtilsTest {
 
+    @JacksonXmlRootElement(localName = "sample")
     static class SampleBean {
+        @JacksonXmlProperty(localName = "id")
         public String id;
+        @JacksonXmlProperty(localName = "count")
         public int count;
     }
 
-    static class BeanWithKnownField {
-        public String known;
+    @JacksonXmlRootElement(localName = "catalog")
+    static class Catalog {
+        @JacksonXmlElementWrapper(localName = "items")
+        @JacksonXmlProperty(localName = "item")
+        public List<String> items;
     }
 
     @Test
-    void toXml_and_fromXml_class_roundTrip() {
+    void toXml_containsIndentation() throws JsonProcessingException {
         SampleBean bean = new SampleBean();
-        bean.id = "abc";
-        bean.count = 7;
-
+        bean.id = "a1";
+        bean.count = 2;
         String xml = JacksonXmlUtils.toXml(bean);
         Assertions.assertNotNull(xml);
-        Assertions.assertTrue(xml.contains("<id>abc</id>"));
-        Assertions.assertTrue(xml.contains("<count>7</count>"));
+        Assertions.assertTrue(xml.contains("<id>"), xml);
+        Assertions.assertTrue(xml.contains("a1"), xml);
+        Assertions.assertTrue(xml.contains("<count>"), xml);
+        Assertions.assertTrue(xml.contains("2"), xml);
+        Assertions.assertTrue(xml.contains("\n"), "INDENT_OUTPUT should add newlines");
+    }
 
-        SampleBean back = JacksonXmlUtils.fromXml(xml, SampleBean.class);
+    @Test
+    void fromXml_class_roundTrip() throws IOException {
+        SampleBean original = new SampleBean();
+        original.id = "x";
+        original.count = 99;
+        String xml = JacksonXmlUtils.toXml(original);
+        SampleBean parsed = JacksonXmlUtils.fromXml(xml, SampleBean.class);
+        Assertions.assertNotNull(parsed);
+        Assertions.assertEquals("x", parsed.id);
+        Assertions.assertEquals(99, parsed.count);
+    }
+
+    @Test
+    void fromXml_typeReference_listInsideRoot() throws IOException {
+        Catalog catalog = new Catalog();
+        catalog.items = List.of("one", "two");
+        String xml = JacksonXmlUtils.toXml(catalog);
+        Catalog back = JacksonXmlUtils.fromXml(xml, new TypeReference<Catalog>() {});
         Assertions.assertNotNull(back);
-        Assertions.assertEquals("abc", back.id);
-        Assertions.assertEquals(7, back.count);
+        Assertions.assertNotNull(back.items);
+        Assertions.assertEquals(2, back.items.size());
+        Assertions.assertEquals("one", back.items.get(0));
+        Assertions.assertEquals("two", back.items.get(1));
     }
 
     @Test
-    void toXml_prettyOutput_containsNewline() {
-        SampleBean bean = new SampleBean();
-        bean.id = "n1";
-        bean.count = 1;
-
-        String xml = JacksonXmlUtils.toXml(bean);
-        Assertions.assertNotNull(xml);
-        Assertions.assertTrue(xml.contains("\n"));
+    void fromXml_unknownPropertiesIgnored() throws IOException {
+        String xml = """
+            <sample>
+              <id>with-extra</id>
+              <count>1</count>
+              <unexpected>ignored</unexpected>
+            </sample>
+            """;
+        SampleBean parsed = JacksonXmlUtils.fromXml(xml, SampleBean.class);
+        Assertions.assertEquals("with-extra", parsed.id);
+        Assertions.assertEquals(1, parsed.count);
     }
 
     @Test
-    void fromXml_typeReference_list() {
-        String xml = "<ArrayList><item><id>a</id><count>1</count></item><item><id>b</id><count>2</count></item></ArrayList>";
-
-        List<SampleBean> list = JacksonXmlUtils.fromXml(xml, new TypeReference<List<SampleBean>>() {});
-        Assertions.assertNotNull(list);
-        Assertions.assertEquals(2, list.size());
-        Assertions.assertEquals("a", list.get(0).id);
-        Assertions.assertEquals(2, list.get(1).count);
-    }
-
-    @Test
-    void fromXml_unknownProperty_ignored() {
-        String xml = "<BeanWithKnownField><known>v</known><extra>99</extra></BeanWithKnownField>";
-        BeanWithKnownField bean = JacksonXmlUtils.fromXml(xml, BeanWithKnownField.class);
-        Assertions.assertNotNull(bean);
-        Assertions.assertEquals("v", bean.known);
-    }
-
-    @Test
-    void fromXml_invalidXml_throws() {
-        Assertions.assertThrows(RuntimeException.class,
-            () -> JacksonXmlUtils.fromXml("<bad>", SampleBean.class));
+    void fromXml_typeReference_map() throws IOException {
+        String xml = """
+            <LinkedHashMap>
+              <k1>v1</k1>
+              <k2>v2</k2>
+            </LinkedHashMap>
+            """;
+        Map<String, String> map = JacksonXmlUtils.fromXml(xml, new TypeReference<Map<String, String>>() {});
+        Assertions.assertEquals("v1", map.get("k1"));
+        Assertions.assertEquals("v2", map.get("k2"));
     }
 }

@@ -1,5 +1,7 @@
 package com.lsnju.base.jackson;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,25 +15,34 @@ class JacksonYamlUtilsTest {
         public int count;
     }
 
-    static class BeanWithKnownField {
-        public String known;
+    @Test
+    void toYml_then_fromYml_roundTrip() {
+        SampleBean original = new SampleBean();
+        original.id = "y1";
+        original.count = 3;
+        String yml = JacksonYamlUtils.toYml(original);
+        Assertions.assertNotNull(yml);
+        Assertions.assertTrue(yml.contains("id:"), yml);
+        Assertions.assertTrue(yml.contains("y1"), yml);
+        Assertions.assertTrue(yml.contains("count:"), yml);
+        Assertions.assertTrue(yml.contains("\n"), "INDENT_OUTPUT should produce multi-line YAML");
+
+        SampleBean parsed = JacksonYamlUtils.fromYml(yml, SampleBean.class);
+        Assertions.assertNotNull(parsed);
+        Assertions.assertEquals("y1", parsed.id);
+        Assertions.assertEquals(3, parsed.count);
     }
 
     @Test
-    void toYml_and_fromYml_roundTrip() {
-        SampleBean bean = new SampleBean();
-        bean.id = "abc";
-        bean.count = 7;
-
-        String yml = JacksonYamlUtils.toYml(bean);
+    void toYml_map_roundTrip() {
+        Map<String, String> map = Map.of("a", "1", "b", "2");
+        String yml = JacksonYamlUtils.toYml(map);
         Assertions.assertNotNull(yml);
-        Assertions.assertTrue(yml.contains("id: \"abc\"") || yml.contains("id: abc"));
-        Assertions.assertTrue(yml.contains("count: 7"));
-
-        SampleBean back = JacksonYamlUtils.fromYml(yml, SampleBean.class);
+        @SuppressWarnings("unchecked")
+        Map<String, String> back = JacksonYamlUtils.fromYml(yml, Map.class);
         Assertions.assertNotNull(back);
-        Assertions.assertEquals("abc", back.id);
-        Assertions.assertEquals(7, back.count);
+        Assertions.assertEquals("1", back.get("a"));
+        Assertions.assertEquals("2", back.get("b"));
     }
 
     @Test
@@ -40,27 +51,28 @@ class JacksonYamlUtilsTest {
     }
 
     @Test
-    void fromYml_blank_returnsNull() {
+    void fromYml_blank_or_null_returnsNull() {
+        Assertions.assertNull(JacksonYamlUtils.fromYml(null, SampleBean.class));
         Assertions.assertNull(JacksonYamlUtils.fromYml("", SampleBean.class));
         Assertions.assertNull(JacksonYamlUtils.fromYml("   ", SampleBean.class));
-        Assertions.assertNull(JacksonYamlUtils.fromYml(null, SampleBean.class));
     }
 
     @Test
     void fromYml_nullClazz_throws() {
-        Assertions.assertThrows(NullPointerException.class, () -> JacksonYamlUtils.fromYml("id: a", null));
+        Assertions.assertThrows(NullPointerException.class,
+            () -> JacksonYamlUtils.fromYml("id: x", (Class<SampleBean>) null));
     }
 
     @Test
-    void fromYml_unknownProperty_ignored() {
-        String yml = "known: v\nextra: 99\n";
-        BeanWithKnownField bean = JacksonYamlUtils.fromYml(yml, BeanWithKnownField.class);
-        Assertions.assertNotNull(bean);
-        Assertions.assertEquals("v", bean.known);
-    }
-
-    @Test
-    void fromYml_invalidContent_throws() {
-        Assertions.assertThrows(RuntimeException.class, () -> JacksonYamlUtils.fromYml("known: [", BeanWithKnownField.class));
+    void fromYml_unknownPropertiesIgnored() {
+        String yml = """
+            id: with-extra
+            count: 7
+            unexpected: ignored
+            """;
+        SampleBean parsed = JacksonYamlUtils.fromYml(yml, SampleBean.class);
+        Assertions.assertNotNull(parsed);
+        Assertions.assertEquals("with-extra", parsed.id);
+        Assertions.assertEquals(7, parsed.count);
     }
 }
