@@ -17,12 +17,13 @@ import com.lsnju.base.http5.impl.DefaultTpHttp5ClientImpl;
 /**
  *
  *  <blockquote><pre>
- *      final TpHttpClient CLIENT = TpHttpClientUtils.HTTP_CLIENT;
- *      final ClassicHttpResponse returnClassicHttpResponse = CLIENT.get(targetUrl);
- *      final int statusCode = returnClassicHttpResponse.getCode();
- *      final String rawResp = EntityUtils.toString(returnClassicHttpResponse.getEntity(), StandardCharsets.UTF_8);
- *      if (log.isInfoEnabled()) {
- *          log.info("code = {}, rawResp = {}", statusCode, rawResp);
+ *     try (ClassicHttpResponse response = TpHttp5ClientUtils.get(targetUrl)) {
+ *          final int statusCode = response.getCode();
+ *          final String rawRespStr = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+ *          if (log.isInfoEnabled()) {
+ *              log.info("code = {}", statusCode);
+ *              log.info("resp.length = {}", StringUtils.length(rawRespStr));
+ *          }
  *      }
  *  </pre></blockquote>
  *
