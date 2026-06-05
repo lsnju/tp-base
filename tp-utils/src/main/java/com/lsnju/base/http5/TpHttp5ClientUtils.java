@@ -9,8 +9,8 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 
-import com.lsnju.base.http.config.HttpConfig;
 import com.lsnju.base.http.config.HttpMethod;
+import com.lsnju.base.http5.config.Http5Config;
 import com.lsnju.base.http5.config.Http5RequestCustomizer;
 import com.lsnju.base.http5.impl.DefaultTpHttp5ClientImpl;
 
@@ -36,13 +36,14 @@ public class TpHttp5ClientUtils {
     public static final TpHttp5Client HTTP_CLIENT = newHttpClient();
 
     public static TpHttp5Client newHttpClient() {
-        return newHttpClient(HttpConfig.builder()
+        return newHttpClient(Http5Config.builder()
             .connectTimeout(DefaultTpHttp5ClientImpl.DEFAULT_CONNECT_TIMEOUT)
             .socketTimeout(DefaultTpHttp5ClientImpl.DEFAULT_SOCKET_TIMEOUT)
+            .executor(Http5ExecutorUtils.defaultExecutor())
             .build());
     }
 
-    public static TpHttp5Client newHttpClient(HttpConfig config) {
+    public static TpHttp5Client newHttpClient(Http5Config config) {
         return new DefaultTpHttp5ClientImpl(config);
     }
 

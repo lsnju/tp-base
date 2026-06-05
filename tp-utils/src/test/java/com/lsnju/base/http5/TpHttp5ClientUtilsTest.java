@@ -16,8 +16,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.lsnju.base.http.config.HttpConfig;
 import com.lsnju.base.http.config.HttpMethod;
+import com.lsnju.base.http5.config.Http5Config;
 import com.lsnju.base.http5.impl.DefaultTpHttp5ClientImpl;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -53,7 +53,7 @@ class TpHttp5ClientUtilsTest {
 
     @Test
     void newHttpClient_withCustomConfig_shouldUseConfigValues() throws Exception {
-        HttpConfig config = HttpConfig.builder()
+        Http5Config config = Http5Config.builder()
             .userAgent("tp-test-agent")
             .connectTimeout(3210)
             .socketTimeout(6540)
