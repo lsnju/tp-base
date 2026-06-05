@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.lsnju.base.http5.TpHttp5Client;
+import com.lsnju.base.http5.TpHttp5ClientUtils;
 import com.lsnju.base.util.JsonUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +41,7 @@ public class TpHttpClientUtilsFunTest {
             URI targetUrl = uriComponents.toUri();
             log.info("targetUrl = {}", targetUrl);
 
-            final ClassicHttpResponse response = TpHttpClientUtils.HTTP_CLIENT.get(targetUrl);
-            try (response) {
+            try (ClassicHttpResponse response = TpHttp5ClientUtils.HTTP_CLIENT.get(targetUrl)) {
                 final int statusCode = response.getCode();
                 final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
                 if (log.isInfoEnabled()) {
@@ -58,7 +59,7 @@ public class TpHttpClientUtilsFunTest {
     @Test
     void test_002() {
         try {
-            TpHttpClient CLIENT = TpHttpClientUtils.HTTP_CLIENT;
+            TpHttp5Client CLIENT = TpHttp5ClientUtils.HTTP_CLIENT;
             final String targetUrl = "http://localhost:8080/tp/mo/sysinfo.json";
             final ClassicHttpResponse response = CLIENT.get(targetUrl);
             try (response) {

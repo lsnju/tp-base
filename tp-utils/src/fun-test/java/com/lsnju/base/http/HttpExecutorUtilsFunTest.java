@@ -6,6 +6,8 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.junit.jupiter.api.Test;
 
+import com.lsnju.base.http5.Http5ExecutorUtils;
+import com.lsnju.base.http5.TpHttp5ClientUtils;
 import com.lsnju.base.util.JsonUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,7 @@ public class HttpExecutorUtilsFunTest {
     @Test
     void test_001() {
         try {
-            final ClassicHttpResponse returnClassicHttpResponse = TpHttpClientUtils.get(url, HttpExecutorUtils.newTrustAllInstance());
+            final ClassicHttpResponse returnClassicHttpResponse = TpHttp5ClientUtils.get(url, Http5ExecutorUtils.newTrustAllInstance());
             final int statusCode = returnClassicHttpResponse.getCode();
             final String rawResp = EntityUtils.toString(returnClassicHttpResponse.getEntity(), StandardCharsets.UTF_8);
             if (log.isInfoEnabled()) {
@@ -39,7 +41,7 @@ public class HttpExecutorUtilsFunTest {
     @Test
     void test_002() {
         try {
-            final ClassicHttpResponse returnClassicHttpResponse = TpHttpClientUtils.get(url, HttpExecutorUtils.newTrustAllInstance2());
+            final ClassicHttpResponse returnClassicHttpResponse = TpHttp5ClientUtils.get(url, Http5ExecutorUtils.newTrustAllInstance2());
             final int statusCode = returnClassicHttpResponse.getCode();
             final String rawResp = EntityUtils.toString(returnClassicHttpResponse.getEntity(), StandardCharsets.UTF_8);
             if (log.isInfoEnabled()) {
@@ -54,7 +56,7 @@ public class HttpExecutorUtilsFunTest {
     @Test
     void test_003() {
         try {
-            final ClassicHttpResponse returnClassicHttpResponse = TpHttpClientUtils.get(url, HttpExecutorUtils.TRUST_ALL_EXECUTOR);
+            final ClassicHttpResponse returnClassicHttpResponse = TpHttp5ClientUtils.get(url, Http5ExecutorUtils.TRUST_ALL_EXECUTOR);
             final int statusCode = returnClassicHttpResponse.getCode();
             final String rawResp = EntityUtils.toString(returnClassicHttpResponse.getEntity(), StandardCharsets.UTF_8);
             if (log.isInfoEnabled()) {
