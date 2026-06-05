@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.SSLContext;
 
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -16,9 +17,13 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
+
+import com.lsnju.base.http.log.TpHttpRequestInterceptor;
+import com.lsnju.base.http.log.TpHttpResponseInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -69,6 +74,25 @@ public class HttpExecutorUtils {
 
             final CloseableHttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(connMgr)
+                .build();
+            return Executor.newInstance(httpClient);
+        } catch (Exception e) {
+            log.error(String.format("%s", e.getMessage()), e);
+            return Executor.newInstance();
+        }
+    }
+
+    public static Executor defaultExecutor() {
+        try {
+            final PoolingHttpClientConnectionManager connMgr = new PoolingHttpClientConnectionManager();
+            connMgr.setDefaultMaxPerRoute(100);
+            connMgr.setMaxTotal(200);
+            connMgr.setValidateAfterInactivity(1000);
+
+            HttpClient httpClient = HttpClientBuilder.create()
+                .setConnectionManager(connMgr)
+                .addInterceptorLast(new TpHttpRequestInterceptor())
+                .addInterceptorFirst(new TpHttpResponseInterceptor())
                 .build();
             return Executor.newInstance(httpClient);
         } catch (Exception e) {

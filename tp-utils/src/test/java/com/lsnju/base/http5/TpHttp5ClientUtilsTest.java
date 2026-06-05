@@ -24,8 +24,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.lsnju.base.http.config.HttpConfig;
 import com.lsnju.base.http.config.HttpMethod;
+import com.lsnju.base.http5.config.Http5Config;
 import com.lsnju.base.http5.impl.DefaultTpHttp5ClientImpl;
 import com.sun.net.httpserver.HttpServer;
 
@@ -115,7 +115,7 @@ class TpHttp5ClientUtilsTest {
         TpHttp5Client c1 = TpHttp5ClientUtils.newHttpClient();
         assertNotNull(c1);
         assertTrue(c1 instanceof DefaultTpHttp5ClientImpl);
-        TpHttp5Client c2 = TpHttp5ClientUtils.newHttpClient(HttpConfig.builder().build());
+        TpHttp5Client c2 = TpHttp5ClientUtils.newHttpClient(Http5Config.builder().build());
         assertNotNull(c2);
     }
 
@@ -218,7 +218,7 @@ class TpHttp5ClientUtilsTest {
     @Test
     void newHttpClient_customUserAgent() throws IOException {
         TpHttp5Client client = TpHttp5ClientUtils.newHttpClient(
-            HttpConfig.builder().userAgent("UNIT-TEST-UA-5").build());
+            Http5Config.builder().userAgent("UNIT-TEST-UA-5").build());
         String ua = body(client.get(baseUrl + "/ua"));
         assertEquals("UNIT-TEST-UA-5", ua);
     }

@@ -36,11 +36,13 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
     private final String userAgent;
     private final int socketTimeout;
     private final int connectTimeout;
+    private final Executor exe;
 
     public DefaultTpHttpClientImpl(HttpConfig config) {
         this.userAgent = Objects.toString(config.getUserAgent(), DEFAULT_USER_AGENT);
         this.socketTimeout = config.getSocketTimeout() > 0 ? config.getSocketTimeout() : DEFAULT_SOCKET_TIMEOUT;
         this.connectTimeout = config.getConnectTimeout() > 0 ? config.getConnectTimeout() : DEFAULT_CONNECT_TIMEOUT;
+        this.exe = config.getExecutor();
     }
 
     @Override
@@ -142,13 +144,7 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
     public HttpResponse post(URI targetUrl, String rawReq, ContentType contentType, RequestCustomizer customizer, Executor executor) throws IOException {
         final Request request = request(HttpMethod.POST, targetUrl)
             .body(new StringEntity(rawReq, contentType));
-        if (customizer != null) {
-            customizer.customize(request);
-        }
-        if (executor != null) {
-            return executor.execute(request).returnResponse();
-        }
-        return request.execute().returnResponse();
+        return exeInternal(customizer, executor, request);
     }
 
     @Override
@@ -190,13 +186,7 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
     @Override
     public HttpResponse get(URI targetUrl, RequestCustomizer customizer, Executor executor) throws IOException {
         final Request request = request(HttpMethod.GET, targetUrl);
-        if (customizer != null) {
-            customizer.customize(request);
-        }
-        if (executor != null) {
-            return executor.execute(request).returnResponse();
-        }
-        return request.execute().returnResponse();
+        return exeInternal(customizer, executor, request);
     }
 
     @Override
@@ -238,13 +228,7 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
     public HttpResponse putJson(URI targetUrl, String rawReq, RequestCustomizer customizer, Executor executor) throws IOException {
         final Request request = request(HttpMethod.PUT, targetUrl)
             .body(new StringEntity(rawReq, APPLICATION_JSON));
-        if (customizer != null) {
-            customizer.customize(request);
-        }
-        if (executor != null) {
-            return executor.execute(request).returnResponse();
-        }
-        return request.execute().returnResponse();
+        return exeInternal(customizer, executor, request);
     }
 
     @Override
@@ -268,11 +252,18 @@ public class DefaultTpHttpClientImpl implements TpHttpClient {
         if (entity != null) {
             request.body(entity);
         }
+        return exeInternal(customizer, executor, request);
+    }
+
+    private HttpResponse exeInternal(RequestCustomizer customizer, Executor executor, Request request) throws IOException {
         if (customizer != null) {
             customizer.customize(request);
         }
         if (executor != null) {
             return executor.execute(request).returnResponse();
+        }
+        if (this.exe != null) {
+            return this.exe.execute(request).returnResponse();
         }
         return request.execute().returnResponse();
     }

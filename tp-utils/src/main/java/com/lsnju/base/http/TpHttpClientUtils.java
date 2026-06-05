@@ -37,6 +37,7 @@ public class TpHttpClientUtils {
         return newHttpClient(HttpConfig.builder()
             .connectTimeout(DefaultTpHttpClientImpl.DEFAULT_CONNECT_TIMEOUT)
             .socketTimeout(DefaultTpHttpClientImpl.DEFAULT_SOCKET_TIMEOUT)
+            .executor(HttpExecutorUtils.defaultExecutor())
             .build());
     }
 
