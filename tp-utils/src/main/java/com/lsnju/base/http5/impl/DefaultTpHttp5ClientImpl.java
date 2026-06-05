@@ -13,9 +13,9 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.util.Timeout;
 
-import com.lsnju.base.http.config.HttpConfig;
 import com.lsnju.base.http.config.HttpMethod;
 import com.lsnju.base.http5.TpHttp5Client;
+import com.lsnju.base.http5.config.Http5Config;
 import com.lsnju.base.http5.config.Http5RequestCustomizer;
 import com.lsnju.base.util.TpAppInfo;
 
@@ -37,11 +37,13 @@ public class DefaultTpHttp5ClientImpl implements TpHttp5Client {
     private final String userAgent;
     private final int socketTimeout;
     private final int connectTimeout;
+    private final Executor exe;
 
-    public DefaultTpHttp5ClientImpl(HttpConfig config) {
+    public DefaultTpHttp5ClientImpl(Http5Config config) {
         this.userAgent = Objects.toString(config.getUserAgent(), DEFAULT_USER_AGENT);
         this.socketTimeout = config.getSocketTimeout() > 0 ? config.getSocketTimeout() : DEFAULT_SOCKET_TIMEOUT;
         this.connectTimeout = config.getConnectTimeout() > 0 ? config.getConnectTimeout() : DEFAULT_CONNECT_TIMEOUT;
+        this.exe = config.getExecutor();
     }
 
     @Override
@@ -146,13 +148,7 @@ public class DefaultTpHttp5ClientImpl implements TpHttp5Client {
             .connectTimeout(Timeout.ofMilliseconds(this.connectTimeout))
             .responseTimeout(Timeout.ofMilliseconds(this.socketTimeout))
             .body(new StringEntity(rawReq, contentType));
-        if (customizer != null) {
-            customizer.customize(request);
-        }
-        if (executor != null) {
-            return (ClassicHttpResponse) executor.execute(request).returnResponse();
-        }
-        return (ClassicHttpResponse) request.execute().returnResponse();
+        return exeInternal(customizer, executor, request);
     }
 
     @Override
@@ -197,13 +193,7 @@ public class DefaultTpHttp5ClientImpl implements TpHttp5Client {
             .userAgent(this.userAgent)
             .connectTimeout(Timeout.ofMilliseconds(this.connectTimeout))
             .responseTimeout(Timeout.ofMilliseconds(this.socketTimeout));
-        if (customizer != null) {
-            customizer.customize(request);
-        }
-        if (executor != null) {
-            return (ClassicHttpResponse) executor.execute(request).returnResponse();
-        }
-        return (ClassicHttpResponse) request.execute().returnResponse();
+        return exeInternal(customizer, executor, request);
     }
 
     @Override
@@ -245,13 +235,7 @@ public class DefaultTpHttp5ClientImpl implements TpHttp5Client {
     public ClassicHttpResponse putJson(URI targetUrl, String rawReq, Http5RequestCustomizer customizer, Executor executor) throws IOException {
         final Request request = request(HttpMethod.PUT, targetUrl)
             .body(new StringEntity(rawReq, APPLICATION_JSON));
-        if (customizer != null) {
-            customizer.customize(request);
-        }
-        if (executor != null) {
-            return (ClassicHttpResponse) executor.execute(request).returnResponse();
-        }
-        return (ClassicHttpResponse) request.execute().returnResponse();
+        return exeInternal(customizer, executor, request);
     }
 
     @Override
@@ -275,11 +259,18 @@ public class DefaultTpHttp5ClientImpl implements TpHttp5Client {
         if (entity != null) {
             request.body(entity);
         }
+        return exeInternal(customizer, executor, request);
+    }
+
+    private ClassicHttpResponse exeInternal(Http5RequestCustomizer customizer, Executor executor, Request request) throws IOException {
         if (customizer != null) {
             customizer.customize(request);
         }
         if (executor != null) {
             return (ClassicHttpResponse) executor.execute(request).returnResponse();
+        }
+        if (this.exe != null) {
+            return (ClassicHttpResponse) this.exe.execute(request).returnResponse();
         }
         return (ClassicHttpResponse) request.execute().returnResponse();
     }

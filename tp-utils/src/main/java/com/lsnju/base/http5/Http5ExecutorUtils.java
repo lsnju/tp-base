@@ -8,6 +8,7 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.hc.client5.http.fluent.Executor;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
@@ -23,6 +24,9 @@ import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.util.TimeValue;
+
+import com.lsnju.base.http5.log.TpHttp5RequestInterceptor;
+import com.lsnju.base.http5.log.TpHttp5ResponseInterceptor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,6 +83,28 @@ public class Http5ExecutorUtils {
 
             final CloseableHttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(connMgr)
+                .build();
+            return Executor.newInstance(httpClient);
+        } catch (Exception e) {
+            log.error(String.format("%s", e.getMessage()), e);
+            return Executor.newInstance();
+        }
+    }
+
+    public static Executor defaultExecutor() {
+        try {
+            final CloseableHttpClient httpClient = HttpClientBuilder.create()
+                .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
+                    .useSystemProperties()
+                    .setMaxConnPerRoute(100)
+                    .setMaxConnTotal(200)
+                    .setValidateAfterInactivity(TimeValue.ofSeconds(10))
+                    .build())
+                .useSystemProperties()
+                .evictExpiredConnections()
+                .evictIdleConnections(TimeValue.ofMinutes(1))
+                .addRequestInterceptorLast(new TpHttp5RequestInterceptor())
+                .addResponseInterceptorFirst(new TpHttp5ResponseInterceptor())
                 .build();
             return Executor.newInstance(httpClient);
         } catch (Exception e) {
