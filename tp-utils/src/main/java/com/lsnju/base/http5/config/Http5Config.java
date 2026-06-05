@@ -1,4 +1,6 @@
-package com.lsnju.base.http.config;
+package com.lsnju.base.http5.config;
+
+import org.apache.hc.client5.http.fluent.Executor;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +15,9 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class HttpConfig {
+public class Http5Config {
     private final String userAgent;
     private final int socketTimeout;
     private final int connectTimeout;
+    private final Executor executor;
 }
