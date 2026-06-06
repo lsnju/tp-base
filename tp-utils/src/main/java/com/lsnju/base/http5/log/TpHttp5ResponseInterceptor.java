@@ -11,6 +11,8 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lsnju.base.http.TpHttpConstants;
+
 /**
  *
  * @author lis614
@@ -19,11 +21,11 @@ import org.slf4j.LoggerFactory;
  */
 public class TpHttp5ResponseInterceptor implements HttpResponseInterceptor {
 
-    private static final Logger TP_HTTP_HEADER = LoggerFactory.getLogger("TP_HTTP_HEADER");
+    private static final Logger TP_HTTP_HEADER = LoggerFactory.getLogger(TpHttpConstants.LOG_NAME);
 
     @Override
     public void process(HttpResponse response, EntityDetails entity, HttpContext context) throws HttpException, IOException {
-        Object tpHttpId = context.removeAttribute("TP_HTTP_ID");
+        Object tpHttpId = context.removeAttribute(TpHttpConstants.REQ_ID);
         StringBuilder sb = new StringBuilder();
         sb.append("RESP_IN <<< ").append(tpHttpId).append(System.lineSeparator());
         sb.append("<<");
