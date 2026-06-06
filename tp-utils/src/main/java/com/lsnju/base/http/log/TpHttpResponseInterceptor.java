@@ -23,7 +23,7 @@ public class TpHttpResponseInterceptor implements HttpResponseInterceptor {
 
     @Override
     public void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
-        Object tpHttpId = context.getAttribute("TP_HTTP_ID");
+        Object tpHttpId = context.removeAttribute("TP_HTTP_ID");
         StatusLine statusLine = response.getStatusLine();
         StringBuilder sb = new StringBuilder();
         sb.append("RESP_IN <<< ").append(tpHttpId).append(System.lineSeparator());
