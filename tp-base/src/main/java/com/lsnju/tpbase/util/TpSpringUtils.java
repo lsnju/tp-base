@@ -26,14 +26,12 @@ public class TpSpringUtils implements BeanFactoryPostProcessor, ApplicationConte
     private static ApplicationContext applicationContext;
     private static ConfigurableListableBeanFactory beanFactory;
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         log.debug("TpSpringUtils postProcessBeanFactory {}", beanFactory);
         TpSpringUtils.beanFactory = beanFactory;
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         log.debug("TpSpringUtils setApplicationContext {}", applicationContext);

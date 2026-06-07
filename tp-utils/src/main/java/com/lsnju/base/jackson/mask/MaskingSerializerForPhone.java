@@ -15,6 +15,8 @@ import com.lsnju.base.util.TpStringMaskUtils;
  */
 public class MaskingSerializerForPhone extends StdSerializer<String> {
 
+    private static final long serialVersionUID = 1L;
+
     private static final TpStringMaskUtils MASK = new TpStringMaskUtils(3, 4, '*', 4);
 
     public MaskingSerializerForPhone() {

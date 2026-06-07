@@ -15,6 +15,8 @@ import com.lsnju.base.util.TpStringMaskUtils;
  */
 public class MaskingSerializerForDefault extends StdSerializer<String> {
 
+    private static final long serialVersionUID = 1L;
+
     private static final TpStringMaskUtils MASK = new TpStringMaskUtils(4, 4, '*', 2);
 
     public MaskingSerializerForDefault() {

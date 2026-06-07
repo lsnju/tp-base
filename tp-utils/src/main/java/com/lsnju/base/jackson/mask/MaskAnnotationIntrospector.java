@@ -11,6 +11,9 @@ import com.lsnju.base.jackson.annotation.Mask;
  * @version V1.0
  */
 public class MaskAnnotationIntrospector extends JacksonAnnotationIntrospector {
+
+    private static final long serialVersionUID = 1L;
+
     @Override
     public Object findSerializer(Annotated annotated) {
         Mask annotation = annotated.getAnnotation(Mask.class);
