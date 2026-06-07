@@ -3,6 +3,8 @@ package com.lsnju.tpbase.util;
 import java.util.Map;
 import java.util.Objects;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -27,13 +29,13 @@ public class TpSpringUtils implements BeanFactoryPostProcessor, ApplicationConte
     private static ConfigurableListableBeanFactory beanFactory;
 
     @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+    public void postProcessBeanFactory(@Nullable ConfigurableListableBeanFactory beanFactory) throws BeansException {
         log.debug("TpSpringUtils postProcessBeanFactory {}", beanFactory);
         TpSpringUtils.beanFactory = beanFactory;
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         log.debug("TpSpringUtils setApplicationContext {}", applicationContext);
         TpSpringUtils.applicationContext = applicationContext;
     }
