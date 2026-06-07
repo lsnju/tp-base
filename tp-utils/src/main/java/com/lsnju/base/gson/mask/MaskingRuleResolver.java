@@ -17,7 +17,8 @@ public final class MaskingRuleResolver {
     private static final TpStringMaskUtils PHONE_MASK = new TpStringMaskUtils(3, 4, '*', 4);
     private static final TpStringMaskUtils GID_MASK = new TpStringMaskUtils(6, 4, '*', -1);
 
-    private MaskingRuleResolver() {}
+    private MaskingRuleResolver() {
+    }
 
     public static String mask(Mask annotation, String value) {
         if (annotation == null || value == null) {
@@ -27,15 +28,11 @@ public final class MaskingRuleResolver {
         if (bySerializer != null) {
             return bySerializer.mask(value);
         }
-        switch (annotation.type()) {
-            case PHONE:
-                return PHONE_MASK.mask(value);
-            case GID:
-                return GID_MASK.mask(value);
-            case DEFAULT:
-            default:
-                return DEFAULT_MASK.mask(value);
-        }
+        return switch (annotation.type()) {
+            case PHONE -> PHONE_MASK.mask(value);
+            case GID -> GID_MASK.mask(value);
+            default -> DEFAULT_MASK.mask(value);
+        };
     }
 
     private static TpStringMaskUtils resolveBySerializer(Mask annotation) {

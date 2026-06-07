@@ -84,10 +84,9 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
 
     private void maskJsonObjectFromMap(Map<?, ?> source, JsonObject jsonObject, IdentityHashMap<Object, Boolean> visited) {
         for (Map.Entry<?, ?> entry : source.entrySet()) {
-            if (!(entry.getKey() instanceof String)) {
+            if (!(entry.getKey() instanceof String key)) {
                 continue;
             }
-            String key = (String) entry.getKey();
             if (!jsonObject.has(key)) {
                 continue;
             }
@@ -153,8 +152,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
             }
             return;
         }
-        if (source instanceof Map) {
-            Map<?, ?> map = (Map<?, ?>) source;
+        if (source instanceof Map<?, ?> map) {
             for (int i = 0; i < array.size(); i++) {
                 JsonElement item = array.get(i);
                 if (!item.isJsonObject()) {
@@ -167,10 +165,9 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private boolean isStringPrimitive(JsonElement element) {
-        if (!(element instanceof JsonPrimitive)) {
+        if (!(element instanceof JsonPrimitive primitive)) {
             return false;
         }
-        JsonPrimitive primitive = (JsonPrimitive) element;
         return primitive.isString();
     }
 
