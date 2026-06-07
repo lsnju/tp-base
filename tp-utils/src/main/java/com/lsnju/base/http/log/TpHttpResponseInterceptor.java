@@ -25,6 +25,9 @@ public class TpHttpResponseInterceptor implements HttpResponseInterceptor {
 
     @Override
     public void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
+        if (!TP_HTTP_HEADER.isInfoEnabled()) {
+            return;
+        }
         Object tpHttpId = context.removeAttribute(TpHttpConstants.REQ_ID);
         StatusLine statusLine = response.getStatusLine();
         StringBuilder sb = new StringBuilder();

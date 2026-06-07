@@ -26,6 +26,9 @@ public class TpHttpRequestInterceptor implements HttpRequestInterceptor {
 
     @Override
     public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+        if (!TP_HTTP_HEADER.isInfoEnabled()) {
+            return;
+        }
         String tpHttpId = UUIDGenerator.getSUID();
         context.setAttribute(TpHttpConstants.REQ_ID, tpHttpId);
         RequestLine requestLine = request.getRequestLine();
