@@ -25,6 +25,9 @@ public class TpHttp5ResponseInterceptor implements HttpResponseInterceptor {
 
     @Override
     public void process(HttpResponse response, EntityDetails entity, HttpContext context) throws HttpException, IOException {
+        if (!TP_HTTP_HEADER.isInfoEnabled()) {
+            return;
+        }
         Object tpHttpId = context.removeAttribute(TpHttpConstants.REQ_ID);
         StringBuilder sb = new StringBuilder();
         sb.append("RESP_IN <<< ").append(tpHttpId).append(System.lineSeparator());
