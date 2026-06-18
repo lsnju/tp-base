@@ -26,11 +26,14 @@ import com.lsnju.base.gson.FieldNamingStrategyForJackson;
 import com.lsnju.base.gson.GsonUtils;
 import com.lsnju.base.jackson.annotation.Mask;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Gson adapter factory that masks string fields annotated with {@link Mask}.
  *
  * @author ls
  */
+@Slf4j
 public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
 
     private static final FieldNamingStrategyForJackson JACKSON_NAMING = new FieldNamingStrategyForJackson();
@@ -39,6 +42,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
         Class<?> rawType = type.getRawType();
+        log.debug("rawType = {}", rawType);
         if (rawType.isPrimitive() || rawType.isEnum() || rawType == String.class || Number.class.isAssignableFrom(rawType)
             || Boolean.class == rawType || Character.class == rawType) {
             return null;
@@ -47,6 +51,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
         return (TypeAdapter<T>) new TypeAdapter<Object>() {
             @Override
             public void write(JsonWriter out, Object value) throws IOException {
+                log.debug("write value {}", value);
                 JsonElement json = delegate.toJsonTree((T) value);
                 JsonElement masked = maskElement(value, json, new IdentityHashMap<>());
                 gson.toJson(masked, out);
@@ -60,6 +65,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private JsonElement maskElement(Object source, JsonElement element, IdentityHashMap<Object, Boolean> visited) {
+        log.debug("maskElement {}", source);
         if (source == null || element == null || element.isJsonNull()) {
             return element;
         }
@@ -83,6 +89,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private void maskJsonObjectFromMap(Map<?, ?> source, JsonObject jsonObject, IdentityHashMap<Object, Boolean> visited) {
+        log.debug("maskJsonObjectFromMap {}", source);
         for (Map.Entry<?, ?> entry : source.entrySet()) {
             if (!(entry.getKey() instanceof String)) {
                 continue;
@@ -99,6 +106,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private void maskJsonObject(Object source, JsonObject jsonObject, IdentityHashMap<Object, Boolean> visited) {
+        log.debug("maskJsonObject {}", source);
         for (Field field : getAllFields(source.getClass())) {
             if (shouldSkip(field)) {
                 continue;
@@ -133,6 +141,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private void maskJsonArray(Object source, JsonArray array, IdentityHashMap<Object, Boolean> visited) {
+        log.debug("maskJsonArray {}", source);
         if (source.getClass().isArray()) {
             int len = Array.getLength(source);
             for (int i = 0; i < len && i < array.size(); i++) {
@@ -175,6 +184,7 @@ public class MaskAnnotationTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private Set<String> resolveJsonFieldNames(Field field) {
+        log.debug("resolveJsonFieldNames {}", field);
         Set<String> names = new LinkedHashSet<>();
         SerializedName serializedName = field.getAnnotation(SerializedName.class);
         if (serializedName != null) {
