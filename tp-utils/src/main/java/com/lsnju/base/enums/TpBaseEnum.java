@@ -6,7 +6,7 @@ package com.lsnju.base.enums;
  * @since 2023/3/10 20:16
  * @version V1.0
  */
-public interface TpBaseEnum {
+public interface TpBaseEnum extends BaseEnum<String> {
 
     String getCode();
 
