@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.gson.annotations.SerializedName;
-import com.lsnju.base.enums.TpBaseEnum;
+import com.lsnju.base.enums.BaseEnum;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,21 +18,21 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum StatusEnum implements TpBaseEnum {
+public enum StatusV2Enum implements BaseEnum<Integer> {
 
     @SerializedName("ENABLE")
-    E("ENABLE", "E"),
+    E(1, "E"),
     @SerializedName("DISABLE")
-    D("DISABLE", "D"),
+    D(2, "D"),
 
     // ...
     ;
 
     @JsonValue
-    private final String code;
+    private final Integer code;
     private final String desc;
 
-    public static StatusEnum getByCode(String code) {
+    public static StatusV2Enum getByCode(Integer code) {
         return Stream.of(values()).filter(i -> i.code.equals(code)).findAny().orElse(null);
     }
 }
