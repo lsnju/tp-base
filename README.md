@@ -2,6 +2,11 @@
 
 ## current version <version>3.1.31-SNAPSHOT</version>
 
+## docs
+
+- 入门说明：`doc/入门说明.md`
+- 详细文档：`doc/详细文档.md`
+
 ## usage
 
 ```xml
