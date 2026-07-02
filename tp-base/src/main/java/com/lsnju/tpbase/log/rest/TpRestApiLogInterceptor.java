@@ -1,6 +1,7 @@
 package com.lsnju.tpbase.log.rest;
 
 import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -149,6 +150,9 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
             for (int i = 0; i < args.length; i++) {
                 Object arg = args[i];
                 if (arg != null) {
+                    if (hasTpSkipLogOnParameter(joinPoint, i)) {
+                        continue;
+                    }
                     if (arg instanceof ServletResponse) {
                         continue;
                     }
@@ -195,6 +199,26 @@ public class TpRestApiLogInterceptor implements DigestConstants, ProceedingJoinP
 
     private String toJson(Object response) {
         return toJsonStr.apply(response);
+    }
+
+    private boolean hasTpSkipLogOnParameter(ProceedingJoinPoint joinPoint, int paramIndex) {
+        if (!(joinPoint.getSignature() instanceof MethodSignature signature)) {
+            return false;
+        }
+        Method method = signature.getMethod();
+        if (method == null) {
+            return false;
+        }
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        if (paramIndex < 0 || paramIndex >= parameterAnnotations.length) {
+            return false;
+        }
+        for (Annotation parameterAnnotation : parameterAnnotations[paramIndex]) {
+            if (parameterAnnotation.annotationType() == TpSkipLog.class) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
