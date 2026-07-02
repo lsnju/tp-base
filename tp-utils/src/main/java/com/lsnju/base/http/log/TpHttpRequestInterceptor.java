@@ -11,6 +11,7 @@ import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lsnju.base.http.TpHttpConstants;
 import com.lsnju.base.util.UUIDGenerator;
 
 /**
@@ -21,12 +22,15 @@ import com.lsnju.base.util.UUIDGenerator;
  */
 public class TpHttpRequestInterceptor implements HttpRequestInterceptor {
 
-    private static final Logger TP_HTTP_HEADER = LoggerFactory.getLogger("TP_HTTP_HEADER");
+    private static final Logger TP_HTTP_HEADER = LoggerFactory.getLogger(TpHttpConstants.LOG_NAME);
 
     @Override
     public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+        if (!TP_HTTP_HEADER.isInfoEnabled()) {
+            return;
+        }
         String tpHttpId = UUIDGenerator.getSUID();
-        context.setAttribute("TP_HTTP_ID", tpHttpId);
+        context.setAttribute(TpHttpConstants.REQ_ID, tpHttpId);
         RequestLine requestLine = request.getRequestLine();
         StringBuilder sb = new StringBuilder();
         sb.append("REQ_OUT >>> ").append(tpHttpId).append(System.lineSeparator());

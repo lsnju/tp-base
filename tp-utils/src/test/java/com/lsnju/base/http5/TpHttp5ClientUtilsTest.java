@@ -34,6 +34,7 @@ import com.sun.net.httpserver.HttpServer;
  *
  * @author ls
  */
+@SuppressWarnings("restriction")
 class TpHttp5ClientUtilsTest {
 
     private HttpServer server;

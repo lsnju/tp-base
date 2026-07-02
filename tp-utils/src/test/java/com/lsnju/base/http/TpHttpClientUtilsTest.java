@@ -33,6 +33,7 @@ import com.sun.net.httpserver.HttpServer;
  *
  * @author ls
  */
+@SuppressWarnings("restriction")
 class TpHttpClientUtilsTest {
 
     private HttpServer server;
