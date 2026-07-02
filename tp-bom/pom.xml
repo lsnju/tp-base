@@ -48,6 +48,11 @@
             </dependency>
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-domain-gson-mask</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-jackson</artifactId>
                 <version>${project.version}</version>
             </dependency>
