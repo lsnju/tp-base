@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>4.0.6</version>
+        <version>4.1.0</version>
         <relativePath />
     </parent>
 
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-dependencies</artifactId>
-    <version>4.0.4</version>
+    <version>4.0.5</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -50,6 +50,11 @@
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-gson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-domain-gson-mask</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

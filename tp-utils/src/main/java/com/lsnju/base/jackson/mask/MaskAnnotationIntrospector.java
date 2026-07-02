@@ -1,5 +1,7 @@
 package com.lsnju.base.jackson.mask;
 
+import java.io.Serial;
+
 import com.lsnju.base.jackson.annotation.Mask;
 
 import tools.jackson.databind.cfg.MapperConfig;
@@ -13,6 +15,9 @@ import tools.jackson.databind.introspect.JacksonAnnotationIntrospector;
  * @version V1.0
  */
 public class MaskAnnotationIntrospector extends JacksonAnnotationIntrospector {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Override
     public Object findSerializer(MapperConfig<?> config, Annotated annotated) {

@@ -14,7 +14,6 @@
     </appender>
 
     <logger name="com.lsnju" level="info" />
-    <logger name="com.lsnju.base.util" level="info" />
 
     <logger name="org.apache.http.headers" level="debug" />
 
@@ -24,7 +23,9 @@
     <logger name="org.apache.hc.client5" level="info" />
     <logger name="org.apache.hc.client5.http" level="info" />
     <logger name="org.apache.hc.client5.http.impl" level="info" />
+
     <logger name="TP_HTTP_HEADER" level="info" />
+    <logger name="HTTP_HEADER" level="info" />
 
     <logger name="org.apache.hc" level="debug" additivity="false">
         <appender-ref ref="STDOUT_SIMPLE" />

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @since 2026-02-10 21:34
  * @version V1.0
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited

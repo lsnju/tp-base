@@ -15,11 +15,13 @@ import com.lsnju.base.http5.config.Http5RequestCustomizer;
 /**
  *
  *  <blockquote><pre>
- *      final ClassicHttpResponse response = CLIENT.get(targetUrl);
- *      final int statusCode = response.getCode();
- *      final String rawResp = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
- *      if (log.isInfoEnabled()) {
- *          log.info("code = {}, rawResp = {}", statusCode, rawResp);
+ *     try (ClassicHttpResponse response = TpHttp5ClientUtils.get(targetUrl)) {
+ *          final int statusCode = response.getCode();
+ *          final String rawRespStr = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+ *          if (log.isInfoEnabled()) {
+ *              log.info("code = {}", statusCode);
+ *              log.info("resp.length = {}", StringUtils.length(rawRespStr));
+ *          }
  *      }
  *  </pre></blockquote>
  *
