@@ -6,7 +6,7 @@
     <!-- https://mvnrepository.com/artifact/com.lsnju.tp3/tp-bom -->
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-bom</artifactId>
-    <version>3.1.30</version>
+    <version>3.1.31</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -44,6 +44,11 @@
             <dependency>
                 <groupId>com.lsnju.tp3</groupId>
                 <artifactId>tp-domain-gson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsnju.tp3</groupId>
+                <artifactId>tp-domain-gson-mask</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

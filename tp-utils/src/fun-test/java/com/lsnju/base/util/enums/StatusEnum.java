@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.gson.annotations.SerializedName;
+import com.lsnju.base.enums.TpBaseEnum;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum StatusEnum {
-
+public enum StatusEnum implements TpBaseEnum {
 
     @SerializedName("ENABLE")
     E("ENABLE", "E"),

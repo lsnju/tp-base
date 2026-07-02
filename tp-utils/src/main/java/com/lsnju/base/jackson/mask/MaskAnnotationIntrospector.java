@@ -1,5 +1,7 @@
 package com.lsnju.base.jackson.mask;
 
+import java.io.Serial;
+
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.lsnju.base.jackson.annotation.Mask;
@@ -11,6 +13,10 @@ import com.lsnju.base.jackson.annotation.Mask;
  * @version V1.0
  */
 public class MaskAnnotationIntrospector extends JacksonAnnotationIntrospector {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Override
     public Object findSerializer(Annotated annotated) {
         Mask annotation = annotated.getAnnotation(Mask.class);

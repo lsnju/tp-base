@@ -1,6 +1,11 @@
 # tp-base
 
-## current version <version>3.1.30</version>
+## current version <version>3.1.31</version>
+
+## docs
+
+- [入门说明](doc/入门说明.md)
+- [详细文档](doc/详细文档.md)
 
 ## usage
 
@@ -12,7 +17,7 @@
         <dependency>
             <groupId>com.lsnju.tp3</groupId>
             <artifactId>tp-bom</artifactId>
-            <version>3.1.30</version>
+            <version>3.1.31</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
