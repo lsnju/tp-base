@@ -25,7 +25,7 @@ import com.lsnju.tpbase.web.filter.AbstractTpRequestFilter;
 public class TpRestApiDigestFilter extends AbstractTpRequestFilter implements DigestConstants, FilterOrderConstants {
 
     private static final Logger DIGEST_LOGGER = LoggerFactory.getLogger(TP_REST_API);
-    private static final String DIGEST_FORMAT = "[%s,%s,%sms,%s] %s";
+    private static final String DIGEST_FORMAT = "[%s,%s,%sms,rc_%s] %s";
     public static final String DEFAULT = "na";
 
     @Override
