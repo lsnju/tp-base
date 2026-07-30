@@ -15,6 +15,7 @@ import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.money.Money;
 import com.lsnju.base.util.vo.DateTimeBean;
 import com.lsnju.base.util.vo.TestBean;
+import com.lsnju.base.util.vo.TestBean2;
 import com.lsnju.base.util.vo.TestVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -131,6 +132,20 @@ public class JacksonUtilsFunTest {
 
         log.info("{}", TpJsonUtils.jackson().toJsonPretty(b));
         log.info("{}", TpJsonUtils.gson().toJsonPretty(b));
+    }
+
+    @Test
+    void test_money_to_decimal() {
+        final TestBean obj = new TestBean();
+        obj.setId(11);
+        obj.setName("xxx");
+        obj.setAmount(new Money("1.11111"));
+        obj.setStatus(StatusEnum.E);
+        final String js = JacksonUtils.toJsonPretty(obj);
+        log.info("{}", js);
+        TestBean2 bean2 = JacksonUtils.fromJson(js, TestBean2.class);
+        log.info("{}", bean2);
+        log.info("{}", JacksonUtils.toJsonPretty(bean2));
     }
 
 }
