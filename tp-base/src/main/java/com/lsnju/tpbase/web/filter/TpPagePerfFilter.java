@@ -35,7 +35,7 @@ public class TpPagePerfFilter implements Filter, DigestConstants {
     private static final Logger WEBX_LOGGER = LoggerFactory.getLogger(WEB_X);
 
     /** [method,uri,cost,result,ip] */
-    private static final String PAGE_DIGEST_FORMAT = "[%s,%s,%sms,%s,%s] %s";
+    private static final String PAGE_DIGEST_FORMAT = "[%s,%s,%sms,%s,%s] rc_%s";
 
     @Override
     public void init(FilterConfig filterConfig) {
