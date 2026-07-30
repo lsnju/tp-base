@@ -1,6 +1,6 @@
 # tp-base
 
-## current version <version>3.1.31</version>
+## current version <version>3.1.32</version>
 
 ## docs
 
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.lsnju.tp3</groupId>
             <artifactId>tp-bom</artifactId>
-            <version>3.1.31</version>
+            <version>3.1.32</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

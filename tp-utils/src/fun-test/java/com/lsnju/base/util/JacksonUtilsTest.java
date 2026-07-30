@@ -21,6 +21,7 @@ import com.lsnju.base.money.Money;
 import com.lsnju.base.util.enums.StatusEnum;
 import com.lsnju.base.util.vo.DateTimeBean;
 import com.lsnju.base.util.vo.TestBean;
+import com.lsnju.base.util.vo.TestBean2;
 import com.lsnju.base.util.vo.TestVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -144,6 +145,20 @@ public class JacksonUtilsTest {
         String jsonStr = "{\"id\":11,\"name\":\"name\",\"amount\":\"11.11\",\"status\":\"UNKNOW\"}";
         log.info("{}", JsonUtils.fromJson(jsonStr, TestBean.class));
         log.info("{}", JacksonUtils.fromJson(jsonStr, TestBean.class));
+    }
+
+    @Test
+    void test_money_to_decimal() {
+        final TestBean obj = new TestBean();
+        obj.setId(11);
+        obj.setName("xxx");
+        obj.setAmount(new Money("1.11111"));
+        obj.setStatus(StatusEnum.E);
+        final String js = JacksonUtils.toJsonPretty(obj);
+        log.info("{}", js);
+        TestBean2 bean2 = JacksonUtils.fromJson(js, TestBean2.class);
+        log.info("{}", bean2);
+        log.info("{}", JacksonUtils.toJsonPretty(bean2));
     }
 
 }
