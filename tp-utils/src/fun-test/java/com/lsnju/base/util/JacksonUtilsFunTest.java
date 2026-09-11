@@ -12,10 +12,9 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.money.Money;
 import com.lsnju.base.util.enums.StatusEnum;
@@ -32,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version V1.0
  */
 @Slf4j
-public class JacksonUtilsTest {
+public class JacksonUtilsFunTest {
 
     @Test
     public void test_001() {
@@ -108,7 +107,7 @@ public class JacksonUtilsTest {
     void test_jackson() {
         try {
             String json = "{\"date\":\"2022-09-01 14:47:32\",\"abc\":\"def\",\"blank\":\"\"}";
-            ObjectMapper mapper = new ObjectMapper();
+            JsonMapper mapper = new JsonMapper();
 
             final Map<String, String> value = mapper.readValue(json, new TypeReference<>() {});
             log.info("{}", value);
@@ -116,13 +115,13 @@ public class JacksonUtilsTest {
             JsonNode root = mapper.readTree(json);
             log.info("{}", mapper.convertValue(root, new TypeReference<Map<String, String>>() {}));
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.error(String.format("%s", e.getMessage()), e);
         }
     }
 
     @Test
-    void test_dateTime() {
+    void test_dateTime() throws IOException {
         DateTimeBean b = new DateTimeBean();
         b.setName("name");
         b.setZonedDateTime(ZonedDateTime.now());
@@ -132,19 +131,9 @@ public class JacksonUtilsTest {
         log.info("{}", jsonStr);
         final DateTimeBean ret = JacksonUtils.fromJson(jsonStr, DateTimeBean.class);
         log.info("{}", ret);
-    }
 
-    @Test
-    void test_enum() {
-        TestBean bean = new TestBean();
-        bean.setId(11);
-        bean.setName("name");
-        bean.setAmount(new Money("11.11"));
-        bean.setStatus(StatusEnum.E);
-        log.info("{}", JacksonUtils.toJson(bean));
-        String jsonStr = "{\"id\":11,\"name\":\"name\",\"amount\":\"11.11\",\"status\":\"UNKNOW\"}";
-        log.info("{}", JsonUtils.fromJson(jsonStr, TestBean.class));
-        log.info("{}", JacksonUtils.fromJson(jsonStr, TestBean.class));
+        log.info("{}", TpJsonUtils.jackson().toJsonPretty(b));
+        log.info("{}", TpJsonUtils.gson().toJsonPretty(b));
     }
 
     @Test
