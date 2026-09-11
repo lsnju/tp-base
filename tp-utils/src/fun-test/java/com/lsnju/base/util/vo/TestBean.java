@@ -5,6 +5,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.lsnju.base.jackson.RawJsonDeserializer;
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.enums.StatusEnum;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,4 +29,7 @@ public class TestBean {
     private String memo;
 
     private Money amount;
+
+    private StatusEnum status;
+
 }
