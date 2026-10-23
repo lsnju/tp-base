@@ -92,7 +92,7 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.84</version>
+                <version>1.86</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -127,7 +127,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.20.0</version>
+                <version>3.21.0</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
@@ -141,7 +141,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>33.7.1-jre</version>
+                <version>33.7.2-jre</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.github.javadev/underscore -->
@@ -162,7 +162,7 @@
             <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>joor</artifactId>
-                <version>0.9.15</version>
+                <version>0.9.16</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
@@ -213,7 +213,7 @@
             <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
-                <version>10.9.1</version>
+                <version>10.10</version>
                 <optional>true</optional>
             </dependency>
 
@@ -392,7 +392,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.10.0</version>
+                <version>0.12.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>
