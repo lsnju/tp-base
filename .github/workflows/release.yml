@@ -31,6 +31,13 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
+      # Maven 3.10+ writes maven-metadata-local.xml into the staging repo; Central
+      # rejects the bundle unless central-publishing-maven-plugin >= 0.12.0 is used.
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v7
+        with:
+          maven-version: 3.9.9
+
       - name: Import GPG signing key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
