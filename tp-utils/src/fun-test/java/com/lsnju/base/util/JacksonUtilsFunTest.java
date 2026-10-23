@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.lsnju.base.jackson.JacksonUtils;
 import com.lsnju.base.money.Money;
+import com.lsnju.base.util.enums.StatusEnum;
 import com.lsnju.base.util.vo.DateTimeBean;
 import com.lsnju.base.util.vo.TestBean;
 import com.lsnju.base.util.vo.TestBean2;
