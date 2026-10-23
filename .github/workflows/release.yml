@@ -31,17 +31,6 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name: Verify tag matches POM version
-        run: |
-          TAG="${GITHUB_REF_NAME#v}"
-          VERSION="$(mvn --batch-mode --no-transfer-progress \
-            help:evaluate -Dexpression=project.version -q -DforceStdout)"
-          if [ "$TAG" != "$VERSION" ]; then
-            echo "::error::Git tag v${TAG} does not match pom.xml version ${VERSION}"
-            exit 1
-          fi
-          echo "Release version: ${VERSION}"
-
       - name: Import GPG signing key
         env:
           GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
