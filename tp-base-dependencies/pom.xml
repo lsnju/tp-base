@@ -13,7 +13,7 @@
 
     <groupId>com.lsnju.tp3</groupId>
     <artifactId>tp-base-dependencies</artifactId>
-    <version>3.1.32</version>
+    <version>3.1.33</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -170,7 +170,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.10.0</version>
+                <version>0.12.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>
