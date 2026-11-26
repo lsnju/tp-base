@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>4.1.2</version>
+        <version>4.2.0</version>
         <relativePath />
     </parent>
 
@@ -68,7 +68,7 @@
             <dependency>
                 <groupId>org.springframework.session</groupId>
                 <artifactId>spring-session-bom</artifactId>
-                <version>2021.2.3</version>
+                <version>4.2.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -76,7 +76,7 @@
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-bom</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -92,7 +92,7 @@
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.86</version>
+                <version>1.87</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -113,7 +113,7 @@
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
-                <version>3.5.19</version>
+                <version>3.6.0</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
@@ -245,6 +245,13 @@
                 <artifactId>springfox-core</artifactId>
                 <version>3.0.0</version>
                 <optional>true</optional>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
+            <dependency>
+                <groupId>org.codehaus.janino</groupId>
+                <artifactId>janino</artifactId>
+                <version>3.1.12</version>
             </dependency>
 
         </dependencies>
