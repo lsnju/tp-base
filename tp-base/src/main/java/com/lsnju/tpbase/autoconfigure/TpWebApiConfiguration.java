@@ -101,30 +101,43 @@ public class TpWebApiConfiguration {
             public SysInfo show() {
                 log.debug("x");
                 final SysInfo ret = new SysInfo();
-                ret.setHostname(VersionConfig.getHostname());
-                ret.setPid(VersionConfig.getPid());
-                ret.setPort(serverPort);
-                ret.setJavaVersion(TpAppInfo.JAVA_VERSION);
-                ret.setJavaVersionDate(TpAppInfo.JAVA_VERSION_DATE);
-                ret.setJavaVendor(TpAppInfo.JAVA_VENDOR);
-                ret.setVersion(TpAppInfo.BUILD_VERSION);
-                ret.setBuildTime(TpAppInfo.BUILD_TIME);
-                ret.setBuildDate(TpAppInfo.BUILD_DATE);
-                ret.setStartTime(VersionConfig.getStartDate());
-                ret.setNow(TpDateFormatUtils.getNewFormatDateString(new Date()));
-                ret.setProfile(profile);
-                ret.setLogger(tpLogConfigProperties);
-                ret.setTpVersion(TpAppInfo.TP_BASE_VERSION);
-                ret.setSbVersion(SpringBootVersion.getVersion());
-                ret.setHomeDir(String.valueOf(HOME.getDir()));
-                ret.setHomeSrc(String.valueOf(HOME.getSource()));
-                ret.setCoreSize(Runtime.getRuntime().availableProcessors());
-                ret.setTotalMemory(Runtime.getRuntime().totalMemory());
-                ret.setMaxMemory(Runtime.getRuntime().maxMemory());
-                ret.setFreeMemory(Runtime.getRuntime().freeMemory());
+
+                final SysInfo.MemInfo memInfo = new SysInfo.MemInfo();
+                memInfo.setTotalMemory(Runtime.getRuntime().totalMemory());
+                memInfo.setMaxMemory(Runtime.getRuntime().maxMemory());
+                memInfo.setFreeMemory(Runtime.getRuntime().freeMemory());
+                ret.setMemInfo(memInfo);
+
+                final SysInfo.JdkInfo jdkInfo = new SysInfo.JdkInfo();
+                jdkInfo.setJavaVersion(TpAppInfo.JAVA_VERSION);
+                jdkInfo.setJavaVersionDate(TpAppInfo.JAVA_VERSION_DATE);
+                jdkInfo.setJavaVendor(TpAppInfo.JAVA_VENDOR);
+                ret.setJdkInfo(jdkInfo);
+
+                final SysInfo.AppInfo appInfo = new SysInfo.AppInfo();
+                appInfo.setVersion(TpAppInfo.BUILD_VERSION);
+                appInfo.setBuildTime(TpAppInfo.BUILD_TIME);
+                appInfo.setBuildDate(TpAppInfo.BUILD_DATE);
+                appInfo.setTpVersion(TpAppInfo.TP_BASE_VERSION);
+                appInfo.setSbVersion(SpringBootVersion.getVersion());
+                ret.setAppInfo(appInfo);
+
+                final SysInfo.AppRuntime appRuntime = new SysInfo.AppRuntime();
+                appRuntime.setHostname(VersionConfig.getHostname());
+                appRuntime.setPid(VersionConfig.getPid());
+                appRuntime.setPort(serverPort);
+                appRuntime.setCoreSize(Runtime.getRuntime().availableProcessors());
+                appRuntime.setStartTime(VersionConfig.getStartDate());
+                appRuntime.setNow(TpDateFormatUtils.getNewFormatDateString(new Date()));
+                appRuntime.setProfile(profile);
+                appRuntime.setHomeDir(String.valueOf(HOME.getDir()));
+                appRuntime.setHomeSrc(String.valueOf(HOME.getSource()));
                 if (tpSpringWebMvcHelper != null) {
-                    ret.setServerUrl(tpSpringWebMvcHelper.getServerUrl());
+                    appRuntime.setServerUrl(tpSpringWebMvcHelper.getServerUrl());
                 }
+                ret.setAppRuntime(appRuntime);
+
+                ret.setLogger(tpLogConfigProperties);
                 return ret;
             }
 
