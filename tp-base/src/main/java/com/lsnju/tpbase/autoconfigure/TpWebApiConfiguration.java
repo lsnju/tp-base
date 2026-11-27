@@ -105,7 +105,7 @@ public class TpWebApiConfiguration {
                 memInfo.setTotalMemory(Runtime.getRuntime().totalMemory());
                 memInfo.setMaxMemory(Runtime.getRuntime().maxMemory());
                 memInfo.setFreeMemory(Runtime.getRuntime().freeMemory());
-                ret.setMemInfo(memInfo);
+                ret.setJvmInfo(memInfo);
 
                 final SysInfo.JdkInfo jdkInfo = new SysInfo.JdkInfo();
                 jdkInfo.setJavaVersion(TpAppInfo.JAVA_VERSION);
