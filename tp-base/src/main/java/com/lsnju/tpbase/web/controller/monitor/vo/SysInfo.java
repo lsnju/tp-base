@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 public class SysInfo extends BaseMo {
 
-    private MemInfo memInfo;
+    private MemInfo jvmInfo;
     private JdkInfo jdkInfo;
     private AppInfo appInfo;
     private AppRuntime appRuntime;
