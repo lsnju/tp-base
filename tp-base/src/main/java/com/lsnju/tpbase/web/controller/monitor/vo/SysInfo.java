@@ -18,27 +18,61 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SysInfo extends BaseMo {
-    private String hostname;
-    private String pid;
-    private int port;
-    private int coreSize;
-    private long totalMemory;
-    private long maxMemory;
-    private long freeMemory;
-    private String javaVersion;
-    private String javaVersionDate;
-    private String javaVendor;
-    private String version;
-    private String serverUrl;
-    private String buildTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date buildDate;
-    private String startTime;
-    private String now;
-    private String profile;
-    private String tpVersion;
-    private String sbVersion;
-    private String homeDir;
-    private String homeSrc;
+
+    private MemInfo jvmInfo;
+    private JdkInfo jdkInfo;
+    private AppInfo appInfo;
+    private AppRuntime appRuntime;
     private TpLogConfigProperties logger;
+
+    @Getter
+    @Setter
+    public static class MemInfo extends BaseMo {
+
+        private long totalMemory;
+        private long maxMemory;
+        private long freeMemory;
+
+    }
+
+    @Getter
+    @Setter
+    public static class JdkInfo extends BaseMo {
+
+        private String javaVersion;
+        private String javaVersionDate;
+        private String javaVendor;
+
+    }
+
+    @Getter
+    @Setter
+    public static class AppInfo extends BaseMo {
+
+        private String version;
+        private String buildTime;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+        private Date buildDate;
+        private String tpVersion;
+        private String sbVersion;
+
+    }
+
+    @Getter
+    @Setter
+    public static class AppRuntime extends BaseMo {
+
+        private String hostname;
+        private String pid;
+        private int port;
+        private int coreSize;
+        private String serverUrl;
+        private String startTime;
+        private String now;
+        private String profile;
+        private String homeDir;
+        private String homeSrc;
+
+    }
+
 }
